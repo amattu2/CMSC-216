@@ -1,0 +1,19 @@
+#!/bin/bash
+# Written by Richard McHorgh
+
+if [ $# -eq 0 ]
+then
+    echo "I don't know what to build. Add an project filename as an argument."
+else
+    echo Building $1
+    FILES=$1/*
+    for f in $FILES.c
+    do
+	if [ $f != $1/$2 ]
+	then
+	    gcc $f $1/$2 -o $f.x
+	    $f.x | grep -i "failed"
+	fi
+    done
+fi
+
