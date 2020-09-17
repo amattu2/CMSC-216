@@ -47,6 +47,7 @@ int main(int argc, char *argv[])  {
 			/* Handle Line */
 			parseLine(line, index+1);
 			reset(line, 999);
+			continue;
 		}
 
 		/* Increment index */
@@ -72,14 +73,15 @@ void parseLine(char l[], int size) {
 	int i;
 
 	/* Output */
-	printf("%c %4d> ", (length > 80 ? *"X" : *" "), size);
+	printf("%c %4d> ", (length > 80 ? *"X" : *" "), size-1);
 	for (i = 0; i < size; i++) {
+		/* Output */
 		printf("%c", l[i]);
 	}
 }
 
 /**
- * Calculate tab length in given char array
+ * Calculate the total printable length in char array
  *
  * @param char[] line array
  * @param int array size
