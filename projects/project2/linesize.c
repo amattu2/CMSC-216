@@ -16,8 +16,17 @@
 
 /* Prototypes */
 void parseLine(char line[], int size);
-int parseTabs(char l[], int size);
+int parseTabs(char line[], int size);
 
+/**
+ * Main program function
+ *
+ * @param char argument count
+ * @param char argument vector
+ * @return int status code
+ * @author Alec M. <https://amattu.com>
+ * @date 2020-09-17T12:54:12-040
+ */
 int main(int argc, char *argv[])  {
 	/* Variables */
 	char line[999];
@@ -51,6 +60,15 @@ int main(int argc, char *argv[])  {
 	return 0;
 }
 
+/**
+ * Parse a file line
+ *
+ * @param char[] line array
+ * @param int array size
+ * @throws None
+ * @author Alec M. <https://amattu.com>
+ * @date 2020-09-17T12:55:38-040
+ */
 void parseLine(char l[], int size) {
 	/* Variables */
 	int length = parseTabs(l, size); /* Occupied (tabs, etc) length */
@@ -63,6 +81,16 @@ void parseLine(char l[], int size) {
 	}
 }
 
+/**
+ * Calculate tab length in given char array
+ *
+ * @param char[] line array
+ * @param int array size
+ * @return int calculated length
+ * @throws None
+ * @author Alec M. <https://amattu.com>
+ * @date 2020-09-17T12:56:36-040
+ */
 int parseTabs(char l[], int size) {
 	return 0;
 }
