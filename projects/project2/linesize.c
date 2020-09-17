@@ -17,6 +17,7 @@
 /* Prototypes */
 void parseLine(char line[], int size);
 int parseTabs(char line[], int size);
+void reset(char *array, int size);
 
 /**
  * Main program function
@@ -45,11 +46,7 @@ int main(int argc, char *argv[])  {
 
 			/* Handle Line */
 			parseLine(line, index+1);
-
-			/* Reset Array */
-			for (index = 0; index < 999; index++) {
-				line[index] = '\0';
-			}
+			reset(line, index);
 		}
 
 		/* Increment index */
@@ -71,7 +68,7 @@ int main(int argc, char *argv[])  {
  */
 void parseLine(char l[], int size) {
 	/* Variables */
-	int length = parseTabs(l, size); /* Occupied (tabs, etc) length */
+	int length = parseTabs(l, size);
 	int i;
 
 	/* Output */
@@ -93,4 +90,22 @@ void parseLine(char l[], int size) {
  */
 int parseTabs(char l[], int size) {
 	return 0;
+}
+
+/**
+ * Reset given character array
+ * @param char[] array
+ * @param int array size
+ * @throws None
+ * @author Alec M. <https://amattu.com>
+ * @date 2020-09-17T13:04:53-040
+ */
+void reset(char *array, int size) {
+	/* Variables */
+	int i;
+
+	/* Loops */
+	for (i = 0; i < 999; i++) {
+		array[i] = '\0';
+	}
 }
