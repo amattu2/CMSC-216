@@ -5,7 +5,7 @@
  * Directory ID: amattu
  *
  * Author: Alec M.
- * Date: Sept 16th, 2020
+ * Date: Sept 17th, 2020
  *
  * I pledge on my honor that I have not given or received
  * any unauthorized assistance on this assignment.
@@ -15,25 +15,35 @@
 #include <stdio.h>
 
 /* Prototypes */
-
+void parseLine(char line[], int size);
+int parseTabs(char l[], int size);
 
 int main(int argc, char *argv[])  {
 	/* Variables */
+	char line[999];
 	int i = 0;
-	char *string = argv[1];
 
-	/* Checks */
-	if (argc < 2) {
-		printf("You did not provide enough arguments. (Given: %d)\n", argc);
-		return 0;
-	}
+	/* Iterate Through Input */
+	while (feof(stdin) != 1) {
+		/* Read Character */
+		scanf("%c", &line[i]);
 
-	/* This is the closest thing I can get to work.
-		a.out test.123 - Outputs test.123
-		a.out < test.txt - Argument 1 (argv[1]) is null
-	*/
-	while (string[i] != '\0') {
-		printf("%c\n", string[i]);
+		/* Checks for EOL */
+		if (line[i] == '\n') {
+			/* Variables */
+			int index = i;
+			i = 0;
+
+			/* Handle Line */
+			parseLine(line, index+1);
+
+			/* Reset Array */
+			for (index = 0; index < 999; index++) {
+				line[index] = '\0';
+			}
+		}
+
+		/* Increment index */
 		i++;
 	}
 
@@ -41,26 +51,18 @@ int main(int argc, char *argv[])  {
 	return 0;
 }
 
-void readFile(char *filename) {
-	/* Read a file line by line, pass it to parseInput */
-}
-
-void parseInput(void) {
-	/* Read from input, call readLine */
-}
-
-void parseLine(void) {
-	/* Parse input, account for tabs, output result for line */
-
+void parseLine(char l[], int size) {
 	/* Variables */
-	int size = 0; /* Number of characters in the line */
-	int length = 0; /* Occupied (tabs, etc) length */
+	int length = parseTabs(l, size); /* Occupied (tabs, etc) length */
+	int i;
 
 	/* Output */
-	printf("%c %04d> ", (length > 80 ? *"X" : *" "), size);
-
+	printf("%c %4d> ", (length > 80 ? *"X" : *" "), size);
+	for (i = 0; i < size; i++) {
+		printf("%c", l[i]);
+	}
 }
 
-void parseTabs(void) {
-	/* Replace tabs per requirement and return string */
+int parseTabs(char l[], int size) {
+	return 0;
 }
