@@ -46,7 +46,7 @@ int main(int argc, char *argv[])  {
 
 			/* Handle Line */
 			parseLine(line, index+1);
-			reset(line, index);
+			reset(line, 999);
 		}
 
 		/* Increment index */
@@ -105,7 +105,7 @@ void reset(char *array, int size) {
 	int i;
 
 	/* Loops */
-	for (i = 0; i < 999; i++) {
+	for (i = 0; i < size; i++) {
 		array[i] = '\0';
 	}
 }
