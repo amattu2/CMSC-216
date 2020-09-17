@@ -16,7 +16,7 @@
 
 /* Prototypes */
 void parseLine(char line[], int size);
-int parseTabs(char line[], int size);
+int parseWhitespace(char line[], int size);
 void reset(char *array, int size);
 
 /**
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])  {
  */
 void parseLine(char l[], int size) {
 	/* Variables */
-	int length = parseTabs(l, size);
+	int length = parseWhitespace(l, size);
 	int i;
 
 	/* Output */
@@ -90,7 +90,7 @@ void parseLine(char l[], int size) {
  * @author Alec M. <https://amattu.com>
  * @date 2020-09-17T12:56:36-040
  */
-int parseTabs(char l[], int size) {
+int parseWhitespace(char l[], int size) {
 	return 0;
 }
 
