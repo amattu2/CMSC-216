@@ -19,8 +19,6 @@
 	- Tabs are miscounted horribly
  */
 
-
-
 /* Files */
 #include <stdio.h>
 
@@ -64,10 +62,10 @@ int main(int argc, char *argv[])  {
 
 			/* Reset Array */
 			reset(line, 999);
+		} else {
+			/* Increment index */
+			array_index++;
 		}
-
-		/* Increment index */
-		array_index++;
 	}
 
 	/* Output Results */
