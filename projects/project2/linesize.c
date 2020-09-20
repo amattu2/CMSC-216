@@ -11,14 +11,6 @@
  * any unauthorized assistance on this assignment.
 */
 
-/**
-	Current issues:
-	- According to the public tests, \n shouldn't be counted... And when it's on it's own line
-	it is being counted
-	- With the exception of the first line, most of them have differ in length by 1
-	- Tabs are miscounted horribly
- */
-
 /* Files */
 #include <stdio.h>
 
@@ -69,7 +61,7 @@ int main(int argc, char *argv[])  {
 	}
 
 	/* Output Results */
-	printf("%d %d", line_count, lines_exceeding);
+	printf("%d %d\n", line_count, lines_exceeding);
 
 	/* Return */
 	return 0;
@@ -90,7 +82,7 @@ int parseLine(char l[], int size) {
 	int array_index;
 
 	/* Output */
-	printf("%c %4d> ", (length > 80 ? *"X" : *" "), size);
+	printf("%c %4d> ", (length > 80 ? *"X" : *" "), length);
 	for (array_index = 0; array_index <= size; array_index++) {
 		/* Output */
 		printf("%c", l[array_index]);
@@ -119,7 +111,7 @@ int parseWhitespace(char l[], int size) {
 	for (array_index = 0; array_index <= size; array_index++) {
 		if (l[array_index] == '\t') {
 			length += 8 - (length % 8);
-		} else if (l[array_index] != '\n') {
+		} else if (l[array_index] != '\n' && l[array_index] != '\0') {
 			length++;
 		}
 	}
