@@ -29,46 +29,46 @@ void reset(char *array, int size);
  * @date 2020-09-17T12:54:12-040
  */
 int main(int argc, char *argv[])  {
-	/* Variables */
-	char line[999];
-	int array_index = 0;
-	int lines_exceeding = 0;
-	int line_count = 0;
+    /* Variables */
+    char line[999];
+    int array_index = 0;
+    int lines_exceeding = 0;
+    int line_count = 0;
 
-	/* Iterate Through Input */
-	while (feof(stdin) != 1) {
-		/* Read Character */
-		scanf("%c", &line[array_index]);
+    /* Iterate Through Input */
+    while (feof(stdin) != 1) {
+        /* Read Character */
+        scanf("%c", &line[array_index]);
 
-		/* Checks for EOL */
-		if (line[array_index] == '\n') {
-			/* Variables */
-			int index = array_index;
-			array_index = 0;
-			line_count++;
+        /* Checks for EOL */
+        if (line[array_index] == '\n') {
+            /* Variables */
+            int index = array_index;
+            array_index = 0;
+            line_count++;
 
-			/* Check parseLint result */
-			if (parseLine(line, index) > 80) {
-				lines_exceeding++;
-			}
+            /* Check parseLint result */
+            if (parseLine(line, index) > 80) {
+                lines_exceeding++;
+            }
 
-			/* Reset Array */
-			reset(line, 999);
-		} else {
-			/* Increment index */
-			array_index++;
-		}
-	}
+            /* Reset Array */
+            reset(line, 999);
+        } else {
+            /* Increment index */
+            array_index++;
+        }
+    }
 
-	/* Output Results */
-	printf("%d %d\n", line_count, lines_exceeding);
+    /* Output Results */
+    printf("%d %d\n", line_count, lines_exceeding);
 
-	/* Return */
-	return 0;
+    /* Return */
+    return 0;
 }
 
 /**
- * Parse a file line
+ * Parse a given line and output needed details
  *
  * @param char[] line array
  * @param int array size
@@ -77,19 +77,19 @@ int main(int argc, char *argv[])  {
  * @date 2020-09-17T12:55:38-040
  */
 int parseLine(char l[], int size) {
-	/* Variables */
-	int length = parseWhitespace(l, size);
-	int array_index;
+    /* Variables */
+    int length = parseWhitespace(l, size);
+    int array_index;
 
-	/* Output */
-	printf("%c %4d> ", (length > 80 ? *"X" : *" "), length);
-	for (array_index = 0; array_index <= size; array_index++) {
-		/* Output */
-		printf("%c", l[array_index]);
-	}
+    /* Output */
+    printf("%c %4d> ", (length > 80 ? *"X" : *" "), length);
+    for (array_index = 0; array_index <= size; array_index++) {
+        /* Output */
+        printf("%c", l[array_index]);
+    }
 
-	/* Return */
-	return length;
+    /* Return */
+    return length;
 }
 
 /**
@@ -103,21 +103,21 @@ int parseLine(char l[], int size) {
  * @date 2020-09-17T12:56:36-040
  */
 int parseWhitespace(char l[], int size) {
-	/* Variables */
-	int array_index;
-	int length = 0;
+    /* Variables */
+    int array_index;
+    int length = 0;
 
-	/* Iterate Through Array */
-	for (array_index = 0; array_index <= size; array_index++) {
-		if (l[array_index] == '\t') {
-			length += 8 - (length % 8);
-		} else if (l[array_index] != '\n' && l[array_index] != '\0') {
-			length++;
-		}
-	}
+    /* Iterate Through Array */
+    for (array_index = 0; array_index <= size; array_index++) {
+        if (l[array_index] == '\t') {
+            length += 8 - (length % 8);
+        } else if (l[array_index] != '\n' && l[array_index] != '\0') {
+            length++;
+        }
+    }
 
-	/* Return */
-	return length;
+    /* Return */
+    return length;
 }
 
 /**
@@ -130,11 +130,11 @@ int parseWhitespace(char l[], int size) {
  * @date 2020-09-17T13:04:53-040
  */
 void reset(char *array, int size) {
-	/* Variables */
-	int array_index;
+    /* Variables */
+    int array_index;
 
-	/* Iterate Through Array */
-	for (array_index = 0; array_index < size; array_index++) {
-		array[array_index] = '\0';
-	}
+    /* Iterate Through Array */
+    for (array_index = 0; array_index < size; array_index++) {
+        array[array_index] = '\0';
+    }
 }
