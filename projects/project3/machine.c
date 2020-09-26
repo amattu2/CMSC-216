@@ -22,12 +22,14 @@
 /*** REMOVE AFTER FORMATTING encode_instruction PARAMETER DESIGN ***/
 
 /* Files */
+#include <stdio.h>
 #include "machine.h"
 
 /* Prototypes */
-void print_opcode(unsigned int opcode);
+void print_opcode(int opcode);
 
 void print_instruction(Hardware_word instruction) {
+	print_opcode(instruction >> 28);
 	/*
 	Use bit operators to move throughout the parameter data
 
@@ -68,6 +70,62 @@ unsigned int compare_instructions(Hardware_word instr1, Hardware_word instr2) {
 	return 0;
 }
 
-void print_opcode(unsigned int opcode) {
-	
+/**
+ * Print opcode descripton
+ *
+ * @param int opcode
+ * @throws None
+ * @author Alec M. <https://amattu.com>
+ * @date 2020-09-26T13:50:29-040
+ */
+void print_opcode(int opcode) {
+	switch (opcode) {
+		case 0:
+			printf("halt");
+			break;
+		case 1:
+			printf("add");
+			break;
+		case 2:
+			printf("sub");
+			break;
+		case 3:
+			printf("mul");
+			break;
+		case 4:
+			printf("div");
+			break;
+		case 5:
+			printf("rem");
+			break;
+		case 6:
+			printf("inv");
+			break;
+		case 7:
+			printf("and");
+			break;
+		case 8:
+			printf("or");
+			break;
+		case 9:
+			printf("not");
+			break;
+		case 10:
+			printf("cmp");
+			break;
+		case 11:
+			printf("mv");
+			break;
+		case 12:
+			printf("li");
+			break;
+		case 13:
+			printf("load");
+			break;
+		case 14:
+			printf("store");
+			break;
+		default:
+			break;
+	}
 }
