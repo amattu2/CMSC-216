@@ -24,6 +24,9 @@
 /* Files */
 #include "machine.h"
 
+/* Prototypes */
+void print_opcode(unsigned int opcode);
+
 void print_instruction(Hardware_word instruction) {
 	/*
 	Use bit operators to move throughout the parameter data
@@ -38,6 +41,7 @@ unsigned int encode_instruction(unsigned short opcode, unsigned short reg1, unsi
 
 	if parameters are invalid, return 0 before modifying Hardware_word otherwise 1
 	- if opcode is invalid (only 15 opcodes)
+	- if opcode is HALT, just stop
 	- if a register operand (reg1, reg2, reg3) are outside of the 0-19 (R0-R19) range
 	- if the instruction uses a memory address, and the addr_or_constant is not a valid mem addr (0-2047)
 	- if it uses a memory addr and the mem addr is not divisible by 4 (addr % 4 == 0)
@@ -62,4 +66,8 @@ unsigned int compare_instructions(Hardware_word instr1, Hardware_word instr2) {
 	 */
 
 	return 0;
+}
+
+void print_opcode(unsigned int opcode) {
+	
 }
