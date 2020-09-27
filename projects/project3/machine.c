@@ -28,6 +28,7 @@
 /* Prototypes */
 void print_opcode(Opcode opcode);
 void print_register(unsigned int bits);
+void print_memaddr(Opcode opcode, unsigned int bits);
 unsigned int read_bit(unsigned int byte, int msb, int lsb);
 Opcode determine_opcode(unsigned int opcode);
 
@@ -72,7 +73,7 @@ void print_instruction(Hardware_word instruction) {
 	/* Print Address/Constant */
 	if (opcode == CMP || opcode == LI || opcode == LOAD || opcode == STORE) {
 		printf(" ");
-		printf("%d", addr_or_const); /* THIS IS TEMPORARY.... NOT PARSED AT ALL */
+		print_memaddr(opcode, addr_or_const);
 	}
 }
 
@@ -301,4 +302,28 @@ Opcode determine_opcode(unsigned int opcode) {
 	}
 
 	return HALT;
+}
+
+/**
+ * Print a memory address or constant value
+ *
+ * @param Opcode opcode
+ * @param unsigned int bits
+ * @throws None
+ * @author Alec M. <https://amattu.com>
+ * @date 2020-09-27T12:07:15-040
+ */
+void print_memaddr(Opcode opcode, unsigned int bits) {
+	switch (opcode) {
+		case CMP:
+		case LOAD:
+		case STORE:
+			printf("%04d", bits);
+			break;
+		case LI:
+			printf("%d", bits);
+			break;
+		default:
+			break;
+	}
 }
