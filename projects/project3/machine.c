@@ -27,9 +27,13 @@
 
 /* Prototypes */
 void print_opcode(int opcode);
+void print_register(unsigned int bits);
+unsigned int read_bit(unsigned int byte, int msb, int lsb);
 
 void print_instruction(Hardware_word instruction) {
 	print_opcode(instruction >> 28);
+	print_register(read_bit(instruction, 27, 23));
+
 	/*
 	Use bit operators to move throughout the parameter data
 
@@ -42,13 +46,15 @@ unsigned int encode_instruction(unsigned short opcode, unsigned short reg1, unsi
 	Take the 4 provided parameters and store it in Hardware_word
 
 	if parameters are invalid, return 0 before modifying Hardware_word otherwise 1
-	- if opcode is invalid (only 15 opcodes)
+	- if opcode is invalid (only 0-15 opcodes)
 	- if opcode is HALT, just stop
 	- if a register operand (reg1, reg2, reg3) are outside of the 0-19 (R0-R19) range
 	- if the instruction uses a memory address, and the addr_or_constant is not a valid mem addr (0-2047)
 	- if it uses a memory addr and the mem addr is not divisible by 4 (addr % 4 == 0)
 	- if it uses a LI instruction, and not between 0-8191 (inclusive), it's invalid
 	- if instruction is to modify and reg1 is unmodifier or R0/R1, its invalid
+
+	A li instruction is only 11 bits, a immediate value is 13
 	 */
 
 	return 0;
@@ -68,6 +74,22 @@ unsigned int compare_instructions(Hardware_word instr1, Hardware_word instr2) {
 	 */
 
 	return 0;
+}
+
+/**
+ * Determine and return the bit in specified position
+ *
+ * @param unsigned int
+ * @param int msb (Include from lsb to here)
+ * @param int lsb (Move TOWARDS left this amount)
+ * @return unsigned bit(s) at position
+ * @throws None
+ * @author Alec M. <https://amattu.com>
+ * @date 2020-09-27T10:11:09-040
+ */
+unsigned int read_bit(unsigned int byte, int msb, int lsb) {
+	unsigned int result = (byte >> lsb) & ~(~0 << (msb-lsb+1));
+	return result;
 }
 
 /**
@@ -124,6 +146,73 @@ void print_opcode(int opcode) {
 			break;
 		case 14:
 			printf("store");
+			break;
+		default:
+			break;
+	}
+}
+
+void print_register(unsigned int bits) {
+	switch (bits) {
+		case R0:
+			printf(" R0");
+			break;
+		case R1:
+			printf(" R1");
+			break;
+		case R2:
+			printf(" R2");
+			break;
+		case R3:
+			printf(" R3");
+			break;
+		case R4:
+			printf(" R4");
+			break;
+		case R5:
+			printf(" R5");
+			break;
+		case R6:
+			printf(" R6");
+			break;
+		case R7:
+			printf(" R7");
+			break;
+		case R8:
+			printf(" R8");
+			break;
+		case R9:
+			printf(" R9");
+			break;
+		case R10:
+			printf(" R10");
+			break;
+		case R11:
+			printf(" R11");
+			break;
+		case R12:
+			printf(" R12");
+			break;
+		case R13:
+			printf(" R13");
+			break;
+		case R14:
+			printf(" R14");
+			break;
+		case R15:
+			printf(" R15");
+			break;
+		case R16:
+			printf(" R16");
+			break;
+		case R17:
+			printf(" R17");
+			break;
+		case R18:
+			printf(" R18");
+			break;
+		case R19:
+			printf(" R19");
 			break;
 		default:
 			break;
