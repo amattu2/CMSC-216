@@ -31,6 +31,8 @@ void print_register(unsigned int bits);
 void print_memaddr(Opcode opcode, unsigned int bits);
 unsigned int read_bit(unsigned int byte, int msb, int lsb);
 Opcode determine_opcode(unsigned int opcode);
+int opcode_uses_register(unsigned int opcode, int register_index);
+int opcode_uses_memory_addr(unsigned int opcode);
 
 /**
  * Print a CPU instruction set
@@ -78,6 +80,31 @@ void print_instruction(Hardware_word instruction) {
 }
 
 unsigned int encode_instruction(unsigned short opcode, unsigned short reg1, unsigned short reg2, unsigned short reg3, unsigned int addr_or_constant, Hardware_word *const hw_word) {
+	/* Check Opcode */
+	if (opcode < 0 || opcode > 14) {
+		return 0;
+	}
+
+	/* Check Register 1 */
+	if (opcode_uses_register(opcode, 1) == 1 && (reg1 < 0 || reg1 > 19)) {
+		return 0;
+	}
+
+	/* Check Register 2 */
+	if (opcode_uses_register(opcode, 2) == 1 && (reg2 < 0 || reg2 > 19)) {
+		return 0;
+	}
+
+	/* Check Register 3 */
+	if (opcode_uses_register(opcode, 3) == 1 && (reg3 < 0 || reg3 > 19)) {
+		return 0;
+	}
+
+	/* Check Memory Address */
+	if (opcode_uses_memory_addr(opcode) == 1 && (addr_or_constant < 0 || addr_or_constant > 2047)) {
+		return 0;
+	}
+
 	/*
 	Take the 4 provided parameters and store it in Hardware_word
 
@@ -325,5 +352,57 @@ void print_memaddr(Opcode opcode, unsigned int bits) {
 			break;
 		default:
 			break;
+	}
+}
+
+/**
+ * Check if specified register (index) is used by a instruction
+ *
+ * @param unsigned int opcode
+ * @param int register number (1-3)
+ * @return int uses specified register (0/1)
+ * @throws None
+ * @author Alec M. <https://amattu.com>
+ * @date 2020-09-27T12:37:43-040
+ */
+int opcode_uses_register(unsigned int opcode, int register_index) {
+	/* Check Opcodes/Registers against project table */
+	if (opcode == HALT) {
+		return 0;
+	}
+	if (register_index == 1) {
+		return 1;
+	}
+	if (register_index == 2 && opcode != LI && opcode != LOAD && opcode != STORE) {
+		return 1;
+	}
+	if (register_index == 3 && opcode != INV && opcode != NOT && opcode != MV && opcode != LI && opcode != LOAD && opcode != STORE) {
+		return 1;
+	}
+
+	/* Default */
+	return 0;
+}
+
+/**
+ * Check if specified Opcode uses a memory address
+ *
+ * @param unsigned int opcode
+ * @return int uses memory address (0/1)
+ * @throws None
+ * @author Alec M. <https://amattu.com>
+ * @date 2020-09-27T12:29:31-040
+ */
+int opcode_uses_memory_addr(unsigned int opcode) {
+	/* Check Provided Opcode against project guideline table */
+	switch (opcode) {
+		case CMP:
+		case LOAD:
+		case STORE:
+			return 1;
+		case LI:
+			return 0;
+		default:
+			return 0;
 	}
 }
