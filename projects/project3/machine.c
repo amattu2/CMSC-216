@@ -18,8 +18,12 @@
  * - Translate machine instructions
 */
 
+/********************************************/
+/********************************************/
 /*** REMOVE AFTER CONVERTING TABS->SPACES ***/
 /*** REMOVE AFTER FORMATTING LONG PARAMETER DESIGN ***/
+/********************************************/
+/********************************************/
 
 /* Files */
 #include <stdio.h>
@@ -85,17 +89,13 @@ unsigned int encode_instruction(unsigned short opcode, unsigned short reg1, unsi
 		return 0;
 	}
 
-	/* Check Register 1 */
+	/* Check Registers */
 	if (opcode_uses_register(opcode, 1) == 1 && (reg1 < 0 || reg1 > 19)) {
 		return 0;
 	}
-
-	/* Check Register 2 */
 	if (opcode_uses_register(opcode, 2) == 1 && (reg2 < 0 || reg2 > 19)) {
 		return 0;
 	}
-
-	/* Check Register 3 */
 	if (opcode_uses_register(opcode, 3) == 1 && (reg3 < 0 || reg3 > 19)) {
 		return 0;
 	}
@@ -104,23 +104,29 @@ unsigned int encode_instruction(unsigned short opcode, unsigned short reg1, unsi
 	if (opcode_uses_memory_addr(opcode) == 1 && (addr_or_constant < 0 || addr_or_constant > 2047)) {
 		return 0;
 	}
+	if (opcode_uses_memory_addr(opcode) == 1 && (addr_or_constant % 4 != 0)) {
+		return 0;
+	}
 
-	/*
-	Take the 4 provided parameters and store it in Hardware_word
+	/* Check Immediate Value */
+	if (opcode == LI && (reg1 < 0 || reg1 > 8191)) {
+		return 0;
+	}
 
-	if parameters are invalid, return 0 before modifying Hardware_word otherwise 1
-	- if opcode is invalid (only 0-15 opcodes)
-	- if opcode is HALT, just stop
-	- if a register operand (reg1, reg2, reg3) are outside of the 0-19 (R0-R19) range
-	- if the instruction uses a memory address, and the addr_or_constant is not a valid mem addr (0-2047)
-	- if it uses a memory addr and the mem addr is not divisible by 4 (addr % 4 == 0)
-	- if it uses a LI instruction, and not between 0-8191 (inclusive), it's invalid
-	- if instruction is to modify and reg1 is unmodifier or R0/R1, its invalid
+	/* Pending:
+		- R0 and R1 validation... We can't use it for modifying or something
+		- Picking priority for CMP operands
+	*/
 
-	A li instruction is only 11 bits, a immediate value is 13
-	 */
+	/* Check Pointer */
+	if (!hw_word) {
+		return 0;
+	}
 
-	return 0;
+	/* do the pointer assignment stuff here */
+
+	/* Default */
+	return 1;
 }
 
 unsigned int diassemble(const Hardware_word memory[], unsigned int memory_size, unsigned int num_instrs) {
@@ -140,7 +146,7 @@ unsigned int compare_instructions(Hardware_word instr1, Hardware_word instr2) {
 }
 
 /**
- * Determine and return the bit in specified position
+ * Find and return the bit in specified position
  *
  * @param unsigned int
  * @param int msb (Include from lsb to here)
@@ -226,7 +232,6 @@ void print_opcode(Opcode opcode) {
  * @author Alec M. <https://amattu.com>
  * @date 2020-09-27T10:47:35-040
  */
-
 void print_register(unsigned int bits) {
 	switch (bits) {
 		case R0:
