@@ -308,7 +308,6 @@ void print_register(unsigned int bits) {
  * @author Alec M. <https://amattu.com>
  * @date 2020-09-27T12:39:33-040
  */
-
 Opcode determine_opcode(unsigned int opcode) {
 	/* Find Opcode */
 	switch (opcode) {
