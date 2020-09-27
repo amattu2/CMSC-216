@@ -280,23 +280,23 @@ Opcode determine_opcode(unsigned int opcode) {
 			return DIV;
 		case 5:
 			return REM;
-		case 7:
+		case 6:
 			return INV;
-		case 8:
+		case 7:
 			return AND;
-		case 9:
+		case 8:
 			return OR;
-		case 10:
+		case 9:
 			return NOT;
-		case 11:
+		case 10:
 			return CMP;
-		case 12:
+		case 11:
 			return MV;
-		case 13:
+		case 12:
 			return LI;
-		case 14:
+		case 13:
 			return LOAD;
-		case 15:
+		case 14:
 			return STORE;
 	}
 
