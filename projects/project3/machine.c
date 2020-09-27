@@ -294,7 +294,18 @@ void print_register(unsigned int bits) {
 	}
 }
 
+/**
+ * --This function might be redundant--
+ *
+ * @param unsigned int opcode
+ * @return Opcode constant
+ * @throws None
+ * @author Alec M. <https://amattu.com>
+ * @date 2020-09-27T12:39:33-040
+ */
+
 Opcode determine_opcode(unsigned int opcode) {
+	/* Find Opcode */
 	switch (opcode) {
 		case 0:
 			return HALT;
