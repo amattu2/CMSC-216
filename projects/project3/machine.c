@@ -31,10 +31,16 @@ void print_register(unsigned int bits);
 unsigned int read_bit(unsigned int byte, int msb, int lsb);
 
 void print_instruction(Hardware_word instruction) {
-	print_opcode(instruction >> 28);
-	print_register(read_bit(instruction, 27, 23));
+	print_opcode(instruction >> 28); /* opcode (Bytes 32-28) */
+	print_register(read_bit(instruction, 27, 23)); /* Reg 1 (27-23) */
+	print_register(read_bit(instruction, 22, 18)); /* Reg 2 (22-18) */
+	print_register(read_bit(instruction, 17, 13)); /* Reg 3 (17-13) */
+	read_bit(instruction, 12, 0); /* Mem Addr or Immedimate */
 
 	/*
+	In order to determine if we read Reg1-Reg3, I have to determine the opcode first
+	the opcode tells you to ignore which registers
+
 	Use bit operators to move throughout the parameter data
 
 	Eg. print_instruction(0x41912000) > div R3 R4 R9
@@ -88,7 +94,10 @@ unsigned int compare_instructions(Hardware_word instr1, Hardware_word instr2) {
  * @date 2020-09-27T10:11:09-040
  */
 unsigned int read_bit(unsigned int byte, int msb, int lsb) {
+	/* Find Bit Position */
 	unsigned int result = (byte >> lsb) & ~(~0 << (msb-lsb+1));
+
+	/* Return Result */
 	return result;
 }
 
@@ -151,6 +160,15 @@ void print_opcode(int opcode) {
 			break;
 	}
 }
+
+/**
+ * Determine register at position and print
+ *
+ * @param unsigned int register bits
+ * @throws None
+ * @author Alec M. <https://amattu.com>
+ * @date 2020-09-27T10:47:35-040
+ */
 
 void print_register(unsigned int bits) {
 	switch (bits) {
