@@ -25,6 +25,10 @@
 /********************************************/
 /********************************************/
 
+/* question for TAs
+	- how to write to hw_word
+*/
+
 /* Files */
 #include <stdio.h>
 #include "machine.h"
@@ -113,7 +117,8 @@ unsigned int encode_instruction(unsigned short opcode, unsigned short reg1, unsi
 		return 0;
 	}
 
-	/* Pending:
+	/* TODO */
+	/*
 		- If the opcode involves modifying reg1 and it's equal to R0 or R1, it's invalid
 		- Picking priority for CMP operands
 	*/
@@ -123,18 +128,56 @@ unsigned int encode_instruction(unsigned short opcode, unsigned short reg1, unsi
 		return 0;
 	}
 
-	/* do the pointer assignment stuff here */
+	/* Todo */
+	/*
+		- how do we write to hw_word
+	*/
 
 	/* Default */
 	return 1;
 }
 
-unsigned int diassemble(const Hardware_word memory[], unsigned int memory_size, unsigned int num_instrs) {
+unsigned int disassemble(const Hardware_word memory[], unsigned int memory_size, unsigned int num_instrs) {
+	/* Variables */
+	int array_index;
+
+	/* Check memory[] */
+	if (!memory) {
+		return 0;
+	}
+
+	/* Check memory_size */
+	if (memory_size < 1 || memory_size > 512) {
+		return 0;
+	}
+
+	/* Check num_instrs */
+	if (num_instrs < 1 || num_instrs > memory_size) {
+		return 0;
+	}
+
+	/* Loop through instructions */
+	for (array_index = 0; array_index < num_instrs; array_index++) {
+		printf("%03x: ", (array_index * 4));
+		print_instruction(memory[array_index]);
+		printf("\n");
+	}
+
+	/* Loop through extra data */
+	for (array_index = num_instrs; array_index < memory_size; array_index++) {
+		printf("%03x: ", (array_index * 4));
+		printf("%08x", memory[array_index]);
+		printf("\n");
+	}
+
 	/*
-	See 3.3
+	Todo
+	- is 512 the maximum memory size? 512*4(bytes) = 2048... However a instruction is 32 bits, so maybe 2048/32 is max
+	- test 9 has a invalid instruction, supposed to stop after invalid instr and return 0
 	 */
 
-	return 0;
+	/* Default */
+	return 1;
 }
 
 unsigned int compare_instructions(Hardware_word instr1, Hardware_word instr2) {
