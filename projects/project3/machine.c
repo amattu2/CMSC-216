@@ -62,7 +62,7 @@ void print_instruction(Hardware_word instruction) {
 	if (opcode == -1) {
 		return;
 	}
-	
+
 	/* Print Opcode */
 	print_opcode(opcode);
 	if (opcode == HALT) {
@@ -163,25 +163,32 @@ unsigned int disassemble(const Hardware_word memory[], unsigned int memory_size,
 
 	/* Loop through memory */
 	for (array_index = 0; array_index < memory_size; array_index++) {
-		/* Print Address */
-		printf("%03x: ", (array_index * 4));
-
 		/* Checks */
 		if (array_index < num_instrs) {
+			/* Check Opcode */
+			unsigned int opcode = determine_opcode(read_bit(memory[array_index], 32, 28));
+
+			/* Check Opcode */
+			if (opcode == -1) {
+				return 0;
+			}
+
+			/* Print Address */
+			printf("%03x: ", (array_index * 4));
+
+			/* Print Instruction */
 			print_instruction(memory[array_index]);
 		} else {
+			/* Print Address */
+			printf("%03x: ", (array_index * 4));
+
+			/* Print Memory */
 			printf("%08x", memory[array_index]);
 		}
 
 		/* Print Newline */
 		printf("\n");
 	}
-
-	/*
-	Todo
-	- is 512 the maximum memory size? 512*4(bytes) = 2048... However a instruction is 32 bits, so maybe 2048/32 is max
-	- test 9 has a invalid instruction, supposed to stop after invalid instr and return 0
-	*/
 
 	/* Default */
 	return 1;
