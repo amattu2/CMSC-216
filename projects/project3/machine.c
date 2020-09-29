@@ -167,6 +167,8 @@ unsigned int disassemble(const Hardware_word memory[], unsigned int memory_size,
 		} else {
 			printf("%08x", memory[array_index]);
 		}
+
+		/* Print Newline */
 		printf("\n");
 	}
 
@@ -174,7 +176,7 @@ unsigned int disassemble(const Hardware_word memory[], unsigned int memory_size,
 	Todo
 	- is 512 the maximum memory size? 512*4(bytes) = 2048... However a instruction is 32 bits, so maybe 2048/32 is max
 	- test 9 has a invalid instruction, supposed to stop after invalid instr and return 0
-	 */
+	*/
 
 	/* Default */
 	return 1;
