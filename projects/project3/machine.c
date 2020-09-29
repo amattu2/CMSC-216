@@ -94,6 +94,20 @@ void print_instruction(Hardware_word instruction) {
 	}
 }
 
+/**
+ * Convert the parameters into a hardware instruction
+ *
+ * @param unsigned short opcode
+ * @param unsigned short reg1
+ * @param unsigned short reg2
+ * @param unsigned short reg3
+ * @param unsigned int mem_address/constant
+ * @param Hardware_word const hw_word
+ * @return int 0/1
+ * @throws None
+ * @author Alec M. <https://amattu.com>
+ * @date 2020-09-29T15:31:28-040
+ */
 unsigned int encode_instruction(unsigned short opcode, unsigned short reg1, unsigned short reg2, unsigned short reg3, unsigned int addr_or_constant, Hardware_word *const hw_word) {
 	/* Check Opcode */
 	if (opcode < 0 || opcode > 14) {
@@ -135,9 +149,9 @@ unsigned int encode_instruction(unsigned short opcode, unsigned short reg1, unsi
 		return 0;
 	}
 
-	/* Todo */
+	/* TODO */
 	/*
-		- how do we write to hw_word
+	- how do we write to hw_word
 	*/
 
 	/* Default */
@@ -178,7 +192,7 @@ unsigned int disassemble(const Hardware_word memory[], unsigned int memory_size,
 	for (array_index = 0; array_index < memory_size; array_index++) {
 		/* Checks */
 		if (array_index < num_instrs) {
-			/* Check Opcode */
+			/* Variables */
 			unsigned int opcode = determine_opcode(read_bit(memory[array_index], 32, 28));
 
 			/* Check Opcode */
@@ -207,6 +221,16 @@ unsigned int disassemble(const Hardware_word memory[], unsigned int memory_size,
 	return 1;
 }
 
+/**
+ * Compare two different Mathlon instructions
+ *
+ * @param Hardware_word instruction1
+ * @param Hardware_word instruction2
+ * @return int 0/1
+ * @throws None
+ * @author Alec M. <https://amattu.com>
+ * @date 2020-09-29T15:37:40-040
+ */
 unsigned int compare_instructions(Hardware_word instr1, Hardware_word instr2) {
 	/*
 	See 3.4
@@ -216,7 +240,7 @@ unsigned int compare_instructions(Hardware_word instr1, Hardware_word instr2) {
 }
 
 /**
- * Find and return the bit in specified position
+ * Find and return the bit in a specified position
  *
  * @param unsigned int
  * @param int msb (Include from lsb to here)
