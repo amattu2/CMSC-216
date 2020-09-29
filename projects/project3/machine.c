@@ -76,13 +76,13 @@ void print_instruction(Hardware_word instruction) {
 	print_register(register1);
 
 	/* Print Register 2 */
-	if (opcode != LI && opcode != LOAD && opcode != STORE) {
+	if (opcode_uses_register(opcode, 2)) {
 		printf(" ");
 		print_register(register2);
 	}
 
 	/* Print Register 3 */
-	if (opcode != INV && opcode != NOT && opcode != MV && opcode != LI && opcode != LOAD && opcode != STORE) {
+	if (opcode_uses_register(opcode, 3)) {
 		printf(" ");
 		print_register(register3);
 	}
