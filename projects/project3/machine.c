@@ -388,7 +388,7 @@ Opcode determine_opcode(unsigned int opcode) {
 			return STORE;
 	}
 
-	return HALT;
+	return -1;
 }
 
 /**
