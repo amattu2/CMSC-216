@@ -27,6 +27,8 @@
 
 /* question for TAs
 	- how to write to hw_word
+	- In disassemble(), do we need to validate R0-R19
+	- In print_instruction(), do we need to validate R0-R19
 */
 
 /* Files */
@@ -142,6 +144,17 @@ unsigned int encode_instruction(unsigned short opcode, unsigned short reg1, unsi
 	return 1;
 }
 
+/**
+ * Convert memory array into instruction set
+ *
+ * @param Hardware_word memory[]
+ * @param unsigned int memory_size
+ * @param unsigned int num_instrs
+ * @return int valid/invalid
+ * @throws None
+ * @author Alec M. <https://amattu.com>
+ * @date 2020-09-29T14:36:31-040
+ */
 unsigned int disassemble(const Hardware_word memory[], unsigned int memory_size, unsigned int num_instrs) {
 	/* Variables */
 	int array_index;
@@ -357,7 +370,9 @@ void print_register(unsigned int bits) {
 }
 
 /**
- * --This function might be redundant--
+ * Convert Opcode to const
+ * (This function is somewhat redundant)
+ * (The default value of -1 is important for invalid opcodes)
  *
  * @param unsigned int opcode
  * @return Opcode constant
@@ -400,6 +415,7 @@ Opcode determine_opcode(unsigned int opcode) {
 			return STORE;
 	}
 
+	/* Default */
 	return -1;
 }
 
@@ -413,6 +429,7 @@ Opcode determine_opcode(unsigned int opcode) {
  * @date 2020-09-27T12:07:15-040
  */
 void print_memaddr(Opcode opcode, unsigned int bits) {
+	/* Find Opcode Association */
 	switch (opcode) {
 		case CMP:
 		case LOAD:
