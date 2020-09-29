@@ -58,6 +58,11 @@ void print_instruction(Hardware_word instruction) {
 	unsigned int register3 = read_bit(instruction, 17, 13); /* Reg 3 (17-13) */
 	unsigned int addr_or_const = read_bit(instruction, 12, 0); /* Address/Constant (12-0) */
 
+	/* Validate Opcode */
+	if (opcode == -1) {
+		return;
+	}
+	
 	/* Print Opcode */
 	print_opcode(opcode);
 	if (opcode == HALT) {
