@@ -156,17 +156,17 @@ unsigned int disassemble(const Hardware_word memory[], unsigned int memory_size,
 		return 0;
 	}
 
-	/* Loop through instructions */
-	for (array_index = 0; array_index < num_instrs; array_index++) {
+	/* Loop through memory */
+	for (array_index = 0; array_index < memory_size; array_index++) {
+		/* Print Address */
 		printf("%03x: ", (array_index * 4));
-		print_instruction(memory[array_index]);
-		printf("\n");
-	}
 
-	/* Loop through extra data */
-	for (array_index = num_instrs; array_index < memory_size; array_index++) {
-		printf("%03x: ", (array_index * 4));
-		printf("%08x", memory[array_index]);
+		/* Checks */
+		if (array_index < num_instrs) {
+			print_instruction(memory[array_index]);
+		} else {
+			printf("%08x", memory[array_index]);
+		}
 		printf("\n");
 	}
 
