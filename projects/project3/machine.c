@@ -114,7 +114,7 @@ unsigned int encode_instruction(unsigned short opcode, unsigned short reg1, unsi
 	}
 
 	/* Pending:
-		- R0 and R1 validation... We can't use it for modifying or something
+		- If the opcode involves modifying reg1 and it's equal to R0 or R1, it's invalid
 		- Picking priority for CMP operands
 	*/
 
