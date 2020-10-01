@@ -47,6 +47,7 @@ unsigned int read_bit(unsigned int byte, int msb, int lsb);
 Opcode find_opcode(unsigned int opcode);
 int opcode_uses_register(unsigned int opcode, int register_index);
 int opcode_uses_memory_addr(unsigned int opcode);
+int opcode_modifies_register1(unsigned int opcode);
 
 /**
  * Print a CPU instruction set
@@ -158,10 +159,18 @@ unsigned int encode_instruction(unsigned short opcode, unsigned short reg1,
         return 0;
     }
 
+    /* Check Register 1 */
+    if (opcode_modifies_register1(opcode) == 1 &&
+        (reg1 == R0 || reg1 == R1)) {
+        return 0;
+    }
+
     /* TODO */
     /*
-    - If the opcode involves modifying reg1 and it's equal to R0 or R1
+    - R0 and R1 cannot be the 1st register if it's being modified
+        ADD, SUB, MUL, DIV, REM, INV, MV, LI
     - Picking priority for CMP operands
+    - even if reg1-3 is not used, it must be stored
     */
 
     /* Check Pointer */
@@ -549,13 +558,13 @@ int opcode_uses_register(unsigned int opcode, int register_index) {
  * Check if specified Opcode uses a memory address
  *
  * @param unsigned int opcode
- * @return int uses memory address (0/1)
+ * @return int (true/false)
  * @throws None
  * @author Alec M. <https://amattu.com>
  * @date 2020-09-27T12:29:31-040
  */
 int opcode_uses_memory_addr(unsigned int opcode) {
-    /* Check Provided Opcode against project guideline table */
+    /* Check provided Opcode against project guideline table */
     switch (opcode) {
         case CMP:
         case LOAD:
@@ -565,5 +574,26 @@ int opcode_uses_memory_addr(unsigned int opcode) {
             return 0;
         default:
             return 0;
+    }
+}
+
+/**
+ * Check if specified opcode modifies register 1
+ *
+ * @param unsigned int opcode
+ * @return int (true/false)
+ * @throws None
+ * @author Alec M. <https://amattu.com>
+ * @date 2020-10-01T17:32:04-040
+ */
+int opcode_modifies_register1(unsigned int opcode) {
+    /* Check use of register 1 in opcode table */
+    switch (opcode) {
+        case HALT:
+        case CMP:
+        case STORE:
+            return 0;
+        default:
+            return 1;
     }
 }
