@@ -20,20 +20,17 @@
 
 /********************************************/
 /********************************************/
-/*** REMOVE AFTER CONVERTING TABS->SPACES ***/
+/*** REMOVE AFTER FINISHING hw_word PROBLEM ***/
 /*** REMOVE AFTER REWRITING LONG LINE DESIGN ***/
 /*** REMOVE AFTER ADDING NEWLINE TO FILE ***/
 /********************************************/
 /********************************************/
 
 /*
-    Still waiting to finish dissessemble
-    and compare
- */
-
-/* question for TAs
-    - how to write to hw_word
-    - whats the deal with CMP instruction and priority
+ Question for TAs
+- how to write to hw_word
+- whats the deal with CMP instruction and priority
+- does compare register order matter?
 */
 
 /* Files */
@@ -47,8 +44,8 @@ void print_memaddr(Opcode opcode, unsigned int bits);
 unsigned int read_bit(unsigned int byte, int msb, int lsb);
 Opcode find_opcode(unsigned int opcode);
 int opcode_uses_register(unsigned int opcode, int register_index);
-int opcode_uses_memory_addr(unsigned int opcode);
 int opcode_modifies_register1(unsigned int opcode);
+int opcode_uses_memory_addr(unsigned int opcode);
 
 /**
  * Print a CPU instruction set
@@ -127,8 +124,9 @@ void print_instruction(Hardware_word instruction) {
  * @date 2020-09-29T15:31:28-040
  */
 unsigned int encode_instruction(unsigned short opcode, unsigned short reg1,
-    unsigned short reg2, unsigned short reg3, unsigned int addr_or_constant,
-    Hardware_word *const hw_word) {
+                                unsigned short reg2, unsigned short reg3,
+                                unsigned int addr_or_constant,
+                                Hardware_word *const hw_word) {
     /* Check Opcode */
     if (opcode < 0 || opcode > 14) {
         return 0;
@@ -198,7 +196,8 @@ unsigned int encode_instruction(unsigned short opcode, unsigned short reg1,
  * @date 2020-09-29T14:36:31-040
  */
 unsigned int disassemble(const Hardware_word memory[],
-    unsigned int memory_size, unsigned int num_instrs) {
+                        unsigned int memory_size,
+                        unsigned int num_instrs) {
     /* Variables */
     int array_index;
 
@@ -282,7 +281,8 @@ unsigned int disassemble(const Hardware_word memory[],
  * @author Alec M. <https://amattu.com>
  * @date 2020-09-29T15:37:40-040
  */
-unsigned int compare_instructions(Hardware_word instr1, Hardware_word instr2) {
+unsigned int compare_instructions(Hardware_word instr1,
+                                  Hardware_word instr2) {
     /* Variables */
     unsigned int i1_opcode, i1_register1, i1_register2, i1_register3, i1_addr_or_const,
     i2_opcode, i2_register1, i2_register2, i2_register3, i2_addr_or_const;
