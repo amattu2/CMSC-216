@@ -71,17 +71,26 @@ void print_instruction(Hardware_word instruction) {
 		return;
 	}
 
-	/* Print Register 1 (Unless HALT, no checks needed) */
+	/* Print Register 1 */
+	if (opcode_uses_register(opcode, 1) == 1 && (register1 < 0 || register1 > 19)) {
+		return;
+	}
 	printf(" ");
 	print_register(register1);
 
 	/* Print Register 2 */
+	if (opcode_uses_register(opcode, 2) == 1 && (register2 < 0 || register2 > 19)) {
+		return;
+	}
 	if (opcode_uses_register(opcode, 2)) {
 		printf(" ");
 		print_register(register2);
 	}
 
 	/* Print Register 3 */
+	if (opcode_uses_register(opcode, 3) == 1 && (register3 < 0 || register3 > 19)) {
+		return;
+	}
 	if (opcode_uses_register(opcode, 3)) {
 		printf(" ");
 		print_register(register3);
