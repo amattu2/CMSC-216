@@ -5,7 +5,7 @@
  * Directory ID: amattu
  *
  * Author: Alec M.
- * Date: Oct 1st, 2020
+ * Date: Oct 2st, 2020
  *
  * I pledge on my honor that I have not given or received
  * any unauthorized assistance on this assignment.
@@ -33,6 +33,7 @@
 
 /* question for TAs
     - how to write to hw_word
+    - whats the deal with CMP instruction and priority
 */
 
 /* Files */
@@ -165,17 +166,15 @@ unsigned int encode_instruction(unsigned short opcode, unsigned short reg1,
         return 0;
     }
 
-    /* TODO */
-    /*
-    - R0 and R1 cannot be the 1st register if it's being modified
-        ADD, SUB, MUL, DIV, REM, INV, MV, LI
-    - Picking priority for CMP operands
-    - even if reg1-3 is not used, it must be stored
-    */
-
     /* Check Pointer */
     if (!hw_word) {
         return 0;
+    }
+
+    /* Assign CMP Priority */
+    if (opcode == CMP && reg3 != R0 && reg3 != R1 && reg3 != R2
+        && reg3 != R3 && reg3 != R4 && reg3 != R5) {
+        /* TODO */
     }
 
     /* TODO */
@@ -284,11 +283,55 @@ unsigned int disassemble(const Hardware_word memory[],
  * @date 2020-09-29T15:37:40-040
  */
 unsigned int compare_instructions(Hardware_word instr1, Hardware_word instr2) {
-    /*
-    See 3.4
-     */
+    /* Variables */
+    unsigned int i1_opcode, i1_register1, i1_register2, i1_register3, i1_addr_or_const,
+    i2_opcode, i2_register1, i2_register2, i2_register3, i2_addr_or_const;
+    i1_opcode = find_opcode(read_bit(instr1, 32, 28));
+    i2_opcode = find_opcode(read_bit(instr2, 32, 28));
+    i1_register1 = read_bit(instr1, 27, 23);
+    i2_register1 = read_bit(instr2, 27, 23);
+    i1_register2 = read_bit(instr1, 22, 18);
+    i2_register2 = read_bit(instr2, 22, 18);
+    i1_register3 = read_bit(instr1, 17, 13);
+    i2_register3 = read_bit(instr2, 17, 13);
+    i1_addr_or_const = read_bit(instr1, 12, 0);
+    i2_addr_or_const = read_bit(instr2, 12, 0);
 
-    return 0;
+    /* Compare Hardware_words */
+    if (instr1 == instr2) {
+        return 1;
+    }
+
+    /* Check Opcodes */
+    if (i1_opcode == -1 || i2_opcode == -1) {
+        return 0;
+    }
+    if (i1_opcode != i2_opcode) {
+        return 0;
+    }
+
+    /* Check Register 1 */
+    if (opcode_uses_register(i1_opcode, 1) && i1_register1 != i2_register1) {
+        return 0;
+    }
+
+    /* Check Register 2 */
+    if (opcode_uses_register(i1_opcode, 2) && i1_register2 != i2_register2) {
+        return 0;
+    }
+
+    /* Check Register 3 */
+    if (opcode_uses_register(i1_opcode, 3) && i1_register3 != i2_register3) {
+        return 0;
+    }
+
+    /* Check Memory / Constant */
+    if (i1_addr_or_const != i2_addr_or_const) {
+        return 0;
+    }
+
+    /* Default */
+    return 1;
 }
 
 /**
