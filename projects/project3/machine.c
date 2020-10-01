@@ -5,7 +5,7 @@
  * Directory ID: amattu
  *
  * Author: Alec M.
- * Date: Sept 30th, 2020
+ * Date: Oct 1st, 2020
  *
  * I pledge on my honor that I have not given or received
  * any unauthorized assistance on this assignment.
@@ -22,6 +22,7 @@
 /********************************************/
 /*** REMOVE AFTER CONVERTING TABS->SPACES ***/
 /*** REMOVE AFTER FORMATTING LONG PARAMETER DESIGN ***/
+/*** REMOVE AFTER ADDING NEWLINE TO FILE ***/
 /********************************************/
 /********************************************/
 
@@ -199,6 +200,9 @@ unsigned int disassemble(const Hardware_word memory[], unsigned int memory_size,
 			if (opcode == -1) {
 				return 0;
 			}
+
+			/* TODO */
+			/* Check registers if used by opcode */
 
 			/* Print Address */
 			printf("%03x: ", (array_index * 4));
