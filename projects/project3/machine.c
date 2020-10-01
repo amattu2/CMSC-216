@@ -21,14 +21,13 @@
 /********************************************/
 /********************************************/
 /*** REMOVE AFTER CONVERTING TABS->SPACES ***/
-/*** REMOVE AFTER FORMATTING LONG PARAMETER DESIGN ***/
+/*** REMOVE AFTER REWRITING LONG LINE DESIGN ***/
 /*** REMOVE AFTER ADDING NEWLINE TO FILE ***/
 /********************************************/
 /********************************************/
 
 /* question for TAs
 	- how to write to hw_word
-	- In print_instruction(), do we need to validate R0-R19
 */
 
 /* Files */
@@ -54,11 +53,11 @@ int opcode_uses_memory_addr(unsigned int opcode);
  */
 void print_instruction(Hardware_word instruction) {
 	/* Variables */
-	Opcode opcode = determine_opcode(read_bit(instruction, 32, 28)); /* opcode (32-28) */
-	unsigned int register1 = read_bit(instruction, 27, 23); /* Reg 1 (27-23) */
-	unsigned int register2 = read_bit(instruction, 22, 18); /* Reg 2 (22-18) */
-	unsigned int register3 = read_bit(instruction, 17, 13); /* Reg 3 (17-13) */
-	unsigned int addr_or_const = read_bit(instruction, 12, 0); /* Address/Constant (12-0) */
+	Opcode opcode = determine_opcode(read_bit(instruction, 32, 28));
+	unsigned int register1 = read_bit(instruction, 27, 23);
+	unsigned int register2 = read_bit(instruction, 22, 18);
+	unsigned int register3 = read_bit(instruction, 17, 13);
+	unsigned int addr_or_const = read_bit(instruction, 12, 0);
 
 	/* Validate Opcode */
 	if (opcode == -1) {
@@ -202,10 +201,10 @@ unsigned int disassemble(const Hardware_word memory[], unsigned int memory_size,
 		/* Checks */
 		if (array_index < num_instrs) {
 			/* Variables */
-			unsigned int opcode = determine_opcode(read_bit(memory[array_index], 32, 28)); /* Opcode (0-4) */
-			unsigned int reg1 = read_bit(memory[array_index], 27, 23); /* Reg 1 (27-23) */
-			unsigned int reg2 = read_bit(memory[array_index], 22, 18); /* Reg 2 (22-18) */
-			unsigned int reg3 = read_bit(memory[array_index], 17, 13); /* Reg 3 (17-13) */
+			unsigned int opcode = determine_opcode(read_bit(memory[array_index], 32, 28));
+			unsigned int reg1 = read_bit(memory[array_index], 27, 23);
+			unsigned int reg2 = read_bit(memory[array_index], 22, 18);
+			unsigned int reg3 = read_bit(memory[array_index], 17, 13);
 
 			/* Check Opcode */
 			if (opcode == -1) {
@@ -270,16 +269,19 @@ unsigned int compare_instructions(Hardware_word instr1, Hardware_word instr2) {
  * Find and return the bit in a specified position
  *
  * @param unsigned int
- * @param int msb (Include from lsb to here)
- * @param int lsb (Move TOWARDS left this amount)
+ * @param int right_index (Include from lsb to here)
+ * @param int left_index (Move TOWARDS left this amount)
  * @return unsigned bit(s) at position
  * @throws None
  * @author Alec M. <https://amattu.com>
  * @date 2020-09-27T10:11:09-040
  */
-unsigned int read_bit(unsigned int byte, int msb, int lsb) {
-	/* Find Bit Position */
-	unsigned int result = (byte >> lsb) & ~(~0 << (msb-lsb+1));
+unsigned int read_bit(unsigned int byte, int right_index, int left_index) {
+	/* Variables */
+	unsigned int result;
+
+	/* Find Position */
+	result = (byte >> left_index) & ~(~0 << (right_index-left_index+1));
 
 	/* Return Result */
 	return result;
@@ -513,10 +515,12 @@ int opcode_uses_register(unsigned int opcode, int register_index) {
 	if (register_index == 1) {
 		return 1;
 	}
-	if (register_index == 2 && opcode != LI && opcode != LOAD && opcode != STORE) {
+	if (register_index == 2 && opcode != LI && opcode != LOAD &&
+		opcode != STORE) {
 		return 1;
 	}
-	if (register_index == 3 && opcode != INV && opcode != NOT && opcode != MV && opcode != LI && opcode != LOAD && opcode != STORE) {
+	if (register_index == 3 && opcode != INV && opcode != NOT &&
+		opcode != MV && opcode != LI && opcode != LOAD && opcode != STORE) {
 		return 1;
 	}
 
