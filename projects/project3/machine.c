@@ -28,7 +28,6 @@
 
 /* question for TAs
 	- how to write to hw_word
-	- In disassemble(), do we need to validate R0-R19
 	- In print_instruction(), do we need to validate R0-R19
 */
 
@@ -194,15 +193,30 @@ unsigned int disassemble(const Hardware_word memory[], unsigned int memory_size,
 		/* Checks */
 		if (array_index < num_instrs) {
 			/* Variables */
-			unsigned int opcode = determine_opcode(read_bit(memory[array_index], 32, 28));
+			unsigned int opcode = determine_opcode(read_bit(memory[array_index], 32, 28)); /* Opcode (0-4) */
+			unsigned int reg1 = read_bit(memory[array_index], 27, 23); /* Reg 1 (27-23) */
+			unsigned int reg2 = read_bit(memory[array_index], 22, 18); /* Reg 2 (22-18) */
+			unsigned int reg3 = read_bit(memory[array_index], 17, 13); /* Reg 3 (17-13) */
 
 			/* Check Opcode */
 			if (opcode == -1) {
 				return 0;
 			}
 
-			/* TODO */
-			/* Check registers if used by opcode */
+			/* Check Register 1 */
+			if (opcode_uses_register(opcode, 1) == 1 && (reg1 < 0 || reg1 > 19)) {
+				return 0;
+			}
+
+			/* Check Register 2 */
+			if (opcode_uses_register(opcode, 2) == 1 && (reg2 < 0 || reg2 > 19)) {
+				return 0;
+			}
+
+			/* Check Register 3 */
+			if (opcode_uses_register(opcode, 3) == 1 && (reg3 < 0 || reg3 > 19)) {
+				return 0;
+			}
 
 			/* Print Address */
 			printf("%03x: ", (array_index * 4));
