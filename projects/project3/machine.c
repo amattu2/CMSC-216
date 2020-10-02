@@ -29,7 +29,6 @@
 /*
  Question for TAs
 - how to write to hw_word
-- whats the deal with CMP instruction and priority
 - does compare register order matter?
 */
 
@@ -142,6 +141,9 @@ unsigned int encode_instruction(unsigned short opcode, unsigned short reg1,
     if (opcode_uses_register(opcode, 3) == 1 && (reg3 < 0 || reg3 > 19)) {
         return 0;
     }
+    if (opcode == CMP && reg3 > R5) {
+        return 0;
+    }
 
     /* Check Memory Address */
     if (opcode_uses_memory_addr(opcode) == 1 &&
@@ -167,12 +169,6 @@ unsigned int encode_instruction(unsigned short opcode, unsigned short reg1,
     /* Check Pointer */
     if (!hw_word) {
         return 0;
-    }
-
-    /* Assign CMP Priority */
-    if (opcode == CMP && reg3 != R0 && reg3 != R1 && reg3 != R2
-        && reg3 != R3 && reg3 != R4 && reg3 != R5) {
-        /* TODO */
     }
 
     /* TODO */
