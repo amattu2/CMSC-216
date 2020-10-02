@@ -20,7 +20,6 @@
 
 /********************************************/
 /********************************************/
-/*** REMOVE AFTER FINISHING hw_word PROBLEM ***/
 /*** REMOVE AFTER REWRITING LONG LINE DESIGN ***/
 /*** REMOVE AFTER ADDING NEWLINE TO FILE ***/
 /********************************************/
@@ -28,7 +27,7 @@
 
 /*
  Question for TAs
-- how to write to hw_word
+- asserion failed for test 3
 - does compare register order matter?
 */
 
@@ -171,10 +170,13 @@ unsigned int encode_instruction(unsigned short opcode, unsigned short reg1,
         return 0;
     }
 
-    /* TODO */
-    /*
-    - how do we write to hw_word
-    */
+    /* Write Instruction */
+    *hw_word |= opcode << 28;
+    *hw_word |= reg1 << 23;
+    *hw_word |= reg2 << 18;
+    *hw_word |= reg3 << 13;
+    *hw_word |= addr_or_constant << 0;
+    printf("0x%x", *hw_word);
 
     /* Default */
     return 1;
