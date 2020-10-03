@@ -309,8 +309,10 @@ unsigned int compare_instructions(Hardware_word instr1,
         return 0;
 
     /* Check Memory / Constant */
-    if (i1_addr_or_const != i2_addr_or_const)
+    if ((i1_opcode == CMP || i1_opcode == LOAD || i1_opcode == STORE ||
+        i1_opcode == LI) && (i1_addr_or_const != i2_addr_or_const)) {
         return 0;
+    }
 
     /* Default */
     return 1;
