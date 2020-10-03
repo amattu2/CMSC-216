@@ -5,7 +5,7 @@
  * Directory ID: amattu
  *
  * Author: Alec M.
- * Date: Oct 2st, 2020
+ * Date: Oct 3rd, 2020
  *
  * I pledge on my honor that I have not given or received
  * any unauthorized assistance on this assignment.
@@ -13,23 +13,16 @@
 
 /**
  * The purpose of this project is to
- * - Emulate a CPU environment (Mathlon, 32-bit--4b)
+ * - Emulate a CPU environment (Mathlon, 32-bit system)
  * - Process commands
- * - Translate machine instructions
+ * - Translate machine instructions into assl.
 */
 
 /********************************************/
 /********************************************/
-/*** REMOVE AFTER REWRITING LONG LINE DESIGN ***/
 /*** REMOVE AFTER ADDING NEWLINE TO FILE ***/
 /********************************************/
 /********************************************/
-
-/*
- Question for TAs
-- asserion failed for test 3
-- does compare register order matter?
-*/
 
 /* Files */
 #include <stdio.h>
@@ -170,13 +163,13 @@ unsigned int encode_instruction(unsigned short opcode, unsigned short reg1,
         return 0;
     }
 
-    /* Write Instruction */
+    /* Reset hw_word, Write Instruction */
+    *hw_word = 0x0;
     *hw_word |= opcode << 28;
     *hw_word |= reg1 << 23;
     *hw_word |= reg2 << 18;
     *hw_word |= reg3 << 13;
     *hw_word |= addr_or_constant << 0;
-    printf("0x%x", *hw_word);
 
     /* Default */
     return 1;
@@ -282,8 +275,10 @@ unsigned int disassemble(const Hardware_word memory[],
 unsigned int compare_instructions(Hardware_word instr1,
                                   Hardware_word instr2) {
     /* Variables */
-    unsigned int i1_opcode, i1_register1, i1_register2, i1_register3, i1_addr_or_const,
-    i2_opcode, i2_register1, i2_register2, i2_register3, i2_addr_or_const;
+    unsigned int i1_opcode, i1_register1, i1_register2,
+    i1_register3, i1_addr_or_const,
+    i2_opcode, i2_register1, i2_register2,
+    i2_register3, i2_addr_or_const;
     i1_opcode = find_opcode(read_bit(instr1, 32, 28));
     i2_opcode = find_opcode(read_bit(instr2, 32, 28));
     i1_register1 = read_bit(instr1, 27, 23);
