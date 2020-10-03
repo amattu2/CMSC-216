@@ -43,7 +43,7 @@ int opcode_uses_memory_addr(unsigned int opcode);
  *
  * @param unsigned int instruction
  * @throws None
- * @author Alec M. <https://amattu.com>
+ * @author Alec M.
  * @date 2020-09-27T11:15:39-040
  */
 void print_instruction(Hardware_word instruction) {
@@ -111,7 +111,7 @@ void print_instruction(Hardware_word instruction) {
  * @param Hardware_word const hw_word
  * @return int 0/1
  * @throws None
- * @author Alec M. <https://amattu.com>
+ * @author Alec M.
  * @date 2020-09-29T15:31:28-040
  */
 unsigned int encode_instruction(unsigned short opcode, unsigned short reg1,
@@ -178,7 +178,7 @@ unsigned int encode_instruction(unsigned short opcode, unsigned short reg1,
  * @param unsigned int num_instrs
  * @return int valid/invalid
  * @throws None
- * @author Alec M. <https://amattu.com>
+ * @author Alec M.
  * @date 2020-09-29T14:36:31-040
  */
 unsigned int disassemble(const Hardware_word memory[],
@@ -263,7 +263,7 @@ unsigned int disassemble(const Hardware_word memory[],
  * @param Hardware_word instruction2
  * @return int 0/1
  * @throws None
- * @author Alec M. <https://amattu.com>
+ * @author Alec M.
  * @date 2020-09-29T15:37:40-040
  */
 unsigned int compare_instructions(Hardware_word instr1,
@@ -326,7 +326,7 @@ unsigned int compare_instructions(Hardware_word instr1,
  * @param int left_index (Move TOWARDS left this amount)
  * @return unsigned bit(s) at position
  * @throws None
- * @author Alec M. <https://amattu.com>
+ * @author Alec M.
  * @date 2020-09-27T10:11:09-040
  */
 unsigned int read_bit(unsigned int byte, int right_index, int left_index) {
@@ -345,7 +345,7 @@ unsigned int read_bit(unsigned int byte, int right_index, int left_index) {
  *
  * @param Opcode opcode
  * @throws None
- * @author Alec M. <https://amattu.com>
+ * @author Alec M.
  * @date 2020-09-26T13:50:29-040
  */
 void print_opcode(Opcode opcode) {
@@ -405,7 +405,7 @@ void print_opcode(Opcode opcode) {
  *
  * @param unsigned int register bits
  * @throws None
- * @author Alec M. <https://amattu.com>
+ * @author Alec M.
  * @date 2020-09-27T10:47:35-040
  */
 void print_register(unsigned int bits) {
@@ -483,7 +483,7 @@ void print_register(unsigned int bits) {
  * @param unsigned int opcode
  * @return Opcode constant
  * @throws None
- * @author Alec M. <https://amattu.com>
+ * @author Alec M.
  * @date 2020-09-27T12:39:33-040
  */
 Opcode find_opcode(unsigned int opcode) {
@@ -531,7 +531,7 @@ Opcode find_opcode(unsigned int opcode) {
  * @param Opcode opcode
  * @param unsigned int bits
  * @throws None
- * @author Alec M. <https://amattu.com>
+ * @author Alec M.
  * @date 2020-09-27T12:07:15-040
  */
 void print_memaddr(Opcode opcode, unsigned int bits) {
@@ -557,7 +557,7 @@ void print_memaddr(Opcode opcode, unsigned int bits) {
  * @param int register number (1-3)
  * @return int uses specified register (0/1)
  * @throws None
- * @author Alec M. <https://amattu.com>
+ * @author Alec M.
  * @date 2020-09-27T12:37:43-040
  */
 int opcode_uses_register(unsigned int opcode, int register_index) {
@@ -585,7 +585,7 @@ int opcode_uses_register(unsigned int opcode, int register_index) {
  * @param unsigned int opcode
  * @return int (true/false)
  * @throws None
- * @author Alec M. <https://amattu.com>
+ * @author Alec M.
  * @date 2020-09-27T12:29:31-040
  */
 int opcode_uses_memory_addr(unsigned int opcode) {
@@ -608,7 +608,7 @@ int opcode_uses_memory_addr(unsigned int opcode) {
  * @param unsigned int opcode
  * @return int (true/false)
  * @throws None
- * @author Alec M. <https://amattu.com>
+ * @author Alec M.
  * @date 2020-10-01T17:32:04-040
  */
 int opcode_modifies_register1(unsigned int opcode) {
