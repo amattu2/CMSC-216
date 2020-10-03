@@ -55,15 +55,15 @@ void print_instruction(Hardware_word instruction) {
     unsigned int addr_or_const = read_bit(instruction, 12, 0);
 
     /* Validate Opcode */
-    if (opcode == -1) {
+    if (opcode == -1)
         return;
-    }
+
 
     /* Print Opcode */
     print_opcode(opcode);
-    if (opcode == HALT) {
+    if (opcode == HALT)
         return;
-    }
+
 
     /* Print Register 1 */
     if (opcode_uses_register(opcode, 1) == 1 &&
@@ -119,23 +119,19 @@ unsigned int encode_instruction(unsigned short opcode, unsigned short reg1,
                                 unsigned int addr_or_constant,
                                 Hardware_word *const hw_word) {
     /* Check Opcode */
-    if (opcode < 0 || opcode > 14) {
+    if (opcode < 0 || opcode > 14)
         return 0;
-    }
+
 
     /* Check Registers */
-    if (opcode_uses_register(opcode, 1) == 1 && (reg1 < 0 || reg1 > 19)) {
+    if (opcode_uses_register(opcode, 1) == 1 && (reg1 < 0 || reg1 > 19))
         return 0;
-    }
-    if (opcode_uses_register(opcode, 2) == 1 && (reg2 < 0 || reg2 > 19)) {
+    if (opcode_uses_register(opcode, 2) == 1 && (reg2 < 0 || reg2 > 19))
         return 0;
-    }
-    if (opcode_uses_register(opcode, 3) == 1 && (reg3 < 0 || reg3 > 19)) {
+    if (opcode_uses_register(opcode, 3) == 1 && (reg3 < 0 || reg3 > 19))
         return 0;
-    }
-    if (opcode == CMP && reg3 > R5) {
+    if (opcode == CMP && reg3 > R5)
         return 0;
-    }
 
     /* Check Memory Address */
     if (opcode_uses_memory_addr(opcode) == 1 &&
@@ -148,9 +144,8 @@ unsigned int encode_instruction(unsigned short opcode, unsigned short reg1,
     }
 
     /* Check Immediate Value */
-    if (opcode == LI && (reg1 < 0 || reg1 > 8191)) {
+    if (opcode == LI && (reg1 < 0 || reg1 > 8191))
         return 0;
-    }
 
     /* Check Register 1 */
     if (opcode_modifies_register1(opcode) == 1 &&
@@ -159,9 +154,9 @@ unsigned int encode_instruction(unsigned short opcode, unsigned short reg1,
     }
 
     /* Check Pointer */
-    if (!hw_word) {
+    if (!hw_word)
         return 0;
-    }
+
 
     /* Reset hw_word, Write Instruction */
     *hw_word = 0x0;
@@ -193,19 +188,19 @@ unsigned int disassemble(const Hardware_word memory[],
     int array_index;
 
     /* Check memory[] */
-    if (!memory) {
+    if (!memory)
         return 0;
-    }
+
 
     /* Check memory_size */
-    if (memory_size < 1 || memory_size > 512) {
+    if (memory_size < 1 || memory_size > 512)
         return 0;
-    }
+
 
     /* Check num_instrs */
-    if (num_instrs < 1 || num_instrs > memory_size) {
+    if (num_instrs < 1 || num_instrs > memory_size)
         return 0;
-    }
+
 
     /* Loop through memory */
     for (array_index = 0; array_index < memory_size; array_index++) {
@@ -219,9 +214,8 @@ unsigned int disassemble(const Hardware_word memory[],
             reg3 = read_bit(memory[array_index], 17, 13);
 
             /* Check Opcode */
-            if (opcode == -1) {
+            if (opcode == -1)
                 return 0;
-            }
 
             /* Check Register 1 */
             if (opcode_uses_register(opcode, 1) == 1 &&
@@ -291,37 +285,32 @@ unsigned int compare_instructions(Hardware_word instr1,
     i2_addr_or_const = read_bit(instr2, 12, 0);
 
     /* Compare Hardware_words */
-    if (instr1 == instr2) {
+    if (instr1 == instr2)
         return 1;
-    }
 
     /* Check Opcodes */
-    if (i1_opcode == -1 || i2_opcode == -1) {
+    if (i1_opcode == -1 || i2_opcode == -1)
         return 0;
-    }
-    if (i1_opcode != i2_opcode) {
+
+    if (i1_opcode != i2_opcode)
         return 0;
-    }
+
 
     /* Check Register 1 */
-    if (opcode_uses_register(i1_opcode, 1) && i1_register1 != i2_register1) {
+    if (opcode_uses_register(i1_opcode, 1) && i1_register1 != i2_register1)
         return 0;
-    }
 
     /* Check Register 2 */
-    if (opcode_uses_register(i1_opcode, 2) && i1_register2 != i2_register2) {
+    if (opcode_uses_register(i1_opcode, 2) && i1_register2 != i2_register2)
         return 0;
-    }
 
     /* Check Register 3 */
-    if (opcode_uses_register(i1_opcode, 3) && i1_register3 != i2_register3) {
+    if (opcode_uses_register(i1_opcode, 3) && i1_register3 != i2_register3)
         return 0;
-    }
 
     /* Check Memory / Constant */
-    if (i1_addr_or_const != i2_addr_or_const) {
+    if (i1_addr_or_const != i2_addr_or_const)
         return 0;
-    }
 
     /* Default */
     return 1;
@@ -571,12 +560,10 @@ void print_memaddr(Opcode opcode, unsigned int bits) {
  */
 int opcode_uses_register(unsigned int opcode, int register_index) {
     /* Check Opcodes/Registers against project table */
-    if (opcode == HALT) {
+    if (opcode == HALT)
         return 0;
-    }
-    if (register_index == 1) {
+    if (register_index == 1)
         return 1;
-    }
     if (register_index == 2 && opcode != LI && opcode != LOAD &&
         opcode != STORE) {
         return 1;
