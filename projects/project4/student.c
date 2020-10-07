@@ -109,5 +109,13 @@ float get_shoe_size(Student student) {
 	return student.shoe_size;
 }
 
-Student change_shoe_size(Student student, float new_shoe_size);
+/* Change student shoe size */
+Student change_shoe_size(Student student, float new_shoe_size) {
+	/* Variables */
+	student.shoe_size = new_shoe_size;
+
+	/* Return */
+	return student;
+}
+
 void change_name(Student *const student, const char new_name[]);
