@@ -87,6 +87,9 @@ unsigned int has_name(Student student, const char name[]) {
   if (!student.name) {
     return 0;
   }
+  if (!name) {
+    return 0;
+  }
   if (strcmp(student.name, name) != 0) {
     return 0;
   }
