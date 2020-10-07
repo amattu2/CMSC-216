@@ -118,4 +118,23 @@ Student change_shoe_size(Student student, float new_shoe_size) {
 	return student;
 }
 
-void change_name(Student *const student, const char new_name[]);
+/* Change student name */
+void change_name(Student *const student, const char new_name[]) {
+	/* Variables */
+	char student_name[40];
+
+	/* Checks */
+	if (!student) {
+		return;
+	}
+	if (!new_name) {
+		strcpy(student_name, "");
+	} else if (strlen(new_name) > 39) {
+		strncpy(student_name, new_name, 40);
+	} else {
+		strcpy(student_name, new_name);
+	}
+
+	/* Assign Values */
+	strcpy(student->name, student_name);
+}
