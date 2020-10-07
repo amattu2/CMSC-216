@@ -98,3 +98,8 @@ unsigned int has_name(Student student, const char name[]) {
 	/* Default */
 	return 1;
 }
+
+unsigned int get_id(Student student);
+float get_shoe_size(Student student);
+Student change_shoe_size(Student student, float new_shoe_size);
+void change_name(Student *const student, const char new_name[]);
