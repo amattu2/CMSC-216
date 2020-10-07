@@ -20,6 +20,7 @@
 
 /*************************************/
 /**** REMOVE AFTER TABS -> SPACES ****/
+/****    REMOVE AFTER 80C LINES   ****/
 /*************************************/
 
 /* Files */
@@ -35,7 +36,7 @@ Student new_student(const char name[], unsigned int id, float shoe_size) {
 	/* Checks */
 	if (!name) {
 		strcpy(student_name, "");
-	} else if (strlen(name) > 40) {
+	} else if (strlen(name) > 39) {
 		strncpy(student_name, name, 40);
 	} else {
 		strcpy(student_name, name);
@@ -48,4 +49,27 @@ Student new_student(const char name[], unsigned int id, float shoe_size) {
 
 	/* Return */
 	return student;
+}
+
+/* Assign new values to student structure */
+void init_student(Student *const student, const char name[], unsigned int id, float shoe_size) {
+	/* Variables */
+	char student_name[40];
+
+	/* Checks */
+	if (!student) {
+		return;
+	}
+	if (!name) {
+		strcpy(student_name, "");
+	} else if (strlen(name) > 39) {
+		strncpy(student_name, name, 40);
+	} else {
+		strcpy(student_name, name);
+	}
+
+	/* Assign Values */
+	strcpy(student->name, student_name);
+	student->id = id;
+	student->shoe_size = shoe_size;
 }
