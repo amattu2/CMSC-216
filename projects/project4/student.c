@@ -99,7 +99,15 @@ unsigned int has_name(Student student, const char name[]) {
 	return 1;
 }
 
-unsigned int get_id(Student student);
-float get_shoe_size(Student student);
+/* Get student structure id */
+unsigned int get_id(Student student) {
+	return student.id;
+}
+
+/* Get student structure shoe size */
+float get_shoe_size(Student student) {
+	return student.shoe_size;
+}
+
 Student change_shoe_size(Student student, float new_shoe_size);
 void change_name(Student *const student, const char new_name[]);
