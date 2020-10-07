@@ -84,3 +84,17 @@ unsigned int has_id(Student student, unsigned int id) {
 	/* Default */
 	return 1;
 }
+
+/* Check student structure name against given name */
+unsigned int has_name(Student student, const char name[]) {
+	/* Checks */
+	if (!student.name) {
+		return 0;
+	}
+	if (strcmp(student.name, name) != 0) {
+		return 0;
+	}
+
+	/* Default */
+	return 1;
+}
