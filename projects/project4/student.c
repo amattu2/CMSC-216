@@ -73,3 +73,14 @@ void init_student(Student *const student, const char name[], unsigned int id, fl
 	student->id = id;
 	student->shoe_size = shoe_size;
 }
+
+/* Check student structure id against given id */
+unsigned int has_id(Student student, unsigned int id) {
+	/* Checks */
+	if (student.id != id) {
+		return 0;
+	}
+
+	/* Default */
+	return 1;
+}
