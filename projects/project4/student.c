@@ -28,7 +28,7 @@ Student new_student(const char name[], unsigned int id, float shoe_size) {
   Student student;
   char student_name[40];
 
-  /* Checks */
+  /* Check name */
   if (!name) {
     strcpy(student_name, "");
   } else if (strlen(name) > 39) {
@@ -52,10 +52,12 @@ void init_student(Student *const student, const char name[], unsigned int id,
   /* Variables */
   char student_name[40];
 
-  /* Checks */
+  /* Check student pointer */
   if (!student) {
     return;
   }
+
+  /* Check name */
   if (!name) {
     strcpy(student_name, "");
   } else if (strlen(name) > 39) {
@@ -72,7 +74,7 @@ void init_student(Student *const student, const char name[], unsigned int id,
 
 /* Check student structure id against given id */
 unsigned int has_id(Student student, unsigned int id) {
-  /* Checks */
+  /* Check student id */
   if (student.id != id) {
     return 0;
   }
@@ -83,7 +85,7 @@ unsigned int has_id(Student student, unsigned int id) {
 
 /* Check student structure name against given name */
 unsigned int has_name(Student student, const char name[]) {
-  /* Checks */
+  /* Check student name */
   if (!student.name) {
     return 0;
   }
@@ -122,10 +124,12 @@ void change_name(Student *const student, const char new_name[]) {
   /* Variables */
   char student_name[40];
 
-  /* Checks */
+  /* Check student pointer */
   if (!student) {
     return;
   }
+
+  /* Check name */
   if (!new_name) {
     strcpy(student_name, "");
   } else if (strlen(new_name) > 39) {
