@@ -155,7 +155,7 @@ void copy_student(Student *const student1, const Student *const student2) {
 	}
 
 	/* Assign values */
-	free(student2->name);
+	free(student1->name);
 	student1->name = student_name;
 	student1->id = student2->id;
 	student1->shoe_size = student2->shoe_size;
