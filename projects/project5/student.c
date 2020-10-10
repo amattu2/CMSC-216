@@ -31,15 +31,15 @@ Student *new_student(const char name[], unsigned int id, float shoe_size) {
 
 	/* Checks */
 	if (!name) {
-		student_name = malloc(sizeof(""));
+		student_name = malloc(1);
 		strcpy(student_name, "");
 	} else {
-		student_name = malloc(sizeof(&name));
+		student_name = malloc(strlen(name) + 1);
 		strcpy(student_name, name);
 	}
 
 	/* Assign values */
-	student = malloc(sizeof(student_name) + sizeof(id) + sizeof(shoe_size));
+	student = malloc((strlen(student_name) + 1) + sizeof(int) + sizeof(float));
 	student->name = student_name;
 	student->id = id;
 	student->shoe_size = shoe_size;
@@ -125,10 +125,10 @@ void change_name(Student *const student, const char new_name[]) {
 		return;
 	}
 	if (!new_name) {
-		student_name = malloc(sizeof(""));
+		student_name = malloc(1);
 		strcpy(student_name, "");
 	} else {
-		student_name = malloc(sizeof(&new_name));
+		student_name = malloc(strlen(new_name) + 1);
 		strcpy(student_name, new_name);
 	}
 
@@ -147,10 +147,10 @@ void copy_student(Student *const student1, const Student *const student2) {
 		return;
 	}
 	if (!student2->name) {
-		student_name = malloc(sizeof(""));
+		student_name = malloc(1);
 		strcpy(student_name, "");
 	} else {
-		student_name = malloc(sizeof(&student2->name));
+		student_name = malloc(strlen(student2->name) + 1);
 		strcpy(student_name, student2->name);
 	}
 
