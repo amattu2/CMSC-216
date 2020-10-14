@@ -1,0 +1,3 @@
+# Ignore instructor provided code
+*.c
+*.h
