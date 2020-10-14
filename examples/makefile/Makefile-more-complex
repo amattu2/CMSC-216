@@ -1,0 +1,42 @@
+#
+# Macro definitions
+#
+CC = gcc
+CFLAGS = -ansi -pedantic-errors -Wall -fstack-protector-all -Werror -Wshadow
+
+#
+# This makefile creates two top-level programs
+#
+all: int-count.x main.x
+
+#
+# This target links together several object files- note no CFLAGS here!!!!
+#
+int-count.x: int-count.o table.o
+        $(CC) int-count.o table.o -o int-count.x
+
+#
+# This target links together several object files- note no CFLAGS here!!!!
+# We don't really need a backslash here; just illustrating....
+#
+main.x: main.o table.o hash-table.o
+        $(CC) main.o table.o \
+              hash-table.o -o table.x
+
+int-count.o: int-count.c int-count.h
+        $(CC) $(CFLAGS) -c int-count.c
+
+table.o: table.c table.h
+        $(CC) $(CFLAGS) -c table.c
+
+main.o: main.c table.h hash-table.h
+        $(CC) $(CFLAGS) -c main.c
+
+hash-table.o: hash-table.c hash-table.h
+        $(CC) $(CFLAGS) -c hash-table.c
+
+#
+# Not part of the main dependency tree- invoked by running "make clean".
+#
+clean:
+         rm -f *.x *.o
