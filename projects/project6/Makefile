@@ -12,7 +12,8 @@ all: main.x program1.x tester.x
 #
 # Define a "clean" option
 #
-clean: rm -f *.x *.o
+clean:
+	rm -f *.x *.o
 
 #
 # Define *.x operations
@@ -37,3 +38,9 @@ fill-array.o: fill-array.c fill-array.h
 
 compare-arrays.o: compare-arrays.c compare-arrays.h
 	$(GC) $(FLAGS) -c compare-arrays.c
+
+incr-array.o: incr-array.c incr-array.h
+	$(GC) $(FLAGS) -c incr-array.c
+
+sum-array.o: sum-array.c sum-array.h
+	$(GC) $(FLAGS) -c sum-array.c
