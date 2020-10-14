@@ -30,9 +30,6 @@ tester.x: tester.o fill-array.o incr-array.o sum-array.o
 #
 # Define *.o operations
 #
-main.o: main.c fill-array.h compare-arrays.h
-	$(GC) $(FLAGS) -c main.c
-
 fill-array.o: fill-array.c fill-array.h
 	$(GC) $(FLAGS) -c fill-array.c
 
