@@ -15,16 +15,25 @@ all: main.x program1.x tester.x
 clean: rm -f *.x *.o
 
 #
-# Define main.x operations
+# Define *.x operations
 #
 main.x: main.o fill-array.o compare-arrays.o
 	$(GC) main.o fill-array.o compare-arrays.o -o main.x
 
+program1.x: program1.o compare-arrays.o
+	$(GC) program1.o compare-arrays.o -o program1.x
+
+tester.x: tester.o fill-array.o incr-array.o sum-array.o
+	$(GC) tester.o fill-array.o incr-array.o sum-array.o -o tester.x
+
+#
+# Define *.o operations
+#
 main.o: main.c fill-array.h compare-arrays.h
-	$(GC) -c main.c
+	$(GC) $(FLAGS) -c main.c
 
 fill-array.o: fill-array.c fill-array.h
-	$(GC) -c fill-array.c
+	$(GC) $(FLAGS) -c fill-array.c
 
 compare-arrays.o: compare-arrays.c compare-arrays.h
-	$(GC) -c compare-arrays.c
+	$(GC) $(FLAGS) -c compare-arrays.c
