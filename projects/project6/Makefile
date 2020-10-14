@@ -37,6 +37,15 @@ tester.x: tester.o fill-array.o incr-array.o sum-array.o
 #
 # Define *.o operations
 #
+main.o: main.c
+	$(GC) $(FLAGS) -c main.c
+
+program1.o: program1.c
+	$(GC) $(FLAGS) -c program1.c
+
+tester.o: tester.c
+	$(GC) $(FLAGS) -c tester.c
+
 fill-array.o: fill-array.c
 	$(GC) $(FLAGS) -c fill-array.c
 
