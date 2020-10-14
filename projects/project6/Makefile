@@ -23,13 +23,7 @@ FLAGS = -ansi -pedantic-errors -Wall -Werror -Wshadow -fstack-protector-all
 all: main.x program1.x tester.x
 
 #
-# Define a "clean" option
-#
-clean:
-	rm -f *.x *.o
-
-#
-# Define *.x operations
+# Define target operations
 #
 main.x: main.o fill-array.o compare-arrays.o
 	$(GC) main.o fill-array.o compare-arrays.o -o main.x
@@ -43,14 +37,20 @@ tester.x: tester.o fill-array.o incr-array.o sum-array.o
 #
 # Define *.o operations
 #
-fill-array.o: fill-array.c fill-array.h
+fill-array.o: fill-array.c
 	$(GC) $(FLAGS) -c fill-array.c
 
-compare-arrays.o: compare-arrays.c compare-arrays.h
+compare-arrays.o: compare-arrays.c
 	$(GC) $(FLAGS) -c compare-arrays.c
 
-incr-array.o: incr-array.c incr-array.h
+incr-array.o: incr-array.c
 	$(GC) $(FLAGS) -c incr-array.c
 
-sum-array.o: sum-array.c sum-array.h
+sum-array.o: sum-array.c
 	$(GC) $(FLAGS) -c sum-array.c
+
+#
+# Define a "clean" option
+#
+clean:
+	rm -f *.x *.o
