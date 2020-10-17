@@ -139,8 +139,12 @@ void print(Two_sided_queue *const twosq) {
   /* Loop */
   while (current && current->next != current) {
     /* Print */
-    printf("%d ", current->data);
+    printf("%d", current->data);
 
+    /* Check next element */
+    if (current->next)
+      printf(" ");
+      
     /* Assign next current */
     current = current->next;
   }
