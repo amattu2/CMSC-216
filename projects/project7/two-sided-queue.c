@@ -69,7 +69,9 @@ int add_front(Two_sided_queue *const twosq, int new_value) {
     twosq->size++;
   } else {
     Node *old_head = twosq->head;
+    node->prev = NULL;
     old_head->prev = node;
+    node->next = old_head;
     twosq->head = node;
     twosq->size++;
   }
@@ -101,6 +103,8 @@ int add_back(Two_sided_queue *const twosq, int new_value) {
   } else {
     Node *old_tail = twosq->tail;
     old_tail->next = node;
+    node->prev = old_tail;
+    node->next = NULL;
     twosq->tail = node;
     twosq->size++;
   }
@@ -162,4 +166,8 @@ int remove_front(Two_sided_queue *const twosq, int *value) {
   twosq->size = (twosq->size <= 0 ? 0 : twosq->size - 1);
   return 1;
 }
-int remove_back(Two_sided_queue *const twosq, int *value);
+
+/* Remove lastmost element in queue */
+int remove_back(Two_sided_queue *const twosq, int *value) {
+
+}
