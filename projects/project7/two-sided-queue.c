@@ -17,6 +17,10 @@
  * - Implement a makefile
  * - Operate on the 2 sided queue
  * - Build public tests with makefile
+ *
+ * Notes
+ * - The uses a doubly-linked list, with
+ * one exception. The tail does not point to the head.
 */
 
 
@@ -60,13 +64,13 @@ int add_front(Two_sided_queue *const twosq, int new_value) {
   if (!twosq->head) {
     node->prev = NULL;
     node->next = NULL;
-    *twosq->head = *node;
-    *twosq->tail = *node;
+    twosq->head = node;
+    twosq->tail = node;
     twosq->size++;
   } else {
     Node *old_head = twosq->head;
     old_head->prev = node;
-    *twosq->head = *node;
+    twosq->head = node;
     twosq->size++;
   }
 
@@ -74,7 +78,36 @@ int add_front(Two_sided_queue *const twosq, int new_value) {
   return 1;
 }
 
-int add_back(Two_sided_queue *const twosq, int new_value);
+/* Add node to the back */
+int add_back(Two_sided_queue *const twosq, int new_value) {
+  /* Variables */
+  Node *node;
+
+  /* Checks */
+  if (!twosq)
+    return 0;
+  if (!(node = malloc(sizeof(Node) + sizeof(Node) + sizeof(int))))
+    return 0;
+  else
+    node->data = new_value;
+
+  /* Find insert spot */
+  if (!twosq->head && !twosq->tail) {
+    node->prev = NULL;
+    node->next = NULL;
+    *twosq->tail = *node;
+    *twosq->head = *node;
+    twosq->size++;
+  } else {
+    Node *old_tail = twosq->tail;
+    old_tail->next = node;
+    twosq->tail = node;
+    twosq->size++;
+  }
+
+  /* Default */
+  return 1;
+}
 
 /* Get number of elements in queue */
 int num_elements(Two_sided_queue *const twosq) {
@@ -100,7 +133,7 @@ void print(Two_sided_queue *const twosq) {
     current = twosq->head;
 
   /* Loop */
-  while (current) {
+  while (current && current->next != current) {
     /* Print */
     printf("%d ", current->data);
 
