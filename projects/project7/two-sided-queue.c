@@ -164,10 +164,29 @@ int remove_front(Two_sided_queue *const twosq, int *value) {
   free(twosq->head);
   twosq->head = new_head;
   twosq->size = (twosq->size <= 0 ? 0 : twosq->size - 1);
+
+  /* Default */
   return 1;
 }
 
 /* Remove lastmost element in queue */
 int remove_back(Two_sided_queue *const twosq, int *value) {
+  /* Variables */
+  Node *new_tail;
 
+  /* Checks */
+  if (!twosq)
+    return 0;
+  if (!twosq->tail)
+    return 0;
+
+  /* Assign values */
+  new_tail = twosq->tail->prev;
+  value = &twosq->tail->data;
+  free(twosq->tail);
+  twosq->tail = new_tail;
+  twosq->size = (twosq->size <= 0 ? 0 : twosq->size - 1);
+
+  /* Default */
+  return 1;
 }
