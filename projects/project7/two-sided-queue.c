@@ -75,7 +75,17 @@ int add_front(Two_sided_queue *const twosq, int new_value) {
 }
 
 int add_back(Two_sided_queue *const twosq, int new_value);
-int num_elements(Two_sided_queue *const twosq);
+
+/* Get number of elements in queue */
+int num_elements(Two_sided_queue *const twosq) {
+  /* Checks */
+  if (!twosq || !twosq->size)
+    return 0;
+
+  /* Default */
+  return twosq->size;
+}
+
 void print(Two_sided_queue *const twosq);
 int remove_front(Two_sided_queue *const twosq, int *value);
 int remove_back(Two_sided_queue *const twosq, int *value);
