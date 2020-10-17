@@ -43,7 +43,33 @@ void init(Two_sided_queue *const twosq) {
   }
 }
 
-int add_front(Two_sided_queue *const twosq, int new_value);
+/* Add node to front */
+int add_front(Two_sided_queue *const twosq, int new_value) {
+  /* Variables */
+  Node *node;
+
+  /* Checks */
+  if (!twosq)
+    return 0;
+  if (!(node = malloc(sizeof(Node) + sizeof(Node) + sizeof(int))))
+    return 0;
+  else
+    node->data = new_value;
+
+  /* Find insert spot */
+  if (!twosq->head) {
+    node->prev = NULL;
+    node->next = NULL;
+    *twosq->head = *node;
+    *twosq->tail = *node;
+  } else {
+    /* Get first element, reassign it's prev value to node, change twosq pointer to node */
+  }
+
+  /* Default */
+  return 1;
+}
+
 int add_back(Two_sided_queue *const twosq, int new_value);
 int num_elements(Two_sided_queue *const twosq);
 void print(Two_sided_queue *const twosq);
