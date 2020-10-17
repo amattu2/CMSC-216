@@ -143,5 +143,23 @@ void print(Two_sided_queue *const twosq) {
   printf("\n");
 }
 
-int remove_front(Two_sided_queue *const twosq, int *value);
+/* Remove first node in queue */
+int remove_front(Two_sided_queue *const twosq, int *value) {
+  /* Variables */
+  Node *new_head;
+
+  /* Checks */
+  if (!twosq)
+    return 0;
+  if (!twosq->head)
+    return 0;
+
+  /* Assign values */
+  new_head = twosq->head->next;
+  value = &twosq->head->data;
+  free(twosq->head);
+  twosq->head = new_head;
+  twosq->size = (twosq->size <= 0 ? 0 : twosq->size - 1);
+  return 1;
+}
 int remove_back(Two_sided_queue *const twosq, int *value);
