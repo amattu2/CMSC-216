@@ -62,6 +62,7 @@ int add_front(Two_sided_queue *const twosq, int new_value) {
     node->next = NULL;
     *twosq->head = *node;
     *twosq->tail = *node;
+    twosq->size++;
   } else {
     /* Get first element, reassign it's prev value to node, change twosq pointer to node */
   }
