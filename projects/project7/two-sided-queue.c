@@ -86,6 +86,29 @@ int num_elements(Two_sided_queue *const twosq) {
   return twosq->size;
 }
 
-void print(Two_sided_queue *const twosq);
+/* Print element values in queue */
+void print(Two_sided_queue *const twosq) {
+  /* Variables */
+  Node *current;
+
+  /* Checks */
+  if (!twosq || !twosq->size || twosq->size <= 0)
+    return;
+  if (!twosq->head)
+    return;
+  else
+    current = twosq->head;
+
+  /* Loop */
+  while (current) {
+    /* Print */
+    printf("%d ", current->data);
+
+    /* Assign next current */
+    current = current->next;
+  }
+  printf("\n");
+}
+
 int remove_front(Two_sided_queue *const twosq, int *value);
 int remove_back(Two_sided_queue *const twosq, int *value);
