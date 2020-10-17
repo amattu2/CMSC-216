@@ -8,8 +8,8 @@ typedef struct {
 } Two_sided_queue;
 
 typedef struct node {
-  struct node *next;
   struct node *prev;
+  struct node *next;
   int data;
 } Node;
 
