@@ -97,8 +97,8 @@ int add_back(Two_sided_queue *const twosq, int new_value) {
   if (!twosq->head && !twosq->tail) {
     node->prev = NULL;
     node->next = NULL;
-    *twosq->tail = *node;
-    *twosq->head = *node;
+    twosq->tail = node;
+    twosq->head = node;
     twosq->size++;
   } else {
     Node *old_tail = twosq->tail;
@@ -144,7 +144,7 @@ void print(Two_sided_queue *const twosq) {
     /* Check next element */
     if (current->next)
       printf(" ");
-      
+
     /* Assign next current */
     current = current->next;
   }
