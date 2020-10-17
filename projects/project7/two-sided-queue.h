@@ -2,14 +2,15 @@
    not to provide it to anyone else. */
 
 typedef struct {
-  Node *head;
-  Node *tail;
+  struct Node *head;
+  struct Node *tail;
   int size;
 } Two_sided_queue;
 
 typedef struct {
+  struct Node *next;
+  struct Node *prev;
   int data;
-  Node *next;
 } Node;
 
 void init(Two_sided_queue *const twosq);
