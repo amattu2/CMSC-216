@@ -38,7 +38,7 @@ void init(Two_sided_queue *const twosq) {
   if (!twosq)
     return;
 
-  /* Assign Variables */
+  /* Allocate memory (Head + Tail + Q_Size) */
   if ((queue = malloc(sizeof(Node) + sizeof(Node) + sizeof(int)))) {
     queue->head = NULL;
     queue->tail = NULL;
@@ -116,7 +116,7 @@ int add_back(Two_sided_queue *const twosq, int new_value) {
 /* Get number of elements in queue */
 int num_elements(Two_sided_queue *const twosq) {
   /* Checks */
-  if (!twosq || !twosq->size)
+  if (!twosq || !twosq->size || twosq->size < 0)
     return 0;
 
   /* Default */
