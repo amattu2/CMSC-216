@@ -74,6 +74,9 @@ student04.x: two-sided-queue.o student04.o
 student05.x: two-sided-queue.o student05.o
 	$(GC) two-sided-queue.o student05.o -o student05.x
 
+student06.x: two-sided-queue.o student06.o
+	$(GC) two-sided-queue.o student05.o -o student06.x
+
 #
 # Define object operations
 #
@@ -124,6 +127,9 @@ student04.o: two-sided-queue.c two-sided-queue.h student04.x
 
 student05.o: two-sided-queue.c two-sided-queue.h student05.x
 	$(GC) $(FLAGS) -c student05.c
+
+student06.o: two-sided-queue.c two-sided-queue.h student06.x
+	$(GC) $(FLAGS) -c student06.c
 
 #
 # Define a "clean" option
