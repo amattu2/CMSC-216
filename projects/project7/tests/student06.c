@@ -3,8 +3,7 @@
 #include "two-sided-queue.h"
 
 /*
- * Test adding to front/back rotationally
- * Then removing elements
+ * Test printing on 1 element
 */
 int main(void) {
   Two_sided_queue queue;
