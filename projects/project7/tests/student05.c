@@ -28,9 +28,9 @@ int main(void) {
 
   for (i = 0; i < size; i++) {
     if (i % 2 == 0) {
-      remove_back(&queue, elements[i]);
+      remove_back(&queue, &temp);
     } else {
-      remove_front(&queue, elements[i]);
+      remove_front(&queue, &temp);
     }
   }
 
