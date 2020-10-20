@@ -21,7 +21,7 @@ FLAGS = -ansi -pedantic-errors -Wall -Werror -Wshadow -fstack-protector-all
 # Define main target options
 #
 all: public01.x public02.x public03.x public04.x public05.x public06.x public07.x public08.x public09.x public10.x
-student: student01.x student02.x student03.x student04.x student05.x
+student: student01.x student02.x student03.x student04.x student05.x student06.x student07.x
 
 #
 # Define target operations
@@ -75,7 +75,10 @@ student05.x: two-sided-queue.o student05.o
 	$(GC) two-sided-queue.o student05.o -o student05.x
 
 student06.x: two-sided-queue.o student06.o
-	$(GC) two-sided-queue.o student05.o -o student06.x
+	$(GC) two-sided-queue.o student06.o -o student06.x
+
+student07.x: two-sided-queue.o student07.o
+	$(GC) two-sided-queue.o student07.o -o student07.x
 
 #
 # Define object operations
@@ -130,6 +133,9 @@ student05.o: two-sided-queue.c two-sided-queue.h student05.x
 
 student06.o: two-sided-queue.c two-sided-queue.h student06.x
 	$(GC) $(FLAGS) -c student06.c
+
+student07.o: two-sided-queue.c two-sided-queue.h student07.x
+	$(GC) $(FLAGS) -c student07.c
 
 #
 # Define a "clean" option
