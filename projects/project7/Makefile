@@ -86,55 +86,55 @@ student07.x: two-sided-queue.o student07.o
 two-sided-queue.o: two-sided-queue.c two-sided-queue.h
 	$(GC) $(FLAGS) -c two-sided-queue.c
 
-public01.o: two-sided-queue.c two-sided-queue.h public01.x
+public01.o: two-sided-queue.c two-sided-queue.h public01.c
 	$(GC) $(FLAGS) -c public01.c
 
-public02.o: two-sided-queue.c two-sided-queue.h public02.x
+public02.o: two-sided-queue.c two-sided-queue.h public02.c
 	$(GC) $(FLAGS) -c public02.c
 
-public03.o: two-sided-queue.c two-sided-queue.h public03.x
+public03.o: two-sided-queue.c two-sided-queue.h public03.c
 	$(GC) $(FLAGS) -c public03.c
 
-public04.o: two-sided-queue.c two-sided-queue.h public04.x
+public04.o: two-sided-queue.c two-sided-queue.h public04.c
 	$(GC) $(FLAGS) -c public04.c
 
-public05.o: two-sided-queue.c two-sided-queue.h public05.x
+public05.o: two-sided-queue.c two-sided-queue.h public05.c
 	$(GC) $(FLAGS) -c public05.c
 
-public06.o: two-sided-queue.c two-sided-queue.h public06.x
+public06.o: two-sided-queue.c two-sided-queue.h public06.c
 	$(GC) $(FLAGS) -c public06.c
 
-public07.o: two-sided-queue.c two-sided-queue.h public07.x
+public07.o: two-sided-queue.c two-sided-queue.h public07.c
 	$(GC) $(FLAGS) -c public07.c
 
-public08.o: two-sided-queue.c two-sided-queue.h public08.x
+public08.o: two-sided-queue.c two-sided-queue.h public08.c
 	$(GC) $(FLAGS) -c public08.c
 
-public09.o: two-sided-queue.c two-sided-queue.h public09.x
+public09.o: two-sided-queue.c two-sided-queue.h public09.c
 	$(GC) $(FLAGS) -c public09.c
 
-public10.o: two-sided-queue.c two-sided-queue.h public10.x
+public10.o: two-sided-queue.c two-sided-queue.h public10.c
 	$(GC) $(FLAGS) -c public10.c
 
-student01.o: two-sided-queue.c two-sided-queue.h student01.x
+student01.o: two-sided-queue.c two-sided-queue.h student01.c
 	$(GC) $(FLAGS) -c student01.c
 
-student02.o: two-sided-queue.c two-sided-queue.h student02.x
+student02.o: two-sided-queue.c two-sided-queue.h student02.c
 	$(GC) $(FLAGS) -c student02.c
 
-student03.o: two-sided-queue.c two-sided-queue.h student03.x
+student03.o: two-sided-queue.c two-sided-queue.h student03.c
 	$(GC) $(FLAGS) -c student03.c
 
-student04.o: two-sided-queue.c two-sided-queue.h student04.x
+student04.o: two-sided-queue.c two-sided-queue.h student04.c
 	$(GC) $(FLAGS) -c student04.c
 
-student05.o: two-sided-queue.c two-sided-queue.h student05.x
+student05.o: two-sided-queue.c two-sided-queue.h student05.c
 	$(GC) $(FLAGS) -c student05.c
 
-student06.o: two-sided-queue.c two-sided-queue.h student06.x
+student06.o: two-sided-queue.c two-sided-queue.h student06.c
 	$(GC) $(FLAGS) -c student06.c
 
-student07.o: two-sided-queue.c two-sided-queue.h student07.x
+student07.o: two-sided-queue.c two-sided-queue.h student07.c
 	$(GC) $(FLAGS) -c student07.c
 
 #
