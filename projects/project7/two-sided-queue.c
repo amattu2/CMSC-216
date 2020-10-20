@@ -157,7 +157,7 @@ int remove_front(Two_sided_queue *const twosq, int *value) {
   Node *new_head;
 
   /* Checks */
-  if (!twosq)
+  if (!twosq || !value)
     return 0;
   if (!twosq->head)
     return 0;
@@ -179,7 +179,7 @@ int remove_back(Two_sided_queue *const twosq, int *value) {
   Node *new_tail;
 
   /* Checks */
-  if (!twosq)
+  if (!twosq || !value)
     return 0;
   if (!twosq->tail)
     return 0;
