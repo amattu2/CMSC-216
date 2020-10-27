@@ -25,33 +25,33 @@
 #include "graph-utils.h"
 
 void init_graph(WString_graph *const graph) {
-	return;
+  return;
 }
 
 int new_vertex_add(WString_graph *const graph, const char new_vertex[]) {
-	return NULL;
+  return NULL;
 }
 
 int num_vertices(const WString_graph *const graph) {
-	return NULL;
+  return NULL;
 }
 
 int is_existing_vertex(const WString_graph *const graph, const char name[]) {
-	return NULL;
+  return NULL;
 }
 
 char **get_vertices(const WString_graph *const graph) {
-	return NULL;
+  return NULL;
 }
 
 int add_edge(WString_graph *const graph, const char source[], const char dest[], int cost) {
-	return NULL;
+  return NULL;
 }
 
 int get_weight_of_edge(const WString_graph *const graph, const char source[], const char dest[]) {
-	return NULL;
+  return NULL;
 }
 
 int num_neighbors(const WString_graph *const graph, const char vertex[]) {
-	return NULL;
+  return NULL;
 }
