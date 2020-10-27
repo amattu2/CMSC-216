@@ -11,8 +11,12 @@
  * any unauthorized assistance on this assignment.
 */
 
-typedef struct {
-  int size;
-  /* This is just a temporary def */
-  /* https://www.programiz.com/dsa/graph-adjacency-list */
+typedef struct node {
+  int vertex;
+  struct node* next;
+} Node;
+
+typedef struct graph {
+  int numVertices;
+  struct node** adjLists;
 } WString_graph;
