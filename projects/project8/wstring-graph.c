@@ -24,8 +24,16 @@
 #include "wstring-graph.h"
 #include "graph-utils.h"
 
+/* Initialize the graph structure */
 void init_graph(WString_graph *const graph) {
-  return;
+  /* Variables */
+  WString_graph *g;
+
+  /* Checks */
+  if (!graph)
+    return;
+  if ((g = malloc(sizeof(Node))))
+    *graph = *g;
 }
 
 int new_vertex_add(WString_graph *const graph, const char new_vertex[]) {

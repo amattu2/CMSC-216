@@ -17,6 +17,6 @@ typedef struct node {
 } Node;
 
 typedef struct graph {
-  int numVertices;
+  int vertexCount;
   struct node** adjLists;
 } WString_graph;
