@@ -21,7 +21,6 @@
 /* Files */
 #include <stdio.h>
 #include <stdlib.h>
-#include "wstring-graph-datastructure.h"
 #include "wstring-graph.h"
 #include "graph-utils.h"
 
