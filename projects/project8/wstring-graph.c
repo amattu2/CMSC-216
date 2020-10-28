@@ -184,7 +184,9 @@ int get_weight_of_edge(const WString_graph *const graph, const char source[], co
 
   /* Checks */
   if (!graph || !edge)
-    return 0;
+    return -1;
+  if (!source || !dest)
+    return -1;
 
   /* Return */
   return edge->cost;
