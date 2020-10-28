@@ -25,6 +25,9 @@
 #include "wstring-graph.h"
 #include "graph-utils.h"
 
+/* Prototypes */
+static Vertex *find_vertex_tail(const WString_graph *const graph);
+
 /* Initialize the graph structure */
 void init_graph(WString_graph *const graph) {
   /* Variables */
@@ -33,11 +36,11 @@ void init_graph(WString_graph *const graph) {
   /* Checks */
   if (!graph)
     return;
-  if ((g = malloc(sizeof(int) + sizeof(int) + sizeof(Vertex)))) {
-    g->vertex_head = NULL;
-    g->edge_head = NULL;
+  if ((g = malloc(sizeof(int) + sizeof(int) + sizeof(NULL) + sizeof(NULL)))) {
     g->vertex_count = 0;
     g->edge_count = 0;
+    g->vertex_head = NULL;
+    g->edge_head = NULL;
     *graph = *g;
   }
 }
@@ -63,12 +66,41 @@ int is_existing_vertex(const WString_graph *const graph, const char name[]) {
   return 0;
 }
 
+/* Create a new graph vertex */
 int new_vertex_add(WString_graph *const graph, const char new_vertex[]) {
+  /* Variables */
+  Vertex *vertex;
+  Vertex *current = NULL;
+  char *name;
+
   /* Checks */
-  if (!graph)
+  if (!graph || is_existing_vertex(graph, new_vertex))
+    return 0;
+  else
+    current = find_vertex_tail(graph);
+
+  /* Create name pointer */
+  if ((name = malloc(strlen(new_vertex) + 1)))
+      strcpy(name, (new_vertex ? new_vertex : ""));
+  else
     return 0;
 
-  return 0;
+  /* Create vertex pointer */
+  if ((vertex = malloc(sizeof(Vertex)))) {
+    vertex->next = NULL;
+    vertex->name = name;
+  } else
+    return 0;
+
+  /* Find insert location */
+  if (current == NULL)
+    *graph->vertex_head = vertex;
+  else
+    current->next = vertex;
+
+  /* Default */
+  graph->vertex_count++;
+  return 1;
 }
 
 int add_edge(WString_graph *const graph, const char source[], const char dest[], int cost) {
@@ -122,4 +154,24 @@ int num_neighbors(const WString_graph *const graph, const char vertex[]) {
     return 0;
 
   return 0;
+}
+
+/* Find tail node of verticies */
+static Vertex *find_vertex_tail(const WString_graph *const graph) {
+  /* Variables */
+  Vertex *current = NULL;
+
+  /* Checks */
+  if (!graph || !graph->vertex_head)
+    return current;
+  else
+    current = *graph->vertex_head;
+
+  /* Loops */
+  while (current && current->next != current) {
+    current = current->next;
+  }
+
+  /* Default */
+  return current;
 }
