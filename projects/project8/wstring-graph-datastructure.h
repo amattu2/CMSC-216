@@ -35,5 +35,6 @@ typedef struct queue {
 /* Structure for graph */
 typedef struct graph {
   int verticies;
+  int edges;
   struct vertex **head;
 } WString_graph;
