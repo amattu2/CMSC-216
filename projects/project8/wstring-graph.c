@@ -39,7 +39,7 @@ void init_graph(WString_graph *const graph) {
   /* Checks */
   if (!graph)
     return;
-  if ((g = malloc(sizeof(int) + sizeof(int)))) {
+  if ((g = malloc(sizeof(struct graph)))) {
     g->vertex_count = 0;
     g->edge_count = 0;
     g->vertex_head = NULL;
@@ -54,14 +54,14 @@ int is_existing_vertex(const WString_graph *const graph, const char name[]) {
   Vertex *current = NULL;
 
   /* Checks */
-  if (!graph || !graph->vertex_head)
+  if (!graph || !graph->vertex_head || !name)
     return 0;
   else
     current = *graph->vertex_head;
 
   /* Loops */
   while (current && current->next != current) {
-    if (strcmp(current->name, (!name ? "" : name)) == 0)
+    if (strcmp((!current->name ? "" : current->name), (!name ? "" : name)) == 0)
       return 1;
 
     current = current->next;
@@ -91,7 +91,7 @@ int new_vertex_add(WString_graph *const graph, const char new_vertex[]) {
     return 0;
 
   /* Create vertex pointer */
-  if ((vertex = malloc(sizeof(Vertex)))) {
+  if ((vertex = malloc(sizeof(struct vertex)))) {
     vertex->next = NULL;
     vertex->name = name;
   } else
@@ -141,7 +141,7 @@ int add_edge(WString_graph *const graph, const char source[], const char dest[],
     dest_ptr = dest_vertex->name;
 
   /* Allocate edge memory */
-  if ((edge = malloc(sizeof(int)))) {
+  if ((edge = malloc(sizeof(struct edge)))) {
     edge->source = source_ptr;
     edge->dest = dest_ptr;
     edge->cost = cost;
@@ -218,9 +218,9 @@ int num_neighbors(const WString_graph *const graph, const char vertex[]) {
   /* Loops */
   while (current && current->next != current) {
     /* Checks */
-    if (strcmp(current->source, vertex) == 0)
+    if (strcmp((!current->source ? "" : current->source), vertex) == 0)
       count++;
-    if (strcmp(current->dest, vertex) == 0)
+    if (strcmp((!current->dest ? "" : current->dest), vertex) == 0)
       count++; /* a V can be it's own neighbor.. source=dest=vertex */
 
     current = current->next;
@@ -267,9 +267,9 @@ static Edge *find_existing_edge(const WString_graph *const graph, const char sou
     int matches = 1;
 
     /* Checks */
-    if (strcmp(current->source, (!source ? "" : source)) != 0)
+    if (strcmp((!current->source ? "" : current->source), (!source ? "" : source)) != 0)
       matches = 0;
-    if (strcmp(current->dest, (!dest ? "" : dest)) != 0)
+    if (strcmp((!current->dest ? "" : current->dest), (!dest ? "" : dest)) != 0)
       matches = 0;
     if (matches)
       return current;
@@ -317,7 +317,7 @@ static Vertex *find_existing_vertex(const WString_graph *const graph, const char
 
   /* Loops */
   while (current && current->next != current) {
-    if (strcmp(current->name, (!name ? "" : name)) == 0)
+    if (strcmp((!current->name ? "" : current->name), (!name ? "" : name)) == 0)
       return current;
 
     current = current->next;
