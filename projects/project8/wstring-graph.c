@@ -202,12 +202,31 @@ int num_vertices(const WString_graph *const graph) {
   return graph->vertex_count;
 }
 
+/* Determine the neighbor count of a vertex */
 int num_neighbors(const WString_graph *const graph, const char vertex[]) {
-  /* Checks */
-  if (!graph)
-    return 0;
+  /* Variables */
+  int count = 0;
+  Edge *current = NULL;
 
-  return 0;
+  /* Checks */
+  if (!graph || !vertex)
+    return -1;
+  else
+    current = *graph->edge_head;
+
+  /* Loops */
+  while (current && current->next != current) {
+    /* Checks */
+    if (strcmp(current->source, vertex) == 0)
+      count++;
+    if (strcmp(current->dest, vertex) == 0)
+      count++; /* a V can be it's own neighbor.. source=dest=vertex */
+
+    current = current->next;
+  }
+
+  /* Return */
+  return count;
 }
 
 /* Find tail node of verticies */
