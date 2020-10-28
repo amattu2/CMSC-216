@@ -177,12 +177,17 @@ char **get_vertices(const WString_graph *const graph) {
   return NULL;
 }
 
+/* Return weight of given edge */
 int get_weight_of_edge(const WString_graph *const graph, const char source[], const char dest[]) {
+  /* Variables */
+  Edge *edge = find_existing_edge(graph, source, dest);
+
   /* Checks */
-  if (!graph)
+  if (!graph || !edge)
     return 0;
 
-  return 0;
+  /* Return */
+  return edge->cost;
 }
 
 /* Return vertex count */
