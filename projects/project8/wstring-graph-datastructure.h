@@ -15,8 +15,8 @@
 #ifndef Edge
 typedef struct edge {
   int weight;
-  struct vertex *source;
-  struct vertex *destination;
+  char *source;
+  char *destination;
   struct edge *next;
 } Edge;
 #endif
@@ -26,7 +26,6 @@ typedef struct edge {
 typedef struct vertex {
   char *name;
   struct vertex *next;
-  struct queue *edges;
 } Vertex;
 #endif
 
