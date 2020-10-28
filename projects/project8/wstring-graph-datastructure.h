@@ -12,29 +12,30 @@
 */
 
 /* Structure for edge (road) */
+#ifndef Edge
 typedef struct edge {
   int weight;
   struct vertex *source;
   struct vertex *destination;
   struct edge *next;
 } Edge;
+#endif
 
 /* Structure for vertex (point) */
+#ifndef Vertex
 typedef struct vertex {
   char *name;
   struct vertex *next;
   struct queue *edges;
 } Vertex;
-
-/* Structure for vertex edges */
-typedef struct queue {
-  int size;
-  struct edge *head;
-} Queue;
+#endif
 
 /* Structure for graph */
+#ifndef WString_graph
 typedef struct graph {
-  int verticies;
-  int edges;
-  struct vertex **head;
+  int vertex_count;
+  int edge_count;
+  struct vertex **vertex_head;
+  struct edge **edge_head;
 } WString_graph;
+#endif
