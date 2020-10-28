@@ -13,9 +13,9 @@
 
 /* Structure for edge (road) */
 typedef struct edge {
-  int source;
-  int destination;
   int weight;
+  struct node *source;
+  struct node *destination;
   struct edge *next;
 } Edge;
 
