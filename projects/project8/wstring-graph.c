@@ -36,30 +36,58 @@ void init_graph(WString_graph *const graph) {
     *graph = *g;
 }
 
-int new_vertex_add(WString_graph *const graph, const char new_vertex[]) {
-  return NULL;
-}
-
-int num_vertices(const WString_graph *const graph) {
-  return NULL;
-}
-
 int is_existing_vertex(const WString_graph *const graph, const char name[]) {
-  return NULL;
+  /* Checks */
+  if (!graph)
+    return 0;
+
+  return 0;
 }
 
-char **get_vertices(const WString_graph *const graph) {
-  return NULL;
+int new_vertex_add(WString_graph *const graph, const char new_vertex[]) {
+  /* Checks */
+  if (!graph)
+    return 0;
+
+  return 0;
 }
 
 int add_edge(WString_graph *const graph, const char source[], const char dest[], int cost) {
-  return NULL;
+  /* Checks */
+  if (!graph)
+    return 0;
+
+  return 0;
+}
+
+char **get_vertices(const WString_graph *const graph) {
+  /* Checks */
+  if (!graph)
+    return 0;
+
+  return 0;
 }
 
 int get_weight_of_edge(const WString_graph *const graph, const char source[], const char dest[]) {
-  return NULL;
+  /* Checks */
+  if (!graph)
+    return 0;
+
+  return 0;
+}
+
+int num_vertices(const WString_graph *const graph) {
+  /* Checks */
+  if (!graph)
+    return 0;
+
+  return 0;
 }
 
 int num_neighbors(const WString_graph *const graph, const char vertex[]) {
-  return NULL;
+  /* Checks */
+  if (!graph)
+    return 0;
+
+  return 0;
 }
