@@ -14,8 +14,8 @@
 /* Structure for edge (road) */
 typedef struct edge {
   int weight;
-  struct node *source;
-  struct node *destination;
+  struct vertex *source;
+  struct vertex *destination;
   struct edge *next;
 } Edge;
 
@@ -29,7 +29,7 @@ typedef struct vertex {
 /* Structure for vertex edges */
 typedef struct queue {
   int size;
-  struct node *head;
+  struct edge *head;
 } Queue;
 
 /* Structure for graph */
