@@ -27,6 +27,8 @@
 
 /* Prototypes */
 static Vertex *find_vertex_tail(const WString_graph *const graph);
+static Edge *find_edge_tail(const WString_graph *const graph);
+static int is_existing_edge(const WString_graph *const graph, const char source[], const char dest[], int cost);
 
 /* Initialize the graph structure */
 void init_graph(WString_graph *const graph) {
@@ -104,9 +106,15 @@ int new_vertex_add(WString_graph *const graph, const char new_vertex[]) {
 }
 
 int add_edge(WString_graph *const graph, const char source[], const char dest[], int cost) {
+  /* Variables */
+  Edge *edge;
+  Edge *current = NULL;
+
   /* Checks */
-  if (!graph)
+  if (!graph || is_existing_edge(graph, source, dest, cost))
     return 0;
+  else
+    current = find_edge_tail(graph);
 
   return 0;
 }
@@ -174,4 +182,41 @@ static Vertex *find_vertex_tail(const WString_graph *const graph) {
 
   /* Default */
   return current;
+}
+
+/* Check if a edge exists already */
+static int is_existing_edge(const WString_graph *const graph, const char source[], const char dest[], int cost) {
+  /* Variables */
+  Edge *current = NULL;
+
+  /* Checks */
+  if (!graph || !graph->edge_head)
+    return 0;
+  else
+    current = *graph->edge_head;
+
+  /* Loops */
+  while (current && current->next != current) {
+    /* Variables */
+    int matches = 1;
+
+    /* Checks */
+    if (strcmp(current->source, source) != 0)
+      matches = 0;
+    if (strcmp(current->dest, dest) != 0)
+      matches = 0;
+    if (current->cost != cost)
+      matches = 0;
+    if (matches)
+      return 1;
+
+    current = current->next;
+  }
+
+  /* Default */
+  return 0;
+}
+
+static Edge *find_edge_tail(const WString_graph *const graph) {
+  return NULL;
 }
