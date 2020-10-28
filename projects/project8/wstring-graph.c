@@ -80,12 +80,14 @@ int get_weight_of_edge(const WString_graph *const graph, const char source[], co
   return 0;
 }
 
+/* Return vertex count */
 int num_vertices(const WString_graph *const graph) {
   /* Checks */
-  if (!graph)
+  if (!graph || !graph->verticies || graph->verticies <= 0)
     return 0;
 
-  return 0;
+  /* Return */
+  return graph->verticies;
 }
 
 int num_neighbors(const WString_graph *const graph, const char vertex[]) {
