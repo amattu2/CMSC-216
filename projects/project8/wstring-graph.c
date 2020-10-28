@@ -39,7 +39,7 @@ void init_graph(WString_graph *const graph) {
   /* Checks */
   if (!graph)
     return;
-  if ((g = malloc(sizeof(int) + sizeof(int) + sizeof(NULL) + sizeof(NULL)))) {
+  if ((g = malloc(sizeof(int) + sizeof(int)))) {
     g->vertex_count = 0;
     g->edge_count = 0;
     g->vertex_head = NULL;
@@ -99,7 +99,7 @@ int new_vertex_add(WString_graph *const graph, const char new_vertex[]) {
 
   /* Find insert location */
   if (current == NULL)
-    *graph->vertex_head = vertex;
+    graph->vertex_head = &vertex;
   else
     current->next = vertex;
 
@@ -145,11 +145,12 @@ int add_edge(WString_graph *const graph, const char source[], const char dest[],
     edge->source = source_ptr;
     edge->dest = dest_ptr;
     edge->cost = cost;
+    edge->next = NULL;
   }
 
   /* Find insert location */
   if (!current)
-    *graph->edge_head = edge;
+    graph->edge_head = &edge;
   else
     current->next = edge;
 
