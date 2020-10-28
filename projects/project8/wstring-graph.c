@@ -217,6 +217,22 @@ static int is_existing_edge(const WString_graph *const graph, const char source[
   return 0;
 }
 
+/* Find tail node of edges */
 static Edge *find_edge_tail(const WString_graph *const graph) {
-  return NULL;
+  /* Variables */
+  Edge *current = NULL;
+
+  /* Checks */
+  if (!graph || !graph->edge_head)
+    return current;
+  else
+    current = *graph->edge_head;
+
+  /* Loops */
+  while (current && current->next != current) {
+    current = current->next;
+  }
+
+  /* Default */
+  return current;
 }
