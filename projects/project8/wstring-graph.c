@@ -32,8 +32,12 @@ void init_graph(WString_graph *const graph) {
   /* Checks */
   if (!graph)
     return;
-  if ((g = malloc(sizeof(Node))))
+  if ((g = malloc(sizeof(int) + sizeof(int) + sizeof(Vertex)))) {
+    g->head = NULL;
+    g->verticies = 0;
+    g->edges = 0;
     *graph = *g;
+  }
 }
 
 int is_existing_vertex(const WString_graph *const graph, const char name[]) {
