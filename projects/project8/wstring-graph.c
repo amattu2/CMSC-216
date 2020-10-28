@@ -34,37 +34,33 @@ static Vertex *find_existing_vertex(const WString_graph *const graph, const char
 /* Initialize the graph structure */
 void init_graph(WString_graph *const graph) {
   /* Variables */
-  WString_graph *g;
+  struct graph *g;
 
   /* Checks */
   if (!graph)
     return;
   if ((g = malloc(sizeof(struct graph)))) {
+    *graph = *g;
     g->vertex_count = 0;
     g->edge_count = 0;
-    g->vertex_head = NULL;
-    g->edge_head = NULL;
-    *graph = *g;
+    g->vertex_list = malloc(sizeof(struct vertex*));
+    g->edge_list = malloc(sizeof(struct edge*));
   }
 }
 
 /* Check if a vertex exists */
 int is_existing_vertex(const WString_graph *const graph, const char name[]) {
   /* Variables */
-  Vertex *current = NULL;
+  int index;
 
   /* Checks */
-  if (!graph || !graph->vertex_head || !name)
+  if (!graph || !graph->vertex_list || !graph->vertex_count || !name)
     return 0;
-  else
-    current = *graph->vertex_head;
 
   /* Loops */
-  while (current && current->next != current) {
-    if (strcmp((!current->name ? "" : current->name), (!name ? "" : name)) == 0)
+  for (index = 0; index < graph->vertex_count; index++) {
+    if (strcmp(graph->vertex_list[index]->name, name) == 0)
       return 1;
-
-    current = current->next;
   }
 
   /* Default */
@@ -74,8 +70,8 @@ int is_existing_vertex(const WString_graph *const graph, const char name[]) {
 /* Create a new graph vertex */
 int new_vertex_add(WString_graph *const graph, const char new_vertex[]) {
   /* Variables */
-  Vertex *vertex;
-  Vertex *current = NULL;
+  struct vertex *vertex;
+  struct vertex *current = NULL;
   char *name;
 
   /* Checks */
@@ -91,7 +87,8 @@ int new_vertex_add(WString_graph *const graph, const char new_vertex[]) {
     return 0;
 
   /* Create vertex pointer */
-  if ((vertex = malloc(sizeof(struct vertex)))) {
+  if ((graph->vertex_list = realloc(graph->vertex_list, sizeof(struct vertex*) * (graph->vertex_count+1)))) {
+    vertex = malloc(sizeof(struct vertex*));
     vertex->next = NULL;
     vertex->name = name;
   } else
@@ -99,7 +96,7 @@ int new_vertex_add(WString_graph *const graph, const char new_vertex[]) {
 
   /* Find insert location */
   if (current == NULL)
-    graph->vertex_head = &vertex;
+    graph->vertex_list[2] = vertex;
   else
     current->next = vertex;
 
@@ -111,12 +108,12 @@ int new_vertex_add(WString_graph *const graph, const char new_vertex[]) {
 /* Create a new graph edge */
 int add_edge(WString_graph *const graph, const char source[], const char dest[], int cost) {
   /* Variables */
-  Edge *edge = find_existing_edge(graph, source, dest);
-  Edge *current = find_edge_tail(graph);
+  struct edge *edge = find_existing_edge(graph, source, dest);
+  struct edge *current = find_edge_tail(graph);
   char *source_ptr;
   char *dest_ptr;
-  Vertex *source_vertex;
-  Vertex *dest_vertex;
+  struct vertex *source_vertex;
+  struct vertex *dest_vertex;
 
   /* Checks */
   if (!graph)
@@ -150,7 +147,7 @@ int add_edge(WString_graph *const graph, const char source[], const char dest[],
 
   /* Find insert location */
   if (!current)
-    graph->edge_head = &edge;
+    graph->edge_list = &edge;
   else
     current->next = edge;
 
@@ -161,17 +158,17 @@ int add_edge(WString_graph *const graph, const char source[], const char dest[],
 
 char **get_vertices(const WString_graph *const graph) {
   /* Variables */
-  Vertex *current = NULL;
+  struct vertex *current = NULL;
 
   /* Checks */
-  if (!graph || !graph->vertex_head)
+  if (!graph || !graph->vertex_list)
     return 0;
   else
-    current = *graph->vertex_head;
+    current = *graph->vertex_list;
 
   /* Iterate */
   while (current && current->next != current) {
-
+    exit(1); /* TDB */
   }
 
   /* Return */
@@ -181,7 +178,7 @@ char **get_vertices(const WString_graph *const graph) {
 /* Return weight of given edge */
 int get_weight_of_edge(const WString_graph *const graph, const char source[], const char dest[]) {
   /* Variables */
-  Edge *edge = find_existing_edge(graph, source, dest);
+  struct edge *edge = find_existing_edge(graph, source, dest);
 
   /* Checks */
   if (!graph || !edge)
@@ -207,23 +204,19 @@ int num_vertices(const WString_graph *const graph) {
 int num_neighbors(const WString_graph *const graph, const char vertex[]) {
   /* Variables */
   int count = 0;
-  Edge *current = NULL;
+  int index;
 
   /* Checks */
-  if (!graph || !vertex)
+  if (!graph || !vertex || !graph->edge_list)
     return -1;
-  else
-    current = *graph->edge_head;
 
   /* Loops */
-  while (current && current->next != current) {
+  for (index = 0; index < graph->edge_count; index++) {
     /* Checks */
-    if (strcmp((!current->source ? "" : current->source), vertex) == 0)
+    if (strcmp((!graph->edge_list[index]->source ? "" : graph->edge_list[index]->source), vertex) == 0)
       count++;
-    if (strcmp((!current->dest ? "" : current->dest), vertex) == 0)
+    if (strcmp((!graph->edge_list[index]->dest ? "" : graph->edge_list[index]->dest), vertex) == 0)
       count++; /* a V can be it's own neighbor.. source=dest=vertex */
-
-    current = current->next;
   }
 
   /* Return */
@@ -232,97 +225,65 @@ int num_neighbors(const WString_graph *const graph, const char vertex[]) {
 
 /* Find tail node of verticies */
 static Vertex *find_vertex_tail(const WString_graph *const graph) {
-  /* Variables */
-  Vertex *current = NULL;
-
   /* Checks */
-  if (!graph || !graph->vertex_head)
-    return current;
-  else
-    current = *graph->vertex_head;
-
-  /* Loops */
-  while (current && current->next != current) {
-    current = current->next;
-  }
+  if (!graph || !graph->vertex_list || !graph->vertex_count)
+    return NULL;
 
   /* Default */
-  return current;
+  return graph->vertex_list[graph->vertex_count];
+}
+
+/* Find tail node of edges */
+static Edge *find_edge_tail(const WString_graph *const graph) {
+  /* Checks */
+  if (!graph || !graph->edge_list || !graph->edge_count)
+    return NULL;
+
+  /* Return */
+  return graph->edge_list[graph->edge_count - 1];
 }
 
 /* Find edge if it exists */
 static Edge *find_existing_edge(const WString_graph *const graph, const char source[], const char dest[]) {
   /* Variables */
-  Edge *current = NULL;
+  int index;
 
   /* Checks */
-  if (!graph || !graph->edge_head)
-    return current;
-  else
-    current = *graph->edge_head;
+  if (!graph || !graph->edge_list || !graph->edge_count)
+    return NULL;
 
   /* Loops */
-  while (current && current->next != current) {
+  for (index = 0; index < graph->edge_count; index++) {
     /* Variables */
-    int matches = 1;
+    struct edge *edge = graph->edge_list[index];
 
     /* Checks */
-    if (strcmp((!current->source ? "" : current->source), (!source ? "" : source)) != 0)
-      matches = 0;
-    if (strcmp((!current->dest ? "" : current->dest), (!dest ? "" : dest)) != 0)
-      matches = 0;
-    if (matches)
-      return current;
-
-    current = current->next;
+    if (strcmp(edge->source, source) == 0 && strcmp(edge->dest, dest) == 0)
+      return edge;
   }
 
   /* Default */
-  return current;
-}
-
-/* Find tail node of edges */
-static Edge *find_edge_tail(const WString_graph *const graph) {
-  /* Variables */
-  Edge *current = NULL;
-
-  /* Checks */
-  if (!graph || !graph->edge_head)
-    return current;
-  else
-    current = *graph->edge_head;
-
-  /* Loops */
-  while (current && current->next != current) {
-    current = current->next;
-  }
-
-  /* Default */
-  return current;
+  return NULL;
 }
 
 /* Find vertex if it exists */
 static Vertex *find_existing_vertex(const WString_graph *const graph, const char name[]) {
   /* Variables */
-  Vertex *current = NULL;
+  int index;
 
   /* Checks */
   if (!is_existing_vertex(graph, name)) {
-    return current;
+    return NULL;
   }
-  if (!graph || !graph->vertex_head)
-    return current;
-  else
-    current = *graph->vertex_head;
+  if (!graph || !graph->vertex_list || !graph->vertex_count)
+    return NULL;
 
   /* Loops */
-  while (current && current->next != current) {
-    if (strcmp((!current->name ? "" : current->name), (!name ? "" : name)) == 0)
-      return current;
-
-    current = current->next;
+  for (index = 0; index < graph->vertex_count; index++) {
+    if (strcmp((!graph->vertex_list[index]->name ? "" : graph->vertex_list[index]->name), (!name ? "" : name)) == 0)
+      return graph->vertex_list[index];
   }
 
   /* Default */
-  return current;
+  return NULL;
 }
