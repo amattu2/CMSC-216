@@ -61,7 +61,7 @@ int is_existing_vertex(const WString_graph *const graph, const char name[]) {
 
   /* Loops */
   while (current && current->next != current) {
-    if (strcmp(current->name, name) == 0)
+    if (strcmp(current->name, (!name ? "" : name)) == 0)
       return 1;
 
     current = current->next;
@@ -267,9 +267,9 @@ static Edge *find_existing_edge(const WString_graph *const graph, const char sou
     int matches = 1;
 
     /* Checks */
-    if (strcmp(current->source, source) != 0)
+    if (strcmp(current->source, (!source ? "" : source)) != 0)
       matches = 0;
-    if (strcmp(current->dest, dest) != 0)
+    if (strcmp(current->dest, (!dest ? "" : dest)) != 0)
       matches = 0;
     if (matches)
       return current;
@@ -317,7 +317,7 @@ static Vertex *find_existing_vertex(const WString_graph *const graph, const char
 
   /* Loops */
   while (current && current->next != current) {
-    if (strcmp(current->name, name) == 0)
+    if (strcmp(current->name, (!name ? "" : name)) == 0)
       return current;
 
     current = current->next;
