@@ -21,6 +21,7 @@
 /* Files */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "wstring-graph.h"
 #include "graph-utils.h"
 
@@ -33,18 +34,32 @@ void init_graph(WString_graph *const graph) {
   if (!graph)
     return;
   if ((g = malloc(sizeof(int) + sizeof(int) + sizeof(Vertex)))) {
-    g->head = NULL;
-    g->verticies = 0;
-    g->edges = 0;
+    g->vertex_head = NULL;
+    g->edge_head = NULL;
+    g->vertex_count = 0;
+    g->edge_count = 0;
     *graph = *g;
   }
 }
 
+/* Check if a vertex exists */
 int is_existing_vertex(const WString_graph *const graph, const char name[]) {
-  /* Checks */
-  if (!graph)
-    return 0;
+  /* Variables */
+  Vertex *current = NULL;
 
+  /* Checks */
+  if (!graph || !graph->vertex_head)
+    return 0;
+  else
+    current = *graph->vertex_head;
+
+  /* Loops */
+  while (current && current->next != current) {
+    if (strcmp(current->name, name) == 0)
+      return 1;
+  }
+
+  /* Default */
   return 0;
 }
 
@@ -65,11 +80,22 @@ int add_edge(WString_graph *const graph, const char source[], const char dest[],
 }
 
 char **get_vertices(const WString_graph *const graph) {
-  /* Checks */
-  if (!graph)
-    return 0;
+  /* Variables */
+  Vertex *current = NULL;
 
-  return 0;
+  /* Checks */
+  if (!graph || !graph->vertex_head)
+    return 0;
+  else
+    current = *graph->vertex_head;
+
+  /* Iterate */
+  while (current && current->next != current) {
+
+  }
+
+  /* Return */
+  return NULL;
 }
 
 int get_weight_of_edge(const WString_graph *const graph, const char source[], const char dest[]) {
@@ -83,11 +109,11 @@ int get_weight_of_edge(const WString_graph *const graph, const char source[], co
 /* Return vertex count */
 int num_vertices(const WString_graph *const graph) {
   /* Checks */
-  if (!graph || !graph->verticies || graph->verticies <= 0)
+  if (!graph || !graph->vertex_count || graph->vertex_count <= 0)
     return 0;
 
   /* Return */
-  return graph->verticies;
+  return graph->vertex_count;
 }
 
 int num_neighbors(const WString_graph *const graph, const char vertex[]) {
