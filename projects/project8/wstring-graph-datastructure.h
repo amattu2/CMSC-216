@@ -34,7 +34,7 @@ typedef struct vertex {
 typedef struct graph {
   int vertex_count;
   int edge_count;
-  struct vertex **vertex_head;
-  struct edge **edge_head;
+  struct vertex **vertex_list;
+  struct edge **edge_list;
 } WString_graph;
 #endif
