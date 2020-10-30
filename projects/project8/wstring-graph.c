@@ -219,21 +219,13 @@ int num_vertices(const WString_graph *const graph) {
 int num_neighbors(const WString_graph *const graph, const char vertex[]) {
   /* Variables */
   struct vertex *v = find_existing_vertex(graph, vertex);
-  int count = 0;
-  int index;
 
   /* Checks */
   if (!graph || !v || !v->edge_list)
     return -1;
 
-  /* Loops */
-  for (index = 0; index < v->edge_count; index++) {
-    if (strcmp(v->edge_list[index]->dest, vertex) == 0)
-      count++;
-  }
-
   /* Return */
-  return count;
+  return v->edge_count;
 }
 
 /* Find tail node of verticies */
