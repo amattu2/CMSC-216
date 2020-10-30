@@ -5,7 +5,7 @@
  * Directory ID: amattu
  *
  * Author: Alec M.
- * Date: Oct 27th, 2020
+ * Date: Oct 30th, 2020
  *
  * I pledge on my honor that I have not given or received
  * any unauthorized assistance on this assignment.
@@ -39,12 +39,12 @@ void init_graph(WString_graph *const graph) {
   /* Checks */
   if (!graph)
     return;
-  if ((g = malloc(sizeof(struct graph)))) {
+  if ((g = malloc(sizeof(struct graph) + sizeof(struct edge*) + sizeof(struct vertex*) + (sizeof(int) * 2)))) {
     *graph = *g;
-    g->vertex_count = 0;
-    g->edge_count = 0;
-    g->vertex_list = malloc(sizeof(struct vertex*));
-    g->edge_list = malloc(sizeof(struct edge*));
+    graph->vertex_count = 0;
+    graph->edge_count = 0;
+    graph->vertex_list = malloc(sizeof(struct vertex*));
+    graph->edge_list = malloc(sizeof(struct edge*));
   }
 }
 
@@ -59,6 +59,8 @@ int is_existing_vertex(const WString_graph *const graph, const char name[]) {
 
   /* Loops */
   for (index = 0; index < graph->vertex_count; index++) {
+    if (!graph->vertex_list[index])
+      continue;
     if (strcmp(graph->vertex_list[index]->name, name) == 0)
       return 1;
   }
@@ -75,32 +77,32 @@ int new_vertex_add(WString_graph *const graph, const char new_vertex[]) {
   char *name;
 
   /* Checks */
-  if (!graph || is_existing_vertex(graph, new_vertex))
+  if (!graph || !new_vertex || is_existing_vertex(graph, new_vertex))
     return 0;
   else
     current = find_vertex_tail(graph);
 
   /* Create name pointer */
   if ((name = malloc(strlen(new_vertex) + 1)))
-      strcpy(name, (new_vertex ? new_vertex : ""));
+    strcpy(name, (new_vertex ? new_vertex : ""));
   else
     return 0;
 
   /* Create vertex pointer */
-  if ((graph->vertex_list = realloc(graph->vertex_list, sizeof(struct vertex*) * (graph->vertex_count+1)))) {
-    vertex = malloc(sizeof(struct vertex*));
+  if (!(graph->vertex_list = realloc(graph->vertex_list, (graph->vertex_count + 1) * sizeof(struct vertex*))))
+    return 0;
+  if ((vertex = malloc(sizeof(struct vertex) + sizeof(struct vertex*) + sizeof(char*)))) {
     vertex->next = NULL;
     vertex->name = name;
   } else
     return 0;
 
-  /* Find insert location */
-  if (current == NULL)
-    graph->vertex_list[2] = vertex;
-  else
+  /* Attach to existing node */
+  if (current != NULL)
     current->next = vertex;
 
   /* Default */
+  graph->vertex_list[graph->vertex_count] = vertex;
   graph->vertex_count++;
   return 1;
 }
@@ -163,11 +165,10 @@ char **get_vertices(const WString_graph *const graph) {
   /* Checks */
   if (!graph || !graph->vertex_list)
     return 0;
-  else
-    current = *graph->vertex_list;
 
   /* Iterate */
   while (current && current->next != current) {
+    printf("%04d: Code not finished\n", __LINE__);
     exit(1); /* TDB */
   }
 
@@ -229,8 +230,8 @@ static Vertex *find_vertex_tail(const WString_graph *const graph) {
   if (!graph || !graph->vertex_list || !graph->vertex_count)
     return NULL;
 
-  /* Default */
-  return graph->vertex_list[graph->vertex_count];
+  /* Return */
+  return graph->vertex_list[graph->vertex_count - 1]; /* Zero indexed */
 }
 
 /* Find tail node of edges */
@@ -240,7 +241,7 @@ static Edge *find_edge_tail(const WString_graph *const graph) {
     return NULL;
 
   /* Return */
-  return graph->edge_list[graph->edge_count - 1];
+  return graph->edge_list[graph->edge_count - 1]; /* Zero indexed */
 }
 
 /* Find edge if it exists */
@@ -280,7 +281,7 @@ static Vertex *find_existing_vertex(const WString_graph *const graph, const char
 
   /* Loops */
   for (index = 0; index < graph->vertex_count; index++) {
-    if (strcmp((!graph->vertex_list[index]->name ? "" : graph->vertex_list[index]->name), (!name ? "" : name)) == 0)
+    if (strcmp(graph->vertex_list[index]->name, name) == 0)
       return graph->vertex_list[index];
   }
 
