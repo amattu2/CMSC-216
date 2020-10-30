@@ -59,8 +59,6 @@ int is_existing_vertex(const WString_graph *const graph, const char name[]) {
 
   /* Loops */
   for (index = 0; index < graph->vertex_count; index++) {
-    if (!graph->vertex_list[index])
-      continue;
     if (strcmp(graph->vertex_list[index]->name, name) == 0)
       return 1;
   }
@@ -112,15 +110,13 @@ int add_edge(WString_graph *const graph, const char source[], const char dest[],
   /* Variables */
   struct edge *edge = find_existing_edge(graph, source, dest);
   struct edge *current = find_edge_tail(graph);
-  char *source_ptr;
-  char *dest_ptr;
   struct vertex *source_vertex;
   struct vertex *dest_vertex;
+  char *source_ptr;
+  char *dest_ptr;
 
   /* Checks */
-  if (!graph)
-    return 0;
-  if (cost < 0)
+  if (!graph || cost < 0)
     return 0;
   if (edge) {
     edge->cost = cost;
@@ -140,36 +136,37 @@ int add_edge(WString_graph *const graph, const char source[], const char dest[],
     dest_ptr = dest_vertex->name;
 
   /* Allocate edge memory */
-  if ((edge = malloc(sizeof(struct edge)))) {
+  if (!(graph->edge_list = realloc(graph->edge_list, (graph->edge_count + 1) * sizeof(struct edge*))))
+    return 0;
+  if ((edge = malloc(sizeof(struct edge) + sizeof(int) + (sizeof(char*) * 2) + sizeof(struct edge*)))) {
+    edge->cost = cost;
     edge->source = source_ptr;
     edge->dest = dest_ptr;
-    edge->cost = cost;
     edge->next = NULL;
   }
 
-  /* Find insert location */
-  if (!current)
-    graph->edge_list = &edge;
-  else
+  /* Attach to existing node */
+  if (current != NULL)
     current->next = edge;
 
-  /* Increment internal tracker for size */
+  /* Return */
+  graph->edge_list[graph->edge_count] = edge;
   graph->edge_count++;
   return 1;
 }
 
 char **get_vertices(const WString_graph *const graph) {
   /* Variables */
-  struct vertex *current = NULL;
+  char **verticies = malloc();
+  int index;
 
   /* Checks */
-  if (!graph || !graph->vertex_list)
+  if (!graph || !graph->vertex_list || !graph->vertex_count)
     return 0;
 
   /* Iterate */
-  while (current && current->next != current) {
-    printf("%04d: Code not finished\n", __LINE__);
-    exit(1); /* TDB */
+  for (index = 0; index < graph->vertex_count; index++) {
+    verticies[index] = graph->vertex_list[index]->name;
   }
 
   /* Return */
