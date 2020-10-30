@@ -222,11 +222,8 @@ int num_neighbors(const WString_graph *const graph, const char vertex[]) {
 
   /* Loops */
   for (index = 0; index < graph->edge_count; index++) {
-    /* Checks */
-    if (strcmp((!graph->edge_list[index]->source ? "" : graph->edge_list[index]->source), vertex) == 0)
+    if (strcmp(graph->edge_list[index]->source, vertex) == 0)
       count++;
-    if (strcmp((!graph->edge_list[index]->dest ? "" : graph->edge_list[index]->dest), vertex) == 0)
-      count++; /* a V can be it's own neighbor.. source=dest=vertex */
   }
 
   /* Return */
