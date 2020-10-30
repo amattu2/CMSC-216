@@ -12,7 +12,11 @@
 */
 
 /**
- * The purpose of this project is to
+ * This project implements singly linked lists,
+ * and dynamically allocated arrays to store
+ * the Verticies and Edges within verticies.
+ *
+ * The purpose of this project is to:
  * - Simulate a graph storage system
  * - Manipulate a given graph
  * - Use dynamic memory allocation
@@ -30,6 +34,7 @@ static Vertex *find_vertex_tail(const WString_graph *const graph);
 static Edge *find_edge_tail(const WString_graph *const graph);
 static Edge *find_existing_edge(const WString_graph *const graph, const char source[], const char dest[]);
 static Vertex *find_existing_vertex(const WString_graph *const graph, const char name[]);
+static int compare_chars(const void *a, const void *b);
 
 /* Initialize the graph structure */
 void init_graph(WString_graph *const graph) {
@@ -70,7 +75,7 @@ int is_existing_vertex(const WString_graph *const graph, const char name[]) {
 /* Create a new graph vertex */
 int new_vertex_add(WString_graph *const graph, const char new_vertex[]) {
   /* Variables */
-  struct vertex *vertex;
+  struct vertex *vertex = NULL;
   struct vertex *current = NULL;
   char *name;
 
@@ -155,18 +160,20 @@ int add_edge(WString_graph *const graph, const char source[], const char dest[],
   return 1;
 }
 
+/* Get array of verticies alphabetically ordered */
 char **get_vertices(const WString_graph *const graph) {
   /* Variables */
   char **verticies = NULL;
   int index;
+  int array_size = graph->vertex_count + 1; /* Space for NULL */
 
   /* Checks */
   if (!graph || !graph->vertex_list || !graph->vertex_count)
     return 0;
-  if (!(verticies = realloc(verticies, (graph->vertex_count) * sizeof(struct vertex*))))
+  if (!(verticies = realloc(verticies, (array_size) * sizeof(char*))))
     return 0;
 
-  /* Iterate */
+  /* Loops */
   for (index = 0; index < graph->vertex_count; index++) {
     /* Variables */
     char *name = NULL;
@@ -180,6 +187,10 @@ char **get_vertices(const WString_graph *const graph) {
     /* Append */
     verticies[index] = name;
   }
+
+  /* Sort Array */
+  qsort(verticies, array_size, sizeof(char*), compare_chars);
+  verticies[array_size] = NULL; /* Null terminator */
 
   /* Return */
   return verticies;
@@ -293,4 +304,9 @@ static Vertex *find_existing_vertex(const WString_graph *const graph, const char
 
   /* Default */
   return NULL;
+}
+
+/* Compare to characters */
+static int compare_chars(const void *a, const void *b) {
+  return *(char*) a - *(char*) b;
 }
