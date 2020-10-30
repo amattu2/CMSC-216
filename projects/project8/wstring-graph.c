@@ -122,16 +122,16 @@ int add_edge(WString_graph *const graph, const char source[], const char dest[],
   char *dest_ptr;
 
   /* Checks */
-  if (!graph || cost < 0)
+  if (!graph || !source || !dest || cost < 0)
     return 0;
   if (edge) {
     edge->cost = cost;
     return 1;
   }
-  if (!is_existing_vertex(graph, source))
-    new_vertex_add(graph, source);
-  if (!is_existing_vertex(graph, dest))
-    new_vertex_add(graph, dest);
+  if (!is_existing_vertex(graph, source) && !new_vertex_add(graph, source))
+    return 0;
+  if (!is_existing_vertex(graph, dest) && !new_vertex_add(graph, dest))
+    return 0;
   if (!(source_vertex = find_existing_vertex(graph, source)))
     return 0; /* Unknown error */
   if ((dest_vertex = find_existing_vertex(graph, dest)))
