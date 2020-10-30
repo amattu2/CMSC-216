@@ -157,20 +157,32 @@ int add_edge(WString_graph *const graph, const char source[], const char dest[],
 
 char **get_vertices(const WString_graph *const graph) {
   /* Variables */
-  char **verticies = malloc();
+  char **verticies = NULL;
   int index;
 
   /* Checks */
   if (!graph || !graph->vertex_list || !graph->vertex_count)
     return 0;
+  if (!(verticies = realloc(verticies, (graph->vertex_count) * sizeof(struct vertex*))))
+    return 0;
 
   /* Iterate */
   for (index = 0; index < graph->vertex_count; index++) {
-    verticies[index] = graph->vertex_list[index]->name;
+    /* Variables */
+    char *name = NULL;
+
+    /* Checks */
+    if ((name = malloc(sizeof(char))))
+      strcpy(name, graph->vertex_list[index]->name);
+    else
+      return NULL;
+
+    /* Append */
+    verticies[index] = name;
   }
 
   /* Return */
-  return NULL;
+  return verticies;
 }
 
 /* Return weight of given edge */
