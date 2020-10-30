@@ -31,7 +31,7 @@
 
 /* Prototypes */
 static Vertex *find_vertex_tail(const WString_graph *const graph);
-static Edge *find_edge_tail(const WString_graph *const graph);
+static Edge *find_edge_tail(const WString_graph *const graph, const char source[]);
 static Edge *find_existing_edge(const WString_graph *const graph, const char source[], const char dest[]);
 static Vertex *find_existing_vertex(const WString_graph *const graph, const char name[]);
 static int compare_chars(const void *a, const void *b);
@@ -39,17 +39,15 @@ static int compare_chars(const void *a, const void *b);
 /* Initialize the graph structure */
 void init_graph(WString_graph *const graph) {
   /* Variables */
-  struct graph *g;
+  struct graph *g = NULL;
 
   /* Checks */
   if (!graph)
     return;
-  if ((g = malloc(sizeof(struct graph) + sizeof(struct edge*) + sizeof(struct vertex*) + (sizeof(int) * 2)))) {
+  if ((g = malloc(sizeof(struct graph) + sizeof(struct vertex*) + (sizeof(int))))) {
     *graph = *g;
     graph->vertex_count = 0;
-    graph->edge_count = 0;
     graph->vertex_list = malloc(sizeof(struct vertex*));
-    graph->edge_list = malloc(sizeof(struct edge*));
   }
 }
 
@@ -94,14 +92,18 @@ int new_vertex_add(WString_graph *const graph, const char new_vertex[]) {
   /* Create vertex pointer */
   if (!(graph->vertex_list = realloc(graph->vertex_list, (graph->vertex_count + 1) * sizeof(struct vertex*))))
     return 0;
-  if ((vertex = malloc(sizeof(struct vertex) + sizeof(struct vertex*) + sizeof(char*)))) {
-    vertex->next = NULL;
+  if ((vertex = malloc(sizeof(struct vertex) + sizeof(int) + sizeof(char*) + sizeof(struct vertex*) + sizeof(struct edge*)))) {
+    vertex->edge_count = 0;
     vertex->name = name;
+    vertex->next = NULL;
+    vertex->edge_list = NULL;
   } else
+    return 0;
+  if (!(vertex->edge_list = malloc(sizeof(struct edge*))))
     return 0;
 
   /* Attach to existing node */
-  if (current != NULL)
+  if (current != NULL && (current = malloc(sizeof(struct vertex*))))
     current->next = vertex;
 
   /* Default */
@@ -114,10 +116,9 @@ int new_vertex_add(WString_graph *const graph, const char new_vertex[]) {
 int add_edge(WString_graph *const graph, const char source[], const char dest[], int cost) {
   /* Variables */
   struct edge *edge = find_existing_edge(graph, source, dest);
-  struct edge *current = find_edge_tail(graph);
+  struct edge *current_tail = find_edge_tail(graph, source);
   struct vertex *source_vertex;
   struct vertex *dest_vertex;
-  char *source_ptr;
   char *dest_ptr;
 
   /* Checks */
@@ -127,36 +128,29 @@ int add_edge(WString_graph *const graph, const char source[], const char dest[],
     edge->cost = cost;
     return 1;
   }
-
-  /* Create verticies */
   if (!is_existing_vertex(graph, source))
     new_vertex_add(graph, source);
   if (!is_existing_vertex(graph, dest))
     new_vertex_add(graph, dest);
-
-  /* Assign name pointers */
-  if ((source_vertex = find_existing_vertex(graph, source)))
-    source_ptr = source_vertex->name;
+  if (!(source_vertex = find_existing_vertex(graph, source)))
+    return 0; /* Unknown error */
   if ((dest_vertex = find_existing_vertex(graph, dest)))
     dest_ptr = dest_vertex->name;
-
-  /* Allocate edge memory */
-  if (!(graph->edge_list = realloc(graph->edge_list, (graph->edge_count + 1) * sizeof(struct edge*))))
+  if (!(source_vertex->edge_list = realloc(source_vertex->edge_list, (source_vertex->edge_count + 1) * sizeof(struct edge*))))
     return 0;
-  if ((edge = malloc(sizeof(struct edge) + sizeof(int) + (sizeof(char*) * 2) + sizeof(struct edge*)))) {
+  if ((edge = malloc(sizeof(struct edge) + sizeof(int) + sizeof(char*) + sizeof(struct edge*)))) {
     edge->cost = cost;
-    edge->source = source_ptr;
     edge->dest = dest_ptr;
     edge->next = NULL;
   }
 
   /* Attach to existing node */
-  if (current != NULL)
-    current->next = edge;
+  if (current_tail != NULL && (current_tail = malloc(sizeof(struct edge*))))
+    current_tail->next = edge;
 
   /* Return */
-  graph->edge_list[graph->edge_count] = edge;
-  graph->edge_count++;
+  source_vertex->edge_list[source_vertex->edge_count] = edge;
+  source_vertex->edge_count++;
   return 1;
 }
 
@@ -224,16 +218,17 @@ int num_vertices(const WString_graph *const graph) {
 /* Determine the neighbor count of a vertex */
 int num_neighbors(const WString_graph *const graph, const char vertex[]) {
   /* Variables */
+  struct vertex *v = find_existing_vertex(graph, vertex);
   int count = 0;
   int index;
 
   /* Checks */
-  if (!graph || !vertex || !graph->edge_list)
+  if (!graph || !v || !v->edge_list)
     return -1;
 
   /* Loops */
-  for (index = 0; index < graph->edge_count; index++) {
-    if (strcmp(graph->edge_list[index]->source, vertex) == 0)
+  for (index = 0; index < v->edge_count; index++) {
+    if (strcmp(v->edge_list[index]->dest, vertex) == 0)
       count++;
   }
 
@@ -252,31 +247,35 @@ static Vertex *find_vertex_tail(const WString_graph *const graph) {
 }
 
 /* Find tail node of edges */
-static Edge *find_edge_tail(const WString_graph *const graph) {
+static Edge *find_edge_tail(const WString_graph *const graph, char const source[]) {
+  /* Variables */
+  struct vertex *vertex = find_existing_vertex(graph, source);
+
   /* Checks */
-  if (!graph || !graph->edge_list || !graph->edge_count)
+  if (!graph || !vertex || !vertex->edge_list)
     return NULL;
 
   /* Return */
-  return graph->edge_list[graph->edge_count - 1]; /* Zero indexed */
+  return vertex->edge_list[vertex->edge_count - 1]; /* Zero indexed */
 }
 
 /* Find edge if it exists */
 static Edge *find_existing_edge(const WString_graph *const graph, const char source[], const char dest[]) {
   /* Variables */
+  struct vertex *vertex = find_existing_vertex(graph, source);
   int index;
 
   /* Checks */
-  if (!graph || !graph->edge_list || !graph->edge_count)
+  if (!graph || !vertex || !vertex->edge_list || !vertex->edge_count)
     return NULL;
 
   /* Loops */
-  for (index = 0; index < graph->edge_count; index++) {
+  for (index = 0; index < vertex->edge_count; index++) {
     /* Variables */
-    struct edge *edge = graph->edge_list[index];
+    struct edge *edge = vertex->edge_list[index];
 
     /* Checks */
-    if (strcmp(edge->source, source) == 0 && strcmp(edge->dest, dest) == 0)
+    if (strcmp(edge->dest, dest) == 0)
       return edge;
   }
 

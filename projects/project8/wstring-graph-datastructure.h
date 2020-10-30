@@ -15,7 +15,6 @@
 #ifndef Edge
 typedef struct edge {
   int cost;
-  char *source;
   char *dest;
   struct edge *next;
 } Edge;
@@ -24,8 +23,10 @@ typedef struct edge {
 /* Structure for vertex (point) */
 #ifndef Vertex
 typedef struct vertex {
+  int edge_count;
   char *name;
   struct vertex *next;
+  struct edge **edge_list;
 } Vertex;
 #endif
 
@@ -33,8 +34,6 @@ typedef struct vertex {
 #ifndef WString_graph
 typedef struct graph {
   int vertex_count;
-  int edge_count;
   struct vertex **vertex_list;
-  struct edge **edge_list;
 } WString_graph;
 #endif
