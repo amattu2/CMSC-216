@@ -22,16 +22,6 @@
  * - Use dynamic memory allocation
 */
 
-/**
- * CHANGE
- * IMPLEMENTATION
- * OF
- * VERTICIES
- * TO
- * LINKED LIST
- * NOT ARRAY
- */
-
 /* Files */
 #include <stdio.h>
 #include <stdlib.h>
