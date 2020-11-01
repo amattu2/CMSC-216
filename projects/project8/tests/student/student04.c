@@ -30,13 +30,13 @@ int main() {
   assert(verticies[0] == NULL);
 
   /* Add verticies */
-  assert(new_vertex_add(&graph, "v1") == 1);
-  assert(new_vertex_add(&graph, "v1") == 0); /* Duplicate */
-  assert(new_vertex_add(&graph, "v2") == 1);
-  assert(new_vertex_add(&graph, "v3") == 1);
-  assert(new_vertex_add(&graph, "v4") == 1);
-  assert(new_vertex_add(&graph, "v5") == 1);
-  assert(new_vertex_add(&graph, "v3") == 0); /* duplicate */
+  assert(new_vertex_add(&graph, "A") == 1);
+  assert(new_vertex_add(&graph, "B") == 0); /* Duplicate */
+  assert(new_vertex_add(&graph, "C") == 1);
+  assert(new_vertex_add(&graph, "D") == 1);
+  assert(new_vertex_add(&graph, "E") == 1);
+  assert(new_vertex_add(&graph, "F") == 1);
+  assert(new_vertex_add(&graph, "G") == 0); /* duplicate */
 
   /* Full graph */
   verticies = get_vertices(&graph);
