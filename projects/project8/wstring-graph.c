@@ -110,13 +110,6 @@ int new_vertex_add(WString_graph *const graph, const char new_vertex[]) {
   } else
     return 0;
 
-
-  /* Allocate space for new edge linked-list
-  I don't think this is needed (Didn't use it in p7)
-  if (!(vertex->edge_head = malloc(sizeof(struct edge*))))
-    return 0;
-  */
-
   /* Default */
   graph->vertex_array[graph->vertex_count] = vertex;
   graph->vertex_count++;
@@ -150,23 +143,6 @@ int add_edge(WString_graph *const graph, const char source[],
     return 0;
   if ((dest_vertex = find_existing_vertex(graph, dest)))
     dest_ptr = dest_vertex->name;
-
-  /* Check Memory Allocation
-  if (!(source_vertex->edge_list = realloc(source_vertex->edge_list,
-      (source_vertex->edge_count + 1) * sizeof(struct edge*))))
-    return 0;
-  if ((edge = malloc(sizeof(struct edge) + sizeof(int) +
-      sizeof(char*) + sizeof(struct edge*)))) {
-    edge->cost = cost;
-    edge->dest = dest_ptr;
-    edge->next = NULL;
-  }
-
-  if (current_tail != NULL &&
-      (current_tail->next = malloc(sizeof(struct edge*))))
-    current_tail->next = edge;
-  source_vertex->edge_list[source_vertex->edge_count] = edge;
-  */
 
   /* Check Memory Allocation */
   if (!(edge = malloc(sizeof(struct edge) + sizeof(int) +
