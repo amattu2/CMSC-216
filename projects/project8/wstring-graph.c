@@ -103,7 +103,7 @@ int new_vertex_add(WString_graph *const graph, const char new_vertex[]) {
     return 0;
 
   /* Attach to existing node */
-  if (current != NULL && (current = malloc(sizeof(struct vertex*))))
+  if (current != NULL && (current->next = malloc(sizeof(struct vertex*))))
     current->next = vertex;
 
   /* Default */
