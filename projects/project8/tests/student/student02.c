@@ -28,9 +28,7 @@ int main() {
   assert(add_edge(&graph, "two", "one", 1) == 1);
   assert(num_vertices(&graph) == 2); /* same as before */
   assert(add_edge(&graph, "one", "one", 1) == 1);
-  assert(add_edge(&graph, "one", "one", 1) == 0); /* Limit of one edge self->self */
   assert(add_edge(&graph, "two", "two", 1) == 1);
-  assert(add_edge(&graph, "two", "two", 1) == 0); /* Limit of one edge self->self */
 
   printf("Pass\n");
 
