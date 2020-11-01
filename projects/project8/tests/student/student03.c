@@ -22,6 +22,13 @@ int main() {
 
   init_graph(&graph);
 
+  assert(add_edge(&graph, "v1", "v2", 3) == 1);
+  assert(get_weight_of_edge(&graph, "v1", "v2") == 3);
+  assert(get_weight_of_edge(&graph, "v2", "v1") == -1); /* doesn't exist */
+  assert(get_weight_of_edge(&graph, "v2", NULL) == -1); /* NULL param */
+  assert(add_edge(&graph, "v1", "v2", 5) == 1);
+  assert(get_weight_of_edge(&graph, "v1", "v2") == 5); /* Updated to 5 */
+  
   printf("Pass\n");
 
   return 0;
