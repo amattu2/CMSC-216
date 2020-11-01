@@ -163,10 +163,10 @@ char **get_vertices(const WString_graph *const graph) {
   /* Checks */
   if (!(verticies = malloc((array_size) * sizeof(char*))))
     return NULL;
-  else
-    verticies[array_size - 1] = NULL; /* Null terminator */
-  if (!graph || !graph->vertex_array)
+  if (!graph || !graph->vertex_array) {
+    verticies[array_size - 1] = NULL;
     return verticies;
+  }
 
   /* Loops */
   for (index = 0; index < graph->vertex_count; index++) {
@@ -184,7 +184,8 @@ char **get_vertices(const WString_graph *const graph) {
   }
 
   /* Sort Array */
-  qsort(verticies, array_size, sizeof(char*), compare_chars);
+  qsort(verticies, array_size-1, sizeof(char*), compare_chars);
+  verticies[array_size - 1] = NULL; /* Null terminator */
 
   /* Return */
   return verticies;
@@ -301,5 +302,5 @@ static Vertex *find_existing_vertex(const WString_graph *const graph,
 
 /* Compare to characters */
 static int compare_chars(const void *a, const void *b) {
-  return *(char*) a - *(char*) b;
+  return strcmp(*(char**) a, *(char**) b);
 }
