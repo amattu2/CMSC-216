@@ -174,7 +174,7 @@ char **get_vertices(const WString_graph *const graph) {
     char *name = NULL;
 
     /* Checks */
-    if ((name = malloc(sizeof(char))))
+    if ((name = malloc(strlen(graph->vertex_array[index]->name))))
       strcpy(name, graph->vertex_array[index]->name);
     else
       return NULL;
