@@ -12,28 +12,31 @@
 */
 
 /* Structure for edge (road) */
-#ifndef Edge
-typedef struct edge {
-  int cost;
-  char *dest;
-  struct edge *next;
-} Edge;
+#ifndef edge_def
+  #define edge_def
+  typedef struct edge {
+    int cost;
+    char *dest;
+    struct edge *next;
+  } Edge;
 #endif
 
 /* Structure for vertex (point) */
-#ifndef Vertex
-typedef struct vertex {
-  int edge_count;
-  char *name;
-  struct vertex *next;
-  struct edge **edge_list;
-} Vertex;
+#ifndef vertex_def
+  #define vertex_def
+  typedef struct vertex {
+    int edge_count;
+    char *name;
+    struct vertex *next;
+    struct edge **edge_list;
+  } Vertex;
 #endif
 
 /* Structure for graph */
-#ifndef WString_graph
-typedef struct graph {
-  int vertex_count;
-  struct vertex **vertex_list;
-} WString_graph;
+#ifndef graph_def
+  #define graph_def
+  typedef struct graph {
+    int vertex_count;
+    struct vertex **vertex_list;
+  } WString_graph;
 #endif
