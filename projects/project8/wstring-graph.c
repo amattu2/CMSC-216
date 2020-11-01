@@ -222,8 +222,10 @@ int num_neighbors(const WString_graph *const graph, const char vertex[]) {
   struct vertex *v = find_existing_vertex(graph, vertex);
 
   /* Checks */
-  if (!graph || !v || !v->edge_count)
+  if (!graph || !v)
     return -1;
+  if (!v->edge_count || !v->edge_head)
+    return 0;
 
   /* Return */
   return v->edge_count;
