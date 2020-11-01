@@ -171,10 +171,12 @@ char **get_vertices(const WString_graph *const graph) {
   int array_size = graph->vertex_count + 1; /* Space for NULL */
 
   /* Checks */
-  if (!graph || !graph->vertex_array || !graph->vertex_count)
-    return 0;
-  if (!(verticies = realloc(verticies, (array_size) * sizeof(char*))))
-    return 0;
+  if (!(verticies = malloc((array_size) * sizeof(char*))))
+    return NULL;
+  else
+    verticies[array_size - 1] = NULL; /* Null terminator */
+  if (!graph || !graph->vertex_array)
+    return verticies;
 
   /* Loops */
   for (index = 0; index < graph->vertex_count; index++) {
@@ -193,7 +195,6 @@ char **get_vertices(const WString_graph *const graph) {
 
   /* Sort Array */
   qsort(verticies, array_size, sizeof(char*), compare_chars);
-  verticies[array_size - 1] = NULL; /* Null terminator */
 
   /* Return */
   return verticies;
