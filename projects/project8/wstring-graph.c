@@ -22,15 +22,23 @@
  * - Use dynamic memory allocation
 */
 
+/**
+ * CHANGE
+ * IMPLEMENTATION
+ * OF
+ * VERTICIES
+ * TO
+ * LINKED LIST
+ * NOT ARRAY
+ */
+
 /* Files */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "wstring-graph.h"
-#include "graph-utils.h"
 
 /* Prototypes */
-static Vertex *find_vertex_tail(const WString_graph *const graph);
 static Edge *find_edge_tail(const WString_graph *const graph, const char source[]);
 static Edge *find_existing_edge(const WString_graph *const graph, const char source[], const char dest[]);
 static Vertex *find_existing_vertex(const WString_graph *const graph, const char name[]);
@@ -46,7 +54,7 @@ void init_graph(WString_graph *const graph) {
     return;
   if ((g = malloc(sizeof(struct graph) + sizeof(struct vertex*) + (sizeof(int))))) {
     g->vertex_count = 0;
-    g->vertex_list = malloc(sizeof(struct vertex*));
+    g->vertex_array = malloc(sizeof(struct vertex*));
     *graph = *g;
   }
 }
@@ -59,12 +67,12 @@ int is_existing_vertex(const WString_graph *const graph, const char name[]) {
   /* Checks */
   if (!graph || !name)
     return 0;
-  if (!graph->vertex_list || !graph->vertex_count)
+  if (!graph->vertex_array || !graph->vertex_count)
     return 0;
 
   /* Loops */
   for (index = 0; index < graph->vertex_count; index++) {
-    if (strcmp(graph->vertex_list[index]->name, name) == 0)
+    if (strcmp(graph->vertex_array[index]->name, name) == 0)
       return 1;
   }
 
@@ -76,43 +84,41 @@ int is_existing_vertex(const WString_graph *const graph, const char name[]) {
 int new_vertex_add(WString_graph *const graph, const char new_vertex[]) {
   /* Variables */
   struct vertex *vertex = NULL;
-  struct vertex *current = NULL;
   char *name;
 
   /* Checks */
   if (!graph || !new_vertex || is_existing_vertex(graph, new_vertex))
     return 0;
-  else
-    current = find_vertex_tail(graph);
 
-  /* Create name pointer */
+  /* Allocate new name */
   if ((name = malloc(strlen(new_vertex) + 1)))
     strcpy(name, (new_vertex ? new_vertex : ""));
   else
     return 0;
 
-  /* Create vertex pointer */
-  if (!(graph->vertex_list = realloc(graph->vertex_list,
+  /* Allocate space for new vertex pointer */
+  if (!(graph->vertex_array = realloc(graph->vertex_array,
               (graph->vertex_count + 1) * sizeof(struct vertex*))))
     return 0;
+
+  /* Allocate space for new vertex */
   if ((vertex = malloc(sizeof(struct vertex) + sizeof(int) +
-              sizeof(char*) + sizeof(struct vertex*) +
-              sizeof(struct edge*)))) {
+              sizeof(char*) + sizeof(struct edge*)))) {
     vertex->edge_count = 0;
     vertex->name = name;
-    vertex->next = NULL;
-    vertex->edge_list = NULL;
+    vertex->edge_head = NULL;
   } else
     return 0;
-  if (!(vertex->edge_list = malloc(sizeof(struct edge*))))
-    return 0;
 
-  /* Attach to existing node */
-  if (current != NULL && (current->next = malloc(sizeof(struct vertex*))))
-    current->next = vertex;
+
+  /* Allocate space for new edge linked-list
+  I don't think this is needed (Didn't use it in p7)
+  if (!(vertex->edge_head = malloc(sizeof(struct edge*))))
+    return 0;
+  */
 
   /* Default */
-  graph->vertex_list[graph->vertex_count] = vertex;
+  graph->vertex_array[graph->vertex_count] = vertex;
   graph->vertex_count++;
   return 1;
 }
@@ -127,13 +133,15 @@ int add_edge(WString_graph *const graph, const char source[],
   struct vertex *dest_vertex;
   char *dest_ptr;
 
-  /* Checks */
+  /* Check Input */
   if (!graph || !source || !dest || cost < 0)
     return 0;
   if (edge) {
     edge->cost = cost;
     return 1;
   }
+
+  /* Check Verticies */
   if (!is_existing_vertex(graph, source) && !new_vertex_add(graph, source))
     return 0;
   if (!is_existing_vertex(graph, dest) && !new_vertex_add(graph, dest))
@@ -142,6 +150,8 @@ int add_edge(WString_graph *const graph, const char source[],
     return 0;
   if ((dest_vertex = find_existing_vertex(graph, dest)))
     dest_ptr = dest_vertex->name;
+
+  /* Check Memory Allocation
   if (!(source_vertex->edge_list = realloc(source_vertex->edge_list,
       (source_vertex->edge_count + 1) * sizeof(struct edge*))))
     return 0;
@@ -152,13 +162,27 @@ int add_edge(WString_graph *const graph, const char source[],
     edge->next = NULL;
   }
 
-  /* Attach to existing node */
   if (current_tail != NULL &&
       (current_tail->next = malloc(sizeof(struct edge*))))
     current_tail->next = edge;
+  source_vertex->edge_list[source_vertex->edge_count] = edge;
+  */
+
+  /* Check Memory Allocation */
+  if (!(edge = malloc(sizeof(struct edge) + sizeof(int) +
+              sizeof(char*) + sizeof(struct edge*))))
+    return 0;
+
+  /* Find insert spot */
+  if (!current_tail)
+    source_vertex->edge_head = edge;
+  else
+    current_tail->next = edge;
 
   /* Return */
-  source_vertex->edge_list[source_vertex->edge_count] = edge;
+  edge->cost = cost;
+  edge->dest = dest_ptr;
+  edge->next = NULL;
   source_vertex->edge_count++;
   return 1;
 }
@@ -171,7 +195,7 @@ char **get_vertices(const WString_graph *const graph) {
   int array_size = graph->vertex_count + 1; /* Space for NULL */
 
   /* Checks */
-  if (!graph || !graph->vertex_list || !graph->vertex_count)
+  if (!graph || !graph->vertex_array || !graph->vertex_count)
     return 0;
   if (!(verticies = realloc(verticies, (array_size) * sizeof(char*))))
     return 0;
@@ -183,7 +207,7 @@ char **get_vertices(const WString_graph *const graph) {
 
     /* Checks */
     if ((name = malloc(sizeof(char))))
-      strcpy(name, graph->vertex_list[index]->name);
+      strcpy(name, graph->vertex_array[index]->name);
     else
       return NULL;
 
@@ -231,21 +255,11 @@ int num_neighbors(const WString_graph *const graph, const char vertex[]) {
   struct vertex *v = find_existing_vertex(graph, vertex);
 
   /* Checks */
-  if (!graph || !v || !v->edge_list)
+  if (!graph || !v || !v->edge_count)
     return -1;
 
   /* Return */
   return v->edge_count;
-}
-
-/* Find tail node of verticies */
-static Vertex *find_vertex_tail(const WString_graph *const graph) {
-  /* Checks */
-  if (!graph || !graph->vertex_list || !graph->vertex_count)
-    return NULL;
-
-  /* Return */
-  return graph->vertex_list[graph->vertex_count - 1]; /* Zero indexed */
 }
 
 /* Find tail node of edges */
@@ -253,13 +267,20 @@ static Edge *find_edge_tail(const WString_graph *const graph,
                             char const source[]) {
   /* Variables */
   struct vertex *vertex = find_existing_vertex(graph, source);
+  struct edge *current = NULL;
 
   /* Checks */
-  if (!graph || !vertex || !vertex->edge_list)
+  if (!graph || !vertex || !vertex->edge_head)
     return NULL;
+  else
+    current = vertex->edge_head;
+
+  /* Loops */
+  while (current && current->next)
+    current = current->next;
 
   /* Return */
-  return vertex->edge_list[vertex->edge_count - 1]; /* Zero indexed */
+  return current;
 }
 
 /* Find edge if it exists */
@@ -267,20 +288,20 @@ static Edge *find_existing_edge(const WString_graph *const graph,
                                 const char source[], const char dest[]) {
   /* Variables */
   struct vertex *vertex = find_existing_vertex(graph, source);
-  int index;
+  struct edge *current = NULL;
 
   /* Checks */
-  if (!graph || !vertex || !vertex->edge_list || !vertex->edge_count)
+  if (!graph || !vertex || !vertex->edge_head)
     return NULL;
+  else
+    current = vertex->edge_head;
 
   /* Loops */
-  for (index = 0; index < vertex->edge_count; index++) {
-    /* Variables */
-    struct edge *edge = vertex->edge_list[index];
-
-    /* Checks */
-    if (strcmp(edge->dest, dest) == 0)
-      return edge;
+  while (current != NULL) {
+    if (strcmp(current->dest, dest) == 0)
+      return current;
+    else
+      current = current->next;
   }
 
   /* Default */
@@ -296,13 +317,13 @@ static Vertex *find_existing_vertex(const WString_graph *const graph,
   /* Checks */
   if (!is_existing_vertex(graph, name))
     return NULL;
-  if (!graph || !graph->vertex_list || !graph->vertex_count)
+  if (!graph || !graph->vertex_array || !graph->vertex_count)
     return NULL;
 
   /* Loops */
   for (index = 0; index < graph->vertex_count; index++) {
-    if (strcmp(graph->vertex_list[index]->name, name) == 0)
-      return graph->vertex_list[index];
+    if (strcmp(graph->vertex_array[index]->name, name) == 0)
+      return graph->vertex_array[index];
   }
 
   /* Default */

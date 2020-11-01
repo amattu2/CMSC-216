@@ -27,8 +27,7 @@
   typedef struct vertex {
     int edge_count;
     char *name;
-    struct vertex *next;
-    struct edge **edge_list;
+    struct edge *edge_head; /* Linked list of edges */
   } Vertex;
 #endif
 
@@ -37,6 +36,6 @@
   #define graph_def
   typedef struct graph {
     int vertex_count;
-    struct vertex **vertex_list;
+    struct vertex **vertex_array; /* Array of verticies */
   } WString_graph;
 #endif
