@@ -145,7 +145,7 @@ int add_edge(WString_graph *const graph, const char source[], const char dest[],
   }
 
   /* Attach to existing node */
-  if (current_tail != NULL && (current_tail = malloc(sizeof(struct edge*))))
+  if (current_tail != NULL && (current_tail->next = malloc(sizeof(struct edge*))))
     current_tail->next = edge;
 
   /* Return */
