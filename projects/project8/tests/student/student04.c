@@ -9,8 +9,8 @@
 
 /*
  * Testing get_vertices
- * Ensure that a pointer is used to reference each element
- * and also that they don't point to node elements (deep copy)
+ * - Ordering
+ * - Adding
  */
 
 #include <stdio.h>
@@ -21,7 +21,9 @@
 int main() {
   WString_graph graph;
   char **verticies;
-  char *current;
+  char *current = NULL;
+  int index = 0;
+  char *ordered[] = {"A", "B", "C", "D", "E", "F", "G", NULL};
 
   init_graph(&graph);
 
@@ -30,20 +32,21 @@ int main() {
   assert(verticies[0] == NULL);
 
   /* Add verticies */
-  assert(new_vertex_add(&graph, "A") == 1);
-  assert(new_vertex_add(&graph, "B") == 0); /* Duplicate */
+  assert(new_vertex_add(&graph, "B") == 1);
+  assert(new_vertex_add(&graph, "G") == 1);
+  assert(new_vertex_add(&graph, "F") == 1);
   assert(new_vertex_add(&graph, "C") == 1);
   assert(new_vertex_add(&graph, "D") == 1);
+  assert(new_vertex_add(&graph, "A") == 1);
   assert(new_vertex_add(&graph, "E") == 1);
-  assert(new_vertex_add(&graph, "F") == 1);
-  assert(new_vertex_add(&graph, "G") == 0); /* duplicate */
 
   /* Full graph */
   verticies = get_vertices(&graph);
-  assert(verticies[0] != NULL);
-
-  /* Test alphabetical ordering */
-
+  current = verticies[0];
+  while (current != NULL) {
+    assert(strcmp(current, ordered[index]) == 0);
+    current = verticies[++index];
+  }
 
   printf("Pass\n");
 
