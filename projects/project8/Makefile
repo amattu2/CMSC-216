@@ -110,4 +110,4 @@ public10.o: wstring-graph.c wstring-graph.h \
 # Define a "clean" option
 #
 clean:
-	rm -f *.x public**.o
+	rm -f *.x public**.o wstring-graph.o
