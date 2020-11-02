@@ -29,9 +29,12 @@
 #include "wstring-graph.h"
 
 /* Prototypes */
-static Edge *find_edge_tail(const WString_graph *const graph, const char source[]);
-static Edge *find_existing_edge(const WString_graph *const graph, const char source[], const char dest[]);
-static Vertex *find_existing_vertex(const WString_graph *const graph, const char name[]);
+static Edge *find_edge_tail(const WString_graph *const graph,
+                            const char source[]);
+static Edge *find_existing_edge(const WString_graph *const graph,
+                                const char source[], const char dest[]);
+static Vertex *find_existing_vertex(const WString_graph *const graph,
+                                    const char name[]);
 static int compare_chars(const void *a, const void *b);
 
 /* Initialize the graph structure */
@@ -42,7 +45,8 @@ void init_graph(WString_graph *const graph) {
   /* Checks */
   if (!graph)
     return;
-  if ((g = malloc(sizeof(struct graph) + sizeof(struct vertex*) + (sizeof(int))))) {
+  if ((g = malloc(sizeof(struct graph) + sizeof(struct vertex*) +
+                  (sizeof(int))))) {
     g->vertex_count = 0;
     g->vertex_array = malloc(sizeof(struct vertex*));
     *graph = *g;
