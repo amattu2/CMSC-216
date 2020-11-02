@@ -5,7 +5,7 @@
 # * Directory ID: amattu
 # *
 # * Author: Alec M.
-# * Date: Oct 28th, 2020
+# * Date: Nov 2nd, 2020
 # *
 # * I pledge on my honor that I have not given or received
 # * any unauthorized assistance on this assignment.
@@ -22,7 +22,7 @@ FLAGS = -ansi -pedantic-errors -Wall -Werror -Wshadow -fstack-protector-all
 #
 all: public01.x public02.x public03.x public04.x public05.x public06.x \
 	public07.x public08.x public09.x public10.x
-student: student01.x student02.x student03.x
+student: student01.x student02.x student03.x student04.x
 
 #
 # Define target operations
@@ -40,7 +40,7 @@ public03.x: wstring-graph.o public03.o
 	$(GC) wstring-graph.o public03.o -o public03.x
 
 public04.x: wstring-graph.o graph-utils.o public04.o
-	$(GC) wstring-graph.h wstring-graph.o public04.o -o public04.x
+	$(GC) graph-utils.o wstring-graph.o public04.o -o public04.x
 
 public05.x: wstring-graph.o public05.o
 	$(GC) wstring-graph.o public05.o -o public05.x
@@ -79,8 +79,8 @@ public03.o: wstring-graph.c wstring-graph.h \
 	$(GC) $(FLAGS) -c public03.c
 
 public04.o: wstring-graph.c wstring-graph.h \
-		wstring-graph-datastructure.h graph-utils.h public04.c
-	$(GC) $(FLAGS) -c graph-utils.h graph-utils.o public04.c
+		wstring-graph-datastructure.h graph-utils.h graph-utils.o public04.c
+	$(GC) $(FLAGS) -c public04.c
 
 public05.o: wstring-graph.c wstring-graph.h \
 		wstring-graph-datastructure.h public05.c
