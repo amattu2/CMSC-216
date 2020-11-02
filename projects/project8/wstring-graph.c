@@ -163,7 +163,9 @@ char **get_vertices(const WString_graph *const graph) {
   /* Checks */
   if (!(verticies = malloc((array_size) * sizeof(char*))))
     return NULL;
-  if (!graph || !graph->vertex_array) {
+  if (!graph)
+    return NULL;
+  if (!graph->vertex_array) {
     verticies[array_size - 1] = NULL;
     return verticies;
   }
