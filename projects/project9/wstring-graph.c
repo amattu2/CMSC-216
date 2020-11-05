@@ -238,6 +238,27 @@ int num_neighbors(const WString_graph *const graph, const char vertex[]) {
   return v->edge_count;
 }
 
+void free_vertex_list(char **const names) {
+  return;
+}
+
+void destroy_graph(WString_graph *const graph) {
+  return;
+}
+
+int remove_edge(WString_graph *const graph, const char source[],
+                const char dest[]) {
+  return 0;
+}
+
+int remove_vertex(WString_graph *const graph, const char vertex[]) {
+  return 0;
+}
+
+char **get_neighbors(const WString_graph *const graph, const char vertex[]) {
+  return NULL;
+}
+
 /* Find tail node of edges */
 static Edge *find_edge_tail(const WString_graph *const graph,
                             char const source[]) {
