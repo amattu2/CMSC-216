@@ -97,7 +97,7 @@ int new_vertex_add(WString_graph *const graph, const char new_vertex[]) {
 
   /* Allocate space for new vertex */
   if ((vertex = malloc(sizeof(struct vertex) + sizeof(int) +
-              sizeof(char*) + sizeof(struct edge*)))) {
+                      sizeof(char*) + sizeof(struct edge*)))) {
     vertex->edge_count = 0;
     vertex->name = name;
     vertex->edge_head = NULL;
@@ -140,7 +140,7 @@ int add_edge(WString_graph *const graph, const char source[],
 
   /* Check Memory Allocation */
   if (!(edge = malloc(sizeof(struct edge) + sizeof(int) +
-              sizeof(char*) + sizeof(struct edge*))))
+                      sizeof(char*) + sizeof(struct edge*))))
     return 0;
 
   /* Find insert spot */
