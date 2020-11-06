@@ -310,8 +310,6 @@ void free_vertex_list(char **const names) {
     free(current);
     current = names[++index];
   }
-
-  return;
 }
 
 /* Find tail node of edges */
