@@ -294,6 +294,7 @@ int remove_vertex(WString_graph *const graph, const char vertex[]) {
   return 1;
 }
 
+/* Free a array of strings */
 void free_vertex_list(char **const names) {
   /* Variables */
   char *current = NULL;
