@@ -53,6 +53,16 @@ void init_graph(WString_graph *const graph) {
   }
 }
 
+void destroy_graph(WString_graph *const graph) {
+  /* Checks */
+  if (!graph)
+    return;
+
+  exit(1);
+
+  return;
+}
+
 /* Check if a vertex exists */
 int is_existing_vertex(const WString_graph *const graph, const char name[]) {
   /* Variables */
@@ -87,8 +97,7 @@ int new_vertex_add(WString_graph *const graph, const char new_vertex[]) {
   /* Allocate new name */
   if ((name = malloc(strlen(new_vertex) + 1)))
     strcpy(name, (new_vertex ? new_vertex : ""));
-  else
-    return 0;
+  else return 0;
 
   /* Allocate space for new vertex pointer */
   if (!(graph->vertex_array = realloc(graph->vertex_array,
@@ -101,8 +110,7 @@ int new_vertex_add(WString_graph *const graph, const char new_vertex[]) {
     vertex->edge_count = 0;
     vertex->name = name;
     vertex->edge_head = NULL;
-  } else
-    return 0;
+  } else return 0;
 
   /* Default */
   graph->vertex_array[graph->vertex_count] = vertex;
@@ -146,8 +154,7 @@ int add_edge(WString_graph *const graph, const char source[],
   /* Find insert spot */
   if (!current_tail)
     source_vertex->edge_head = edge;
-  else
-    current_tail->next = edge;
+  else current_tail->next = edge;
 
   /* Return */
   edge->cost = cost;
@@ -182,8 +189,7 @@ char **get_vertices(const WString_graph *const graph) {
     /* Checks */
     if ((name = malloc(strlen(graph->vertex_array[index]->name))))
       strcpy(name, graph->vertex_array[index]->name);
-    else
-      return NULL;
+    else return NULL;
 
     /* Append */
     verticies[index] = name;
@@ -195,6 +201,18 @@ char **get_vertices(const WString_graph *const graph) {
 
   /* Return */
   return verticies;
+}
+
+char **get_neighbors(const WString_graph *const graph, const char vertex[]) {
+  /* Checks */
+  if (!graph || !vertex)
+    return NULL;
+  if (!is_existing_vertex(graph, vertex))
+    return NULL;
+
+  exit(1);
+
+  return NULL;
 }
 
 /* Return weight of given edge */
@@ -238,25 +256,61 @@ int num_neighbors(const WString_graph *const graph, const char vertex[]) {
   return v->edge_count;
 }
 
-void free_vertex_list(char **const names) {
-  return;
-}
-
-void destroy_graph(WString_graph *const graph) {
-  return;
-}
-
 int remove_edge(WString_graph *const graph, const char source[],
                 const char dest[]) {
+  /* Variables */
+  struct edge *edge = find_existing_edge(graph, source, dest);
+
+  /* Checks */
+  if (!graph || !source || !dest)
+    return 0;
+  if (!is_existing_vertex(graph, source))
+    return 0;
+  if (!is_existing_vertex(graph, dest))
+    return 0;
+  if (!edge)
+    return 0;
+
+  exit(1);
+  /* Remove edge, and any references to it */
+  /* Free memory */
+  /* It's a linked list, so handle the removal properly */
+
   return 0;
 }
 
 int remove_vertex(WString_graph *const graph, const char vertex[]) {
-  return 0;
+  /* Checks */
+  if (!graph || !vertex)
+    return 0;
+  if (!is_existing_vertex(graph, vertex))
+    return 0;
+
+  exit(1);
+  /* Remove all edges attached (ongoing/incoming) */
+  /* Remove vertex and all references to it (char struct pointer) */
+
+  /* Default */
+  return 1;
 }
 
-char **get_neighbors(const WString_graph *const graph, const char vertex[]) {
-  return NULL;
+void free_vertex_list(char **const names) {
+  /* Variables */
+  char *current = NULL;
+  int index = 0;
+
+  /* Checks */
+  if (!names)
+    return;
+  else current = names[0];
+
+  /* Loops */
+  while (current != NULL) {
+    free(current);
+    current = names[++index];
+  }
+
+  return;
 }
 
 /* Find tail node of edges */
@@ -269,8 +323,7 @@ static Edge *find_edge_tail(const WString_graph *const graph,
   /* Checks */
   if (!graph || !vertex || !vertex->edge_head)
     return NULL;
-  else
-    current = vertex->edge_head;
+  else current = vertex->edge_head;
 
   /* Loops */
   while (current && current->next)
@@ -290,15 +343,13 @@ static Edge *find_existing_edge(const WString_graph *const graph,
   /* Checks */
   if (!graph || !vertex || !vertex->edge_head)
     return NULL;
-  else
-    current = vertex->edge_head;
+  else current = vertex->edge_head;
 
   /* Loops */
   while (current != NULL) {
     if (strcmp(current->dest, dest) == 0)
       return current;
-    else
-      current = current->next;
+    else current = current->next;
   }
 
   /* Default */
