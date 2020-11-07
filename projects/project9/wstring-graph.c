@@ -367,7 +367,6 @@ int remove_vertex(WString_graph *const graph, const char vertex[]) {
   struct vertex *current = NULL;
   int index = 0;
 
-
   /* Checks */
   if (!graph || !vertex || !graph->vertex_array)
     return 0;
@@ -388,7 +387,7 @@ int remove_vertex(WString_graph *const graph, const char vertex[]) {
     current = graph->vertex_array[++index];
 
   /* Reset vertex index */
-  while (current && graph->vertex_array[index + 1]) {
+  while (current && index < graph->vertex_count-1 && graph->vertex_array[index + 1]) {
     graph->vertex_array[index] = graph->vertex_array[index + 1];
     current = graph->vertex_array[++index];
   }
@@ -396,8 +395,9 @@ int remove_vertex(WString_graph *const graph, const char vertex[]) {
   /* Free Memory */
   free(v);
   if (!(graph->vertex_array = realloc(graph->vertex_array,
-              (graph->vertex_count - 1) * sizeof(struct vertex*))))
+              (graph->vertex_count - 1) * sizeof(struct vertex*)))) {
     return 0;
+  }
 
   /* Default */
   graph->vertex_count--;
