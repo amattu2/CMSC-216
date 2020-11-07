@@ -77,14 +77,11 @@ void destroy_graph(WString_graph *const graph) {
       current_edge = temp->next;
 
       /* Free Memory */
-      free(temp->dest); /* TBD, not needed? */
-      free(temp->next); /* TBD, not needed? */
       free(temp);
     }
 
     /* Free Memory */
     free(current_vertex->name);
-    free(current_vertex->edge_head);
     free(current_vertex);
   }
 
