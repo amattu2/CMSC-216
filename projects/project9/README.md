@@ -1,4 +1,8 @@
 ## Todo
+#### Styling, Structure, Etc
+- [ ] Check 80-Char line length
+- [ ] Remove excess brackets `{}`
+
 #### Test makefile
 - [ ] Independent public01.x-public10.x
 - [ ] Make clean
