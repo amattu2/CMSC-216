@@ -1,3 +1,16 @@
+## Public Tests
+- [x] public01.c
+- [x] public02.c
+- [x] public03.c
+- [x] public04.c
+- [ ] public05.c
+- [ ] public06.c
+- [ ] public07.c
+- [ ] public08.c
+- [ ] public09.c
+- [ ] public10.c
+
+## Notes
 #### To compile with graph-utils.o
 Eg. public01
 ```
