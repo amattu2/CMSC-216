@@ -49,4 +49,4 @@ Eg. public10
 
 and
 
-`valgrind public10.x --leak-check=full --show-leak-kinds=all --track-origins=yes`
+`valgrind --track-origins=yes --leak-check=full ./public05.x`
