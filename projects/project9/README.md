@@ -1,4 +1,23 @@
-## Public Tests
+## Todo
+#### Test makefile
+- [ ] Independent public01.x-public10.x
+- [ ] Make clean
+- [ ] Make all
+- [ ] Make
+
+#### Project 8 Public Tests
+- [ ] public01.c
+- [ ] public02.c
+- [ ] public03.c
+- [ ] public04.c
+- [ ] public05.c
+- [ ] public06.c
+- [ ] public07.c
+- [ ] public08.c
+- [ ] public09.c
+- [ ] public10.c
+
+#### Project 9 Public Tests
 - [x] public01.c
 - [x] public02.c
 - [x] public03.c
