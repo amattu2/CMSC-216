@@ -225,23 +225,51 @@ char **get_vertices(const WString_graph *const graph) {
   }
 
   /* Sort Array */
-  qsort(verticies, array_size-1, sizeof(char*), compare_chars);
+  qsort(verticies, (array_size - 1), sizeof(char*), compare_chars);
   verticies[array_size - 1] = NULL; /* Null terminator */
 
   /* Return */
   return verticies;
 }
 
+/* Get neighbors of vertex */
 char **get_neighbors(const WString_graph *const graph, const char vertex[]) {
+  /* Variables */
+  char **verticies = NULL;
+  int index = 0;
+  int array_size = 0;
+  struct vertex *v = find_existing_vertex(graph, vertex);
+  struct edge *e = NULL;
+
   /* Checks */
-  if (!graph || !vertex)
+  if (!graph || !vertex || !v)
     return NULL;
-  if (!is_existing_vertex(graph, vertex))
+  else array_size = v->edge_count + 1;
+  if (!(verticies = malloc((array_size) * sizeof(char*))))
     return NULL;
+  else e = v->edge_head;
 
-  exit(1);
+  /* Loops */
+  while (e != NULL) {
+    /* Variables */
+    char *name = NULL;
 
-  return NULL;
+    /* Checks */
+    if ((name = malloc(strlen(e->dest))))
+      strcpy(name, e->dest);
+    else return NULL;
+
+    /* Append */
+    verticies[++index] = name;
+    e = e->next;
+  }
+
+  /* Sort Array */
+  qsort(verticies, (array_size - 1), sizeof(char*), compare_chars);
+  verticies[array_size - 1] = NULL; /* Null terminator */
+
+  /* Return */
+  return verticies;
 }
 
 /* Return weight of given edge */
