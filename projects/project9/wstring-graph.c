@@ -374,7 +374,6 @@ int remove_vertex(WString_graph *const graph, const char vertex[]) {
 
   /* Remove outgoing/incoming edges */
   while (e) {
-    printf("Removing d:%s\n", e->dest);
     remove_edge(graph, vertex, e->dest);
     e = e->next;
   }
