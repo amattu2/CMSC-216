@@ -318,7 +318,6 @@ int remove_edge(WString_graph *const graph, const char source[],
         prev->next = temp->next;
 
       /* Free Memory */
-      free(temp->next);
       free(temp);
 
       /* End search */
