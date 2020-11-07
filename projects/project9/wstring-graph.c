@@ -359,10 +359,14 @@ int remove_edge(WString_graph *const graph, const char source[],
   return 1;
 }
 
+/* Remove specified vertex from graph */
 int remove_vertex(WString_graph *const graph, const char vertex[]) {
   /* Variables */
   struct vertex *v = NULL;
   struct edge *e = NULL;
+  struct vertex *current = NULL;
+  int index = 0;
+
 
   /* Checks */
   if (!graph || !vertex || !graph->vertex_array)
@@ -378,8 +382,22 @@ int remove_vertex(WString_graph *const graph, const char vertex[]) {
     e = e->next;
   }
 
+  /* Find vertex element index */
+  current = graph->vertex_array[0];
+  while (current != v) /* find vertex index, could be 0 or END */
+    current = graph->vertex_array[++index];
+
+  /* Reset vertex index */
+  while (current && graph->vertex_array[index + 1]) {
+    graph->vertex_array[index] = graph->vertex_array[index + 1];
+    current = graph->vertex_array[++index];
+  }
+
   /* Free Memory */
   free(v);
+  if (!(graph->vertex_array = realloc(graph->vertex_array,
+              (graph->vertex_count - 1) * sizeof(struct vertex*))))
+    return 0;
 
   /* Default */
   graph->vertex_count--;
@@ -454,9 +472,9 @@ static Vertex *find_existing_vertex(const WString_graph *const graph,
   int index;
 
   /* Checks */
-  if (!is_existing_vertex(graph, name))
-    return NULL;
   if (!graph || !graph->vertex_array || !graph->vertex_count)
+    return NULL;
+  if (!is_existing_vertex(graph, name))
     return NULL;
 
   /* Loops */
