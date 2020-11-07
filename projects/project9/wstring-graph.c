@@ -54,13 +54,41 @@ void init_graph(WString_graph *const graph) {
 }
 
 void destroy_graph(WString_graph *const graph) {
+  /* Variables */
+  struct vertex *current_vertex = NULL;
+  int index;
+
   /* Checks */
   if (!graph)
     return;
 
-  exit(1);
+  /* Loops */
+  for (index = 0; index < graph->vertex_count; index++) {
+    /* Variables */
+    struct edge *current_edge = current_vertex->edge_head;
+    current_vertex = graph->vertex_array[index];
 
-  return;
+    /* Loops */
+    while (current_edge) {
+      /* Variables */
+      struct edge *temp = current_edge;
+      current_edge = temp->next;
+
+      /* Free Memory */
+      free(temp->dest); /* TBD, not needed? */
+      free(temp->next); /* TBD, not needed? */
+      free(temp);
+    }
+
+    /* Free Memory */
+    free(current_vertex->name);
+    free(current_vertex->edge_head);
+    free(current_vertex);
+  }
+
+  /* Free Memory */
+  free(graph->vertex_array);
+  free(graph);
 }
 
 /* Check if a vertex exists */
