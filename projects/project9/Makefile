@@ -15,7 +15,7 @@
 # Define make variables
 #
 GC = gcc
-FLAGS = -ansi -pedantic-errors -Wall -Werror -Wshadow -fstack-protector-all
+FLAGS = -ansi -pedantic-errors -Wall -Werror -Wshadow -fstack-protector-all -g
 
 #
 # Define main target options
