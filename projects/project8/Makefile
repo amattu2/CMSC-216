@@ -63,7 +63,7 @@ public10.x: wstring-graph.o public10.o
 #
 # Define object operations
 #
-two-sided-queue.o: wstring-graph.c wstring-graph.h
+wstring-graph.o: wstring-graph.c wstring-graph.h
 	$(GC) $(FLAGS) -c wstring-graph.c
 
 public01.o: wstring-graph.c wstring-graph.h \
