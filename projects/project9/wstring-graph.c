@@ -45,8 +45,7 @@ void init_graph(WString_graph *const graph) {
   /* Checks */
   if (!graph)
     return;
-  if ((g = malloc(sizeof(struct graph) + sizeof(struct vertex*) +
-                  (sizeof(int))))) {
+  if ((g = malloc(sizeof(WString_graph)))) {
     g->vertex_count = 0;
     g->vertex_array = malloc(sizeof(struct vertex*));
     *graph = *g;
