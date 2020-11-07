@@ -255,12 +255,12 @@ char **get_neighbors(const WString_graph *const graph, const char vertex[]) {
     char *name = NULL;
 
     /* Checks */
-    if ((name = malloc(strlen(e->dest))))
+    if ((name = malloc(strlen(e->dest) + 1)))
       strcpy(name, e->dest);
     else return NULL;
 
     /* Append */
-    verticies[++index] = name;
+    verticies[index++] = name;
     e = e->next;
   }
 
