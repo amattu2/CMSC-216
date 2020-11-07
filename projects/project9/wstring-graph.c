@@ -360,17 +360,30 @@ int remove_edge(WString_graph *const graph, const char source[],
 }
 
 int remove_vertex(WString_graph *const graph, const char vertex[]) {
-  /* Checks */
-  if (!graph || !vertex)
-    return 0;
-  if (!is_existing_vertex(graph, vertex))
-    return 0;
+  /* Variables */
+  struct vertex *v = NULL;
+  struct edge *e = NULL;
 
-  exit(1);
-  /* Remove all edges attached (ongoing/incoming) */
-  /* Remove vertex and all references to it (char struct pointer) */
+  /* Checks */
+  if (!graph || !vertex || !graph->vertex_array)
+    return 0;
+  else v = find_existing_vertex(graph, vertex);
+  if (!v)
+    return 0;
+  else e = v->edge_head;
+
+  /* Remove outgoing/incoming edges */
+  while (e) {
+    printf("Removing d:%s\n", e->dest);
+    remove_edge(graph, vertex, e->dest);
+    e = e->next;
+  }
+
+  /* Free Memory */
+  free(v);
 
   /* Default */
+  graph->vertex_count--;
   return 1;
 }
 
