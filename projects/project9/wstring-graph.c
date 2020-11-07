@@ -77,6 +77,8 @@ void destroy_graph(WString_graph *const graph) {
       current_edge = temp->next;
 
       /* Free Memory */
+      free(temp->dest);
+      free(temp->next);
       free(temp);
     }
 
@@ -407,18 +409,16 @@ int remove_vertex(WString_graph *const graph, const char vertex[]) {
 /* Free a array of strings */
 void free_vertex_list(char **const names) {
   /* Variables */
-  char *current = NULL;
   int index = 0;
 
   /* Checks */
   if (!names)
     return;
-  else current = names[0];
 
   /* Loops */
-  while (current != NULL) {
-    free(current);
-    current = names[++index];
+  while (names[index]) {
+    free(names[index]);
+    index++;
   }
 }
 
