@@ -53,6 +53,7 @@ void init_graph(WString_graph *const graph) {
   }
 }
 
+/* Destroy the graph structure */
 void destroy_graph(WString_graph *const graph) {
   /* Variables */
   struct vertex *current_vertex = NULL;
