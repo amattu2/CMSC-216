@@ -285,10 +285,14 @@ int num_neighbors(const WString_graph *const graph, const char vertex[]) {
   return v->edge_count;
 }
 
+/* Remove specified edge from graph */
 int remove_edge(WString_graph *const graph, const char source[],
                 const char dest[]) {
   /* Variables */
+  struct vertex *vertex = find_existing_vertex(graph, source);
   struct edge *edge = find_existing_edge(graph, source, dest);
+  struct edge *prev = NULL;
+  struct edge *curr = NULL;
 
   /* Checks */
   if (!graph || !source || !dest)
@@ -297,15 +301,39 @@ int remove_edge(WString_graph *const graph, const char source[],
     return 0;
   if (!is_existing_vertex(graph, dest))
     return 0;
-  if (!edge)
+  if (!edge || !vertex)
     return 0;
+  else curr = vertex->edge_head;
 
-  exit(1);
-  /* Remove edge, and any references to it */
-  /* Free memory */
-  /* It's a linked list, so handle the removal properly */
+  /* Loops */
+  while (curr && curr->next) {
+    if (curr == edge && edge == vertex->edge_head) {
+      /* Variables */
+      struct edge *temp = curr;
 
-  return 0;
+      /* Checks */
+      if (edge == vertex->edge_head)
+        vertex->edge_head = temp->next;
+      else
+        prev->next = temp->next;
+
+      /* Free Memory */
+      free(temp->dest);
+      free(temp->next);
+      free(temp);
+
+      /* End search */
+      vertex->edge_count--;
+      break;
+    }
+
+    /* Variables */
+    prev = curr;
+    curr = curr->next;
+  }
+
+  /* Default */
+  return 1;
 }
 
 int remove_vertex(WString_graph *const graph, const char vertex[]) {
