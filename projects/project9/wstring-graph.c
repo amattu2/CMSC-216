@@ -306,8 +306,8 @@ int remove_edge(WString_graph *const graph, const char source[],
   else curr = vertex->edge_head;
 
   /* Loops */
-  while (curr && curr->next) {
-    if (curr == edge && edge == vertex->edge_head) {
+  while (curr) {
+    if (curr == edge) {
       /* Variables */
       struct edge *temp = curr;
 
@@ -318,7 +318,6 @@ int remove_edge(WString_graph *const graph, const char source[],
         prev->next = temp->next;
 
       /* Free Memory */
-      free(temp->dest);
       free(temp->next);
       free(temp);
 
