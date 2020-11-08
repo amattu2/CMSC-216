@@ -21,6 +21,18 @@
 - [x] public09.c
 - [x] public10.c
 
+#### Project 8 Private Tests
+- [ ] private01.c
+- [ ] private02.c
+- [ ] private03.c
+- [ ] private04.c
+- [ ] private05.c
+- [ ] private06.c
+- [ ] private07.c
+- [ ] private08.c
+- [ ] private09.c
+- [ ] private10.c
+
 #### Project 9 Public Tests
 - [x] public01.c
 - [x] public02.c
