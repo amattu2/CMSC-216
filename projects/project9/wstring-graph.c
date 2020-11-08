@@ -49,6 +49,7 @@ void init_graph(WString_graph *const graph) {
     g->vertex_count = 0;
     g->vertex_array = malloc(sizeof(struct vertex*));
     *graph = *g;
+    free(g);
   }
 }
 
