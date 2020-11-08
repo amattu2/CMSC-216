@@ -27,7 +27,7 @@
 - [x] public03.c
 - [x] public04.c
 - [ ] public05.c
-- [ ] public06.c
+- [x] public06.c
 - [ ] public07.c
 - [ ] public08.c
 - [ ] public09.c
