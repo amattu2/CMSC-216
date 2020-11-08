@@ -28,7 +28,7 @@
 - [x] public04.c
 - [x] public05.c
 - [x] public06.c
-- [ ] public07.c
+- [ ] public07.c (wstring-graph.c:125 causing 13b memory leak)
 - [x] public08.c
 - [x] public09.c
 - [ ] public10.c
