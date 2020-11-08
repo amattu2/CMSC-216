@@ -31,7 +31,7 @@
 - [x] public07.c
 - [x] public08.c
 - [x] public09.c
-- [ ] public10.c
+- [x] public10.c
 
 ## Notes
 #### To compile with graph-utils.o
