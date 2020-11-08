@@ -10,16 +10,16 @@
 - [ ] Make
 
 #### Project 8 Public Tests
-- [ ] public01.c
-- [ ] public02.c
-- [ ] public03.c
-- [ ] public04.c
-- [ ] public05.c
-- [ ] public06.c
-- [ ] public07.c
-- [ ] public08.c
-- [ ] public09.c
-- [ ] public10.c
+- [x] public01.c
+- [x] public02.c
+- [x] public03.c
+- [x] public04.c
+- [x] public05.c
+- [x] public06.c
+- [x] public07.c
+- [x] public08.c
+- [x] public09.c
+- [x] public10.c
 
 #### Project 9 Public Tests
 - [x] public01.c
