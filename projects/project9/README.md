@@ -30,7 +30,7 @@
 - [x] public06.c
 - [ ] public07.c
 - [ ] public08.c
-- [ ] public09.c
+- [x] public09.c
 - [ ] public10.c
 
 ## Notes
