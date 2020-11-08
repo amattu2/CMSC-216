@@ -77,14 +77,13 @@ void destroy_graph(WString_graph *const graph) {
       current_edge = temp->next;
 
       /* Free Memory */
-      free(temp->dest);
-      free(temp->next);
       free(temp);
     }
 
     /* Free Memory */
     free(current_vertex->name);
     free(current_vertex);
+    free(current_edge);
   }
 
   /* Free Memory */
@@ -133,8 +132,7 @@ int new_vertex_add(WString_graph *const graph, const char new_vertex[]) {
     return 0;
 
   /* Allocate space for new vertex */
-  if ((vertex = malloc(sizeof(struct vertex) + sizeof(int) +
-                      sizeof(char*) + sizeof(struct edge*)))) {
+  if ((vertex = malloc(sizeof(struct vertex)))) {
     vertex->edge_count = 0;
     vertex->name = name;
     vertex->edge_head = NULL;
@@ -175,8 +173,7 @@ int add_edge(WString_graph *const graph, const char source[],
     dest_ptr = dest_vertex->name;
 
   /* Check Memory Allocation */
-  if (!(edge = malloc(sizeof(struct edge) + sizeof(int) +
-                      sizeof(char*) + sizeof(struct edge*))))
+  if (!(edge = malloc(sizeof(struct edge))))
     return 0;
 
   /* Find insert spot */
@@ -215,7 +212,7 @@ char **get_vertices(const WString_graph *const graph) {
     char *name = NULL;
 
     /* Checks */
-    if ((name = malloc(strlen(graph->vertex_array[index]->name))))
+    if ((name = malloc(strlen(graph->vertex_array[index]->name) + 1)))
       strcpy(name, graph->vertex_array[index]->name);
     else return NULL;
 
