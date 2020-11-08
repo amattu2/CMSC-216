@@ -413,10 +413,11 @@ void free_vertex_list(char **const names) {
     return;
 
   /* Loops */
-  while (names[index]) {
-    free(names[index]);
-    index++;
-  }
+  while (names[index])
+    free(names[index++]);
+
+  /* Free Memory */
+  free(names);
 }
 
 /* Find tail node of edges */

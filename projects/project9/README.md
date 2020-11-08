@@ -26,10 +26,10 @@
 - [x] public02.c
 - [x] public03.c
 - [x] public04.c
-- [ ] public05.c
+- [x] public05.c
 - [x] public06.c
 - [ ] public07.c
-- [ ] public08.c
+- [x] public08.c
 - [x] public09.c
 - [ ] public10.c
 
