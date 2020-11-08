@@ -392,6 +392,7 @@ int remove_vertex(WString_graph *const graph, const char vertex[]) {
   }
 
   /* Free Memory */
+  free(v->name);
   free(v);
   if (!(graph->vertex_array = realloc(graph->vertex_array,
               (graph->vertex_count - 1) * sizeof(struct vertex*)))) {
