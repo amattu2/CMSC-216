@@ -1,13 +1,13 @@
 ## Todo
 #### Styling, Structure, Etc
-- [ ] Check 80-Char line length
-- [ ] Remove excess brackets `{}`
+- [x] Check 80-Char line length
+- [-] Remove excess brackets `{}`
 
 #### Test makefile
-- [ ] Independent public01.x-public10.x
-- [ ] Make clean
-- [ ] Make all
-- [ ] Make
+- [x] Independent public01.x-public10.x
+- [x] Make clean
+- [x] Make all
+- [x] Make
 
 #### Project 8 Public Tests
 - [x] public01.c
@@ -22,16 +22,16 @@
 - [x] public10.c
 
 #### Project 8 Private Tests
-- [ ] private01.c
-- [ ] private02.c
-- [ ] private03.c
-- [ ] private04.c
-- [ ] private05.c
-- [ ] private06.c
-- [ ] private07.c
-- [ ] private08.c
-- [ ] private09.c
-- [ ] private10.c
+- [x] private01.c
+- [x] private02.c
+- [x] private03.c
+- [x] private04.c
+- [x] private05.c
+- [x] private06.c
+- [x] private07.c
+- [x] private08.c
+- [x] private09.c
+- [x] private10.c
 
 #### Project 9 Public Tests
 - [x] public01.c
