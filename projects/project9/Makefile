@@ -38,7 +38,7 @@ public02.x: wstring-graph.o public02.o
 public03.x: graph-utils.o wstring-graph.o public03.o
 	$(GC) graph-utils.o wstring-graph.o public03.o -o public03.x
 
-public04.x: wstring-graph.o graph-utils.o public04.o
+public04.x: graph-utils.o wstring-graph.o public04.o
 	$(GC) graph-utils.o wstring-graph.o public04.o -o public04.x
 
 public05.x: graph-utils.o wstring-graph.o public05.o
@@ -66,7 +66,8 @@ wstring-graph.o: wstring-graph.c wstring-graph.h
 	$(GC) $(FLAGS) -c wstring-graph.c
 
 public01.o: wstring-graph.c wstring-graph.h \
-		wstring-graph-datastructure.h graph-utils.h graph-utils.o public01.c
+		wstring-graph-datastructure.h graph-utils.h \
+		graph-utils.o public01.c
 	$(GC) $(FLAGS) -c public01.c
 
 public02.o: wstring-graph.c wstring-graph.h \
@@ -74,35 +75,43 @@ public02.o: wstring-graph.c wstring-graph.h \
 	$(GC) $(FLAGS) -c public02.c
 
 public03.o: wstring-graph.c wstring-graph.h \
-		wstring-graph-datastructure.h graph-utils.h graph-utils.o public03.c
+		wstring-graph-datastructure.h graph-utils.h \
+		graph-utils.o public03.c
 	$(GC) $(FLAGS) -c public03.c
 
 public04.o: wstring-graph.c wstring-graph.h \
-		wstring-graph-datastructure.h graph-utils.h graph-utils.o public04.c
+		wstring-graph-datastructure.h graph-utils.h \
+		graph-utils.o public04.c
 	$(GC) $(FLAGS) -c public04.c
 
 public05.o: wstring-graph.c wstring-graph.h \
-		wstring-graph-datastructure.h graph-utils.h graph-utils.o public05.c
+		wstring-graph-datastructure.h graph-utils.h \
+		graph-utils.o public05.c
 	$(GC) $(FLAGS) -c public05.c
 
 public06.o: wstring-graph.c wstring-graph.h \
-		wstring-graph-datastructure.h graph-utils.h graph-utils.o public06.c
+		wstring-graph-datastructure.h graph-utils.h \
+		graph-utils.o public06.c
 	$(GC) $(FLAGS) -c public06.c
 
 public07.o: wstring-graph.c wstring-graph.h \
-		wstring-graph-datastructure.h graph-utils.h graph-utils.o public07.c
+		wstring-graph-datastructure.h graph-utils.h \
+		graph-utils.o public07.c
 	$(GC) $(FLAGS) -c public07.c
 
 public08.o: wstring-graph.c wstring-graph.h \
-		wstring-graph-datastructure.h graph-utils.h graph-utils.o public08.c
+		wstring-graph-datastructure.h graph-utils.h \
+		graph-utils.o public08.c
 	$(GC) $(FLAGS) -c public08.c
 
 public09.o: wstring-graph.c wstring-graph.h \
-		wstring-graph-datastructure.h graph-utils.h graph-utils.o public09.c
+		wstring-graph-datastructure.h graph-utils.h \
+		graph-utils.o public09.c
 	$(GC) $(FLAGS) -c public09.c
 
 public10.o: wstring-graph.c wstring-graph.h \
-		wstring-graph-datastructure.h graph-utils.h graph-utils.o public10.c
+		wstring-graph-datastructure.h graph-utils.h \
+		graph-utils.o public10.c
 	$(GC) $(FLAGS) -c public10.c
 
 #
