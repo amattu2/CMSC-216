@@ -386,7 +386,8 @@ int remove_vertex(WString_graph *const graph, const char vertex[]) {
     current = graph->vertex_array[++index];
 
   /* Reset vertex index */
-  while (current && index < graph->vertex_count-1 && graph->vertex_array[index + 1]) {
+  while (current && index < (graph->vertex_count - 1) &&
+        graph->vertex_array[index + 1]) {
     graph->vertex_array[index] = graph->vertex_array[index + 1];
     current = graph->vertex_array[++index];
   }
