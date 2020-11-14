@@ -22,12 +22,46 @@
 /* Files */
 #include <stdio.h>
 #include <unistd.h>
+#include <err.h>
+#include <sys/types.h>
+#include <sysexits.h>
 #include "safe-fork.h"
 
 /* Variables */
 extern char **environ;
 
 int main(void) {
-  execle("/usr/bin/wc)", "wc", "-w", NULL, environ);
+  pid_t pid;
+  int pipefd[2];
+
+  pipe(pipefd);
+  pid = fork(); /* TBD safe_fork */
+
+  if (pid > 0) {  /* parent */
+    char buf[BUFSIZ];
+
+    close(pipefd[1]);
+    if (read(pipefd[0], buf, BUFSIZ) == -1) {
+      err(EX_OSERR, "pipe error");
+    } else {
+      close(pipefd[0]);
+
+      printf("Child process sent: %s\n", buf);
+    }
+  } else {
+    if (pid == 0) {  /* child */
+      char message[] = "You must write your own tests of your project code!!!";
+
+      execlp("/usr/bin/wc", "wc", "-w", NULL);
+      
+      close(pipefd[0]);
+      printf("Child is sending crucial message to parent.\n");
+      if (write(pipefd[1], message, sizeof(message)) == -1)
+        err(EX_OSERR, "pipe error");
+
+      close(pipefd[1]);
+
+    } else err(EX_OSERR, "fork error");
+  }
   return 0;
 }
