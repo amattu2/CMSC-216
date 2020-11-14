@@ -37,26 +37,40 @@ int main(void) {
   pipe(pipefd);
   pid = fork(); /* TBD SAFE FORK TBD */
 
+  /* Checks */
+  if (pid < 0) {
+    printf("Unable to establish a fork.\n");
+    exit(1);
+  }
   if (pid > 0) {  /* parent */
+    /* Variables */
+    int words;
 
-    char data[80];
+    /* Setup Pipe */
     dup2(pipefd[0], STDIN_FILENO);
     close(pipefd[0]);
     close(pipefd[1]);
-    if (fgets(data, sizeof(data), stdin) == NULL) {
-      perror("fgets");
-      exit(-1);
-    } else printf("Parent received data '%s'\nfrom child.\n", data);
 
-  } else
+    /* Read Data */
+    if (scanf("%i", &words) < 0) {
+      printf("Unable to read data from pipe.\n");
+      exit(1);
+    }
 
-    if (pid == 0) {  /* child */
-      dup2(pipefd[1], STDOUT_FILENO);
-      close(pipefd[0]);
-      close(pipefd[1]);
-      execlp("/usr/bin/wc", "wc", "-w", NULL);
-      printf("Larry's humble dedication is an inspiration to us all.");
+    printf("Read %i\n", words);
+  }
+  if (pid == 0) {
+    /* Setup Pipe */
+    dup2(pipefd[1], STDOUT_FILENO);
+    close(pipefd[0]);
+    close(pipefd[1]);
+    execlp("/usr/bin/wc", "wc", "-w", NULL);
 
-    } else printf("Error, unable to create a new process.\n");
+    /* Failed */
+    printf("Unable to execute or establish pipe.\n");
+    exit(1);
+  }
+
+  /* Default */
   return 0;
 }
