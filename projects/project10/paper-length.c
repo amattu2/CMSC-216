@@ -36,7 +36,7 @@ int main(void) {
   int word_count;
 
   pipe(pipefd);
-  pid = fork(); /* TBD SAFE FORK TBD */
+  pid = safe_fork();
 
   /* Checks */
   if (pid < 0) {
