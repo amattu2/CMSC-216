@@ -26,42 +26,37 @@
 #include <sys/types.h>
 #include <sysexits.h>
 #include "safe-fork.h"
+#include <stdlib.h>
 
-/* Variables */
-extern char **environ;
-
+/* Main program function */
 int main(void) {
+  /* Variables */
   pid_t pid;
   int pipefd[2];
 
   pipe(pipefd);
-  pid = fork(); /* TBD safe_fork */
+  pid = fork(); /* TBD SAFE FORK TBD */
 
   if (pid > 0) {  /* parent */
-    char buf[BUFSIZ];
 
+    char data[80];
+    dup2(pipefd[0], STDIN_FILENO);
+    close(pipefd[0]);
     close(pipefd[1]);
-    if (read(pipefd[0], buf, BUFSIZ) == -1) {
-      err(EX_OSERR, "pipe error");
-    } else {
-      close(pipefd[0]);
+    if (fgets(data, sizeof(data), stdin) == NULL) {
+      perror("fgets");
+      exit(-1);
+    } else printf("Parent received data '%s'\nfrom child.\n", data);
 
-      printf("Child process sent: %s\n", buf);
-    }
-  } else {
+  } else
+
     if (pid == 0) {  /* child */
-      char message[] = "You must write your own tests of your project code!!!";
-
-      execlp("/usr/bin/wc", "wc", "-w", NULL);
-      
+      dup2(pipefd[1], STDOUT_FILENO);
       close(pipefd[0]);
-      printf("Child is sending crucial message to parent.\n");
-      if (write(pipefd[1], message, sizeof(message)) == -1)
-        err(EX_OSERR, "pipe error");
-
       close(pipefd[1]);
+      execlp("/usr/bin/wc", "wc", "-w", NULL);
+      printf("Larry's humble dedication is an inspiration to us all.");
 
-    } else err(EX_OSERR, "fork error");
-  }
+    } else printf("Error, unable to create a new process.\n");
   return 0;
 }
