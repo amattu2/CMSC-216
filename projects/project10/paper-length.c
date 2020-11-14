@@ -33,6 +33,7 @@ int main(void) {
   /* Variables */
   pid_t pid;
   int pipefd[2];
+  int word_count;
 
   pipe(pipefd);
   pid = fork(); /* TBD SAFE FORK TBD */
@@ -42,22 +43,24 @@ int main(void) {
     printf("Unable to establish a fork.\n");
     exit(1);
   }
-  if (pid > 0) {  /* parent */
-    /* Variables */
-    int words;
-
+  if (pid > 0) {
     /* Setup Pipe */
     dup2(pipefd[0], STDIN_FILENO);
     close(pipefd[0]);
     close(pipefd[1]);
 
     /* Read Data */
-    if (scanf("%i", &words) < 0) {
+    if (scanf("%i", &word_count) < 0) {
       printf("Unable to read data from pipe.\n");
       exit(1);
     }
-
-    printf("Read %i\n", words);
+    if (word_count >= 200) {
+      printf("Long enough!\n");
+      exit(0);
+    } else {
+      printf("Too short!\n");
+      exit(1);
+    }
   }
   if (pid == 0) {
     /* Setup Pipe */
