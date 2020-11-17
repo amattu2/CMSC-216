@@ -107,8 +107,40 @@ void print_action(Forkfile forkfile, int rule_num) {
   printf("%s\n", r->action);
 }
 
+/* Print the forkfile contents */
 void print_forkfile(Forkfile forkfile) {
-  return;
+  /* Variables */
+  struct rule *current = NULL;
+
+  /* Checks */
+  if (!forkfile.rule_head)
+    return;
+  else current = forkfile.rule_head;
+
+  /* Loops */
+  while (current) {
+    /* Variables */
+    struct node *d = current->dependency_head;
+
+    /* Print Rule Name */
+    printf("%s:", current->name);
+    if (d)
+      while (d) {
+        printf(" %s", d->name);
+        d = d->next;
+      }
+    else printf("\n");
+
+    /* Print Action */
+    printf("%s\n", current->action);
+
+    /* Checks */
+    if (current->next)
+      printf("\n");
+
+    /* Assign values */
+    current = current->next;
+  }
 }
 
 int num_dependencies(Forkfile forkfile, int rule_num) {
