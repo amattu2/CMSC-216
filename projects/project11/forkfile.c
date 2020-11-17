@@ -108,10 +108,12 @@ static Rule *add_rule(Forkfile *ff, char *line) {
   /* Checks */
   if (!ff || !(r = malloc(sizeof(Forkfile))))
     return NULL;
-  if ((name = strtok(line, ":")) && (r->name = malloc(strlen(name) + 1))) {
+  if ((name = strtok(line, " ")) && (r->name = malloc(strlen(name) + 1))) {
+    name[strlen(name) - 1] = '\0';
+    printf("Name: %s\n", name);
     r->name = name;
   } else return r;
-  if ((dependency = strtok(line, " "))) {
+  if ((dependency = strtok(NULL, " "))) {
     while (dependency != NULL) {
       printf("Dependecy: %s\n", dependency);
       dependency = strtok(NULL, " ");
