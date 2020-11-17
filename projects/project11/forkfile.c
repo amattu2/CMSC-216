@@ -32,6 +32,7 @@
 static Rule *add_rule(Forkfile *ff, char *line);
 static int add_action(Forkfile *ff, Rule *rule, char *line);
 static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency);
+static Rule *lookup_rule(Forkfile *ff, int rule_index);
 
 /* Initialize a Forkfile structure */
 Forkfile read_forkfile(const char filename[]) {
@@ -230,4 +231,30 @@ static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency) {
 
   /* Return */
   return 1;
+}
+
+/* HELPER: Look up a rule by index */
+static Rule *lookup_rule(Forkfile *ff, int rule_index) {
+  /* Variables */
+  struct rule *current;
+
+  /* Checks */
+  if (!ff)
+    return NULL;
+  if (!ff->rule_head)
+    return NULL;
+  else current = ff->rule_head;
+
+  /* Loops */
+  while (current && current->next) {
+    /* Checks */
+    if (current->index == rule_index)
+      return current;
+
+    /* Assign Values */
+    current = current->next;
+  }
+
+  /* Default */
+  return NULL;
 }
