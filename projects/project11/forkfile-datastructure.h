@@ -19,6 +19,7 @@
   /* Forkfile Generic Node */
   typedef struct node {
     char *name;
+    struct node *next;
   } Node;
 
   /* Forkfile Target Structure */
@@ -30,14 +31,14 @@
     /* Dependancy Count */
     int dependency_count;
     /* Dependancies (Linked List) */
-    Node *dependency_head;
-    /* Command */
-    char *command;
+    struct node *dependency_head;
+    /* Command Line */
+    char *action;
   } Rule;
 
   /* Forkfile Encompassing Structure */
-  typedef struct {
+  typedef struct forkfile {
     int rule_count;
-    Rule *target_head;
+    struct rule *rule_head;
   } Forkfile;
 #endif
