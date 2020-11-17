@@ -143,8 +143,17 @@ void print_forkfile(Forkfile forkfile) {
   }
 }
 
+/* Get the dependency count of a rule */
 int num_dependencies(Forkfile forkfile, int rule_num) {
-  return 0;
+  /* Variables */
+  struct rule *r = lookup_rule(&forkfile, rule_num);
+
+  /* Checks */
+  if (!r || rule_num < 0)
+    return -1;
+
+  /* Default */
+  return r->dependency_count;
 }
 
 char *get_dependency(Forkfile forkfile, int rule_num, int dependency_num) {
