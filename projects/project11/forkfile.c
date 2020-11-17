@@ -33,6 +33,7 @@ static Rule *add_rule(Forkfile *ff, char *line);
 static int add_action(Forkfile *ff, Rule *rule, char *line);
 static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency);
 
+/* Initialize a Forkfile structure */
 Forkfile read_forkfile(const char filename[]) {
   /* Variables */
   Forkfile ff = {0, NULL};
@@ -66,8 +67,30 @@ Forkfile read_forkfile(const char filename[]) {
   return ff;
 }
 
+/* Find a makefile target ID */
 int lookup_target(Forkfile forkfile, const char target_name[]) {
-  return 0;
+  /* Variables */
+  struct rule *current;
+
+  /* Checks */
+  if (!target_name)
+    return -1;
+  if (!forkfile.rule_head)
+    return -1;
+  else current = forkfile.rule_head;
+
+  /* Loops */
+  while (current && current->next) {
+    /* Checks */
+    if (current->name && strcmp(current->name, target_name) == 0)
+      return current->index;
+
+    /* Assign Values */
+    current = current->next;
+  }
+
+  /* Default */
+  return -1;
 }
 
 void print_action(Forkfile forkfile, int rule_num) {
@@ -113,6 +136,17 @@ static Rule *add_rule(Forkfile *ff, char *line) {
   if (!(r->dependency_head = malloc(sizeof(struct node*))))
     return NULL;
   else r->dependency_head = NULL;
+  if (ff->rule_head) {
+    /* Variables */
+    struct rule *current = ff->rule_head;
+
+    /* Loops */
+    while (current && current->next)
+      current = current->next;
+
+    /* Assign Values */
+    current->next = r;
+  } else ff->rule_head = r;
   if ((name = strtok(line, " ")) && (r->name = malloc(strlen(name) + 1))) {
     /* Remove Colon */
     if ((pos = strchr(name, ':')) != NULL)
