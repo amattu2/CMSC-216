@@ -34,6 +34,8 @@
     struct node *dependency_head;
     /* Command Line */
     char *action;
+    /* Next */
+    struct rule *next;
   } Rule;
 
   /* Forkfile Encompassing Structure */
