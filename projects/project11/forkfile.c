@@ -108,8 +108,11 @@ static Rule *add_rule(Forkfile *ff, char *line) {
   char *pos;
 
   /* Checks */
-  if (!ff || !(r = malloc(sizeof(Forkfile))))
+  if (!ff || !(r = malloc(sizeof(struct rule))))
     return NULL;
+  if (!(r->dependency_head = malloc(sizeof(struct node*))))
+    return NULL;
+  else r->dependency_head = NULL;
   if ((name = strtok(line, " ")) && (r->name = malloc(strlen(name) + 1))) {
     /* Remove Colon */
     if ((pos = strchr(name, ':')) != NULL)
@@ -117,7 +120,7 @@ static Rule *add_rule(Forkfile *ff, char *line) {
 
     /* Variables */
     r->name = name;
-  } else return r;
+  } else return NULL;
   if ((dependency = strtok(NULL, " "))) {
     while (dependency != NULL) {
       /* Remove Newline */
@@ -131,10 +134,13 @@ static Rule *add_rule(Forkfile *ff, char *line) {
       dependency = strtok(NULL, " ");
       dependency_count++;
     }
-  } else {
-    r->dependency_count = 0;
-    r->dependency_head = NULL;
   }
+
+  /* Assign Values */
+  r->index = ff->rule_count; /* Naturally zero-indexed */
+  r->dependency_count = dependency_count;
+  r->action = "";
+  ff->rule_count++;
 
   /* Default */
   return r;
@@ -149,14 +155,16 @@ static int add_action(Forkfile *ff, Rule *rule, char *line) {
 static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency) {
   /* Variables */
   struct node *n;
+  char *name = NULL;
 
   /* Checks */
   if (!ff || !rule)
     return 0;
-  if ((n = malloc(sizeof(struct node)))) {
-    n->name = dependency;
-    n->next = NULL;
-  } else return 0;
+  if (!(n = malloc(sizeof(struct node))))
+    return 0;
+  else n->next = NULL;
+  if ((name = malloc(strlen(dependency) + 1)))
+    n->name = name;
   if (rule->dependency_head) {
     /* Variables */
     struct node *current = rule->dependency_head;
