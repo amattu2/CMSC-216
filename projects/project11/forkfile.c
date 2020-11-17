@@ -148,7 +148,24 @@ static Rule *add_rule(Forkfile *ff, char *line) {
 
 /* HELPER: Create a new rule action */
 static int add_action(Forkfile *ff, Rule *rule, char *line) {
-  return 0;
+  /* Variables */
+  char *action = NULL;
+  char *pos;
+
+  /* Checks */
+  if (!ff || !rule || !line)
+    return 0;
+  if ((action = malloc(strlen(line) + 1)))
+    strcpy(action, line);
+  else return 0;
+  if ((pos = strchr(action, '\n')) != NULL)
+    *pos = '\0';
+
+  /* Assign Values */
+  rule->action = action;
+
+  /* Default */
+  return 1;
 }
 
 /* HELPER: Create a new rule dependency */
