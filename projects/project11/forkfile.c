@@ -94,8 +94,23 @@ int lookup_target(Forkfile forkfile, const char target_name[]) {
   return -1;
 }
 
+/* Print a rule action */
 void print_action(Forkfile forkfile, int rule_num) {
-  return;
+  /* Variables */
+  struct rule *r = lookup_rule(&forkfile, rule_num);
+  struct node *current = NULL;
+
+  /* Checks */
+  if (!r || rule_num < 0)
+    return;
+  if (!r->dependency_head)
+    return;
+  else current = r->dependency_head;
+
+  /* Default */
+  while (current)
+    printf("%s ", current->name);
+  printf("\n");
 }
 
 void print_forkfile(Forkfile forkfile) {
