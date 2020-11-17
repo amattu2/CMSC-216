@@ -28,7 +28,7 @@
     int index;
     /* Rule (Target) Name */
     char *name;
-    /* Dependancy Count */
+    /* Dependency Count */
     int dependency_count;
     /* Dependancies (Linked List) */
     struct node *dependency_head;
