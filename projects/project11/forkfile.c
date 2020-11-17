@@ -257,7 +257,7 @@ static int add_action(Forkfile *ff, Rule *rule, char *line) {
 static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency) {
   /* Variables */
   struct node *n;
-  char *name = NULL;
+  char *pos = NULL;
 
   /* Checks */
   if (!ff || !rule)
@@ -265,8 +265,10 @@ static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency) {
   if (!(n = malloc(sizeof(struct node))))
     return 0;
   else n->next = NULL;
-  if ((name = malloc(strlen(dependency) + 1)))
-    n->name = name;
+  if ((n->name = malloc(strlen(dependency) + 1)))
+    n->name = dependency;
+  if ((pos = strchr(n->name, '\n')) != NULL)
+    *pos = '\0';
   if (rule->dependency_head) {
     /* Variables */
     struct node *current = rule->dependency_head;
