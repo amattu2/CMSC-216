@@ -224,7 +224,7 @@ static Rule *add_rule(Forkfile *ff, char *line) {
   /* Assign Values */
   r->index = ff->rule_count; /* Naturally zero-indexed */
   r->dependency_count = dependency_count;
-  r->action = "";
+  r->action = NULL;
   ff->rule_count++;
 
   /* Default */
