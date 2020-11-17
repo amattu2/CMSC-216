@@ -31,6 +31,7 @@
 /* Prototypes */
 static Rule *add_rule(Forkfile *ff, char *line);
 static int add_action(Forkfile *ff, Rule *rule, char *line);
+static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency);
 
 Forkfile read_forkfile(const char filename[]) {
   /* Variables */
@@ -104,23 +105,32 @@ static Rule *add_rule(Forkfile *ff, char *line) {
   char *name = NULL;
   int dependency_count = 0;
   char *dependency = NULL;
+  char *pos;
 
   /* Checks */
   if (!ff || !(r = malloc(sizeof(Forkfile))))
     return NULL;
   if ((name = strtok(line, " ")) && (r->name = malloc(strlen(name) + 1))) {
-    name[strlen(name) - 1] = '\0';
-    printf("Name: %s\n", name);
+    /* Remove Colon */
+    if ((pos = strchr(name, ':')) != NULL)
+      *pos = '\0';
+
+    /* Variables */
     r->name = name;
   } else return r;
   if ((dependency = strtok(NULL, " "))) {
     while (dependency != NULL) {
-      printf("Dependecy: %s\n", dependency);
+      /* Remove Newline */
+      if ((pos = strchr(dependency, '\n')) != NULL)
+        *pos = '\0';
+
+      /* Add Dependency */
+      add_dependecy(ff, r, dependency);
+
+      /* Variables */
       dependency = strtok(NULL, " ");
       dependency_count++;
-      /* add head using a function.. dont use this function for that */
     }
-    printf("DP count: %i\n", dependency_count);
   } else {
     r->dependency_count = 0;
     r->dependency_head = NULL;
@@ -133,4 +143,32 @@ static Rule *add_rule(Forkfile *ff, char *line) {
 /* HELPER: Create a new rule action */
 static int add_action(Forkfile *ff, Rule *rule, char *line) {
   return 0;
+}
+
+/* HELPER: Create a new rule dependency */
+static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency) {
+  /* Variables */
+  struct node *n;
+
+  /* Checks */
+  if (!ff || !rule)
+    return 0;
+  if ((n = malloc(sizeof(struct node)))) {
+    n->name = dependency;
+    n->next = NULL;
+  } else return 0;
+  if (rule->dependency_head) {
+    /* Variables */
+    struct node *current = rule->dependency_head;
+
+    /* Loops */
+    while (current && current->next)
+      current = current->next;
+
+    /* Assign Next */
+    current->next = n;
+  } else rule->dependency_head = n;
+
+  /* Return */
+  return 1;
 }
