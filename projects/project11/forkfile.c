@@ -23,6 +23,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/unistd.h>
+#include <errno.h>
 #include "forkfile.h"
 #include "split.h"
 #include "safe-fork.h"
@@ -188,7 +192,19 @@ char *get_dependency(Forkfile forkfile, int rule_num, int dependency_num) {
   return NULL;
 }
 
+/* Check if a file exists */
 int exists(const char filename[]) {
+  /* Variables */
+  struct stat *s = NULL;
+  errno = 0;
+
+  /* Checks */
+  if (!filename)
+    return 0;
+  if (stat(filename, s) == -1 && errno == ENOENT)
+    return 0;
+
+  /* Default */
   return 0;
 }
 
