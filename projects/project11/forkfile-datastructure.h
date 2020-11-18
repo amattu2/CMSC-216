@@ -17,10 +17,10 @@
   #define STRUCT_DEF
 
   /* Forkfile Generic Node */
-  typedef struct node {
-    char *name;
-    struct node *next;
-  } Node;
+  typedef struct dependency {
+    char *word;
+    struct dependency *next;
+  } Dependency;
 
   /* Forkfile Target Structure */
   typedef struct rule {
@@ -31,7 +31,7 @@
     /* Dependency Count */
     int dependency_count;
     /* Dependancies (Linked List) */
-    struct node *dependency_head;
+    struct dependency *dependency_head;
     /* Command Line */
     char *action;
     /* Next */
