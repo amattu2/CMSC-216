@@ -205,11 +205,35 @@ int exists(const char filename[]) {
     return 0;
 
   /* Default */
-  return 0;
+  return 1;
 }
 
+/* Check which file is oldest */
 int is_older(const char filename1[], const char filename2[]) {
-  return 0;
+  /* Variables */
+  struct stat *s1 = NULL;
+  struct stat *s2 = NULL;
+
+  /* Check Arguments */
+  if (!filename1 || !filename2)
+    return 0;
+
+  /* Check File 1 */
+  errno = 0;
+  if (stat(filename1, s1) == -1 && errno == ENOENT)
+    return 0;
+
+  /* Check File 2 */
+  errno = 0;
+  if (stat(filename2, s2) == -1 && errno == ENOENT)
+    return 0;
+
+  /* Check Time */
+  if (s1->st_mtime < s2->st_mtime)
+    return 0;
+
+  /* Default */
+  return 1;
 }
 
 int do_action(Forkfile forkfile, int rule_num) {
