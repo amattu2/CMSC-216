@@ -229,7 +229,7 @@ int is_older(const char filename1[], const char filename2[]) {
     return 0;
 
   /* Check Time */
-  if (s1->st_mtime < s2->st_mtime)
+  if (s1->st_mtime > s2->st_mtime)
     return 0;
 
   /* Default */
