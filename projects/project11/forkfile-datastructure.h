@@ -34,7 +34,7 @@
     struct dependency *dependency_head;
     /* Command Line */
     char *action;
-    /* Next */
+    /* Next Rule */
     struct rule *next;
   } Rule;
 
