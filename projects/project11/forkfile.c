@@ -84,7 +84,7 @@ int lookup_target(Forkfile forkfile, const char target_name[]) {
   else current = forkfile.rule_head;
 
   /* Loops */
-  while (current && current->next) {
+  while (current) {
     /* Checks */
     if (current->name && strcmp(current->name, target_name) == 0)
       return current->index;
