@@ -132,6 +132,8 @@ void print_forkfile(Forkfile forkfile) {
       while (d) {
         printf(" %s", d->word);
         d = d->next;
+        if (!d)
+          printf("\n");
       }
     else printf("\n");
 
@@ -276,6 +278,7 @@ static char *add_action(Forkfile *ff, Rule *rule, char *line) {
 static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency) {
   /* Variables */
   struct dependency *n = NULL;
+  char *word = NULL;
   char *pos = NULL;
 
   /* Checks */
@@ -284,9 +287,9 @@ static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency) {
   if (!(n = malloc(sizeof(struct dependency))))
     return 0;
   else n->next = NULL;
-  if ((n->word = malloc(strlen(dependency) + 1)))
-    n->word = dependency;
-  if ((pos = strchr(n->word, '\n')) != NULL)
+  if ((word = malloc(strlen(dependency) + 1)))
+    strcpy(word, dependency);
+  if ((pos = strchr(word, '\n')) != NULL)
     *pos = '\0';
   if (rule->dependency_head) {
     /* Variables */
@@ -299,6 +302,9 @@ static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency) {
     /* Assign Next */
     current->next = n;
   } else rule->dependency_head = n;
+
+  /* Assign Values */
+  n->word = word;
 
   /* Return */
   return 1;
