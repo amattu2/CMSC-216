@@ -55,10 +55,14 @@ Forkfile read_forkfile(const char filename[]) {
     if (!line[0] || line[0] == '\n' || line[0] == ' ')
       continue;
     if (line[0] == '\t' && rule_open) {
+      printf("Existing Action: %s\n", last_rule->action);
+      printf("Adding action:\n%s\nto rule:\n%s", line, last_rule->name);
       add_action(&ff, last_rule, line);
+      printf("Added Action: %s\n", last_rule->name);
       rule_open = 0;
     } else {
       last_rule = add_rule(&ff, line);
+      printf("Added rule: %s\n", last_rule->name);
       rule_open = 1;
     }
   }
@@ -80,8 +84,12 @@ int lookup_target(Forkfile forkfile, const char target_name[]) {
     return -1;
   else current = forkfile.rule_head;
 
+  printf("---------------\n");
+
   /* Loops */
   while (current && current->next) {
+    printf("Comparing %s to %s\n", target_name, current->name);
+
     /* Checks */
     if (current->name && strcmp(current->name, target_name) == 0)
       return current->index;
@@ -120,13 +128,15 @@ void print_forkfile(Forkfile forkfile) {
   /* Loops */
   while (current) {
     /* Variables */
-    struct node *d = current->dependency_head;
+    struct dependency *d = current->dependency_head;
 
     /* Print Rule Name */
     printf("%s:", current->name);
+
+    /* Print Rule Dependencies */
     if (d)
       while (d) {
-        printf(" %s", d->name);
+        printf(" %s", d->word);
         d = d->next;
       }
     else printf("\n");
@@ -177,16 +187,13 @@ static Rule *add_rule(Forkfile *ff, char *line) {
   /* Variables */
   struct rule *r = NULL;
   char *name = NULL;
-  int dependency_count = 0;
   char *dependency = NULL;
-  char *pos;
+  char *pos = NULL;
+  int dependency_count = 0;
 
   /* Checks */
   if (!ff || !(r = malloc(sizeof(struct rule))))
     return NULL;
-  if (!(r->dependency_head = malloc(sizeof(struct node*))))
-    return NULL;
-  else r->dependency_head = NULL;
   if (ff->rule_head) {
     /* Variables */
     struct rule *current = ff->rule_head;
@@ -198,6 +205,9 @@ static Rule *add_rule(Forkfile *ff, char *line) {
     /* Assign Values */
     current->next = r;
   } else ff->rule_head = r;
+  if (!(r->dependency_head = malloc(sizeof(struct dependency*))))
+    return NULL;
+  else r->dependency_head = NULL;
   if ((name = strtok(line, " ")) && (r->name = malloc(strlen(name) + 1))) {
     /* Remove Colon */
     if ((pos = strchr(name, ':')) != NULL)
@@ -220,11 +230,13 @@ static Rule *add_rule(Forkfile *ff, char *line) {
       dependency_count++;
     }
   }
+  if (!(r->action = malloc(1)))
+    return NULL;
+  else strcpy(r->action, "");
 
   /* Assign Values */
   r->index = ff->rule_count; /* Naturally zero-indexed */
   r->dependency_count = dependency_count;
-  r->action = NULL;
   ff->rule_count++;
 
   /* Default */
@@ -234,20 +246,16 @@ static Rule *add_rule(Forkfile *ff, char *line) {
 /* HELPER: Create a new rule action */
 static int add_action(Forkfile *ff, Rule *rule, char *line) {
   /* Variables */
-  char *action = NULL;
-  char *pos;
+  char *pos = NULL;
 
   /* Checks */
   if (!ff || !rule || !line)
     return 0;
-  if ((action = malloc(strlen(line) + 1)))
-    strcpy(action, line);
+  if ((rule->action = malloc(strlen(line) + 1)))
+    strcpy(rule->action, line);
   else return 0;
-  if ((pos = strchr(action, '\n')) != NULL)
+  if ((pos = strchr(rule->action, '\n')) != NULL)
     *pos = '\0';
-
-  /* Assign Values */
-  rule->action = action;
 
   /* Default */
   return 1;
@@ -256,22 +264,22 @@ static int add_action(Forkfile *ff, Rule *rule, char *line) {
 /* HELPER: Create a new rule dependency */
 static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency) {
   /* Variables */
-  struct node *n;
+  struct dependency *n = NULL;
   char *pos = NULL;
 
   /* Checks */
   if (!ff || !rule)
     return 0;
-  if (!(n = malloc(sizeof(struct node))))
+  if (!(n = malloc(sizeof(struct dependency))))
     return 0;
   else n->next = NULL;
-  if ((n->name = malloc(strlen(dependency) + 1)))
-    n->name = dependency;
-  if ((pos = strchr(n->name, '\n')) != NULL)
+  if ((n->word = malloc(strlen(dependency) + 1)))
+    n->word = dependency;
+  if ((pos = strchr(n->word, '\n')) != NULL)
     *pos = '\0';
   if (rule->dependency_head) {
     /* Variables */
-    struct node *current = rule->dependency_head;
+    struct dependency *current = rule->dependency_head;
 
     /* Loops */
     while (current && current->next)
