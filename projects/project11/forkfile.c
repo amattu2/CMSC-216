@@ -33,6 +33,7 @@ static Rule *add_rule(Forkfile *ff, char *line);
 static char *add_action(Forkfile *ff, Rule *rule, char *line);
 static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency);
 static Rule *lookup_rule(Forkfile *ff, int rule_index);
+static char *trim_whitespace(char *str);
 
 /* Initialize a Forkfile structure */
 Forkfile read_forkfile(const char filename[]) {
@@ -334,4 +335,25 @@ static Rule *lookup_rule(Forkfile *ff, int rule_index) {
 
   /* Default */
   return NULL;
+}
+
+/* HELPER: Remove string whitespace */
+static char *trim_whitespace(char *str) {
+  /* Variables */
+  char *ns;
+  int i = 0;
+  int nsi = 0;
+
+  if (!(ns = malloc(strlen(str))))
+    return NULL;
+
+  /* Loops */
+  while (str[i]) {
+    if (str[i] != '\t' && str[i] != '\n')
+      ns[nsi++] = str[i];
+    i++;
+  }
+
+  /* Return */
+  return ns;
 }
