@@ -13,3 +13,4 @@
 ## Notes
 Potential edge cases:
 - When the action line has multiple tabs after the first index between command spaces (Eg. echo abc 		def)
+- Implement **split
