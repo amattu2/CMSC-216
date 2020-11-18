@@ -30,7 +30,7 @@
 
 /* Prototypes */
 static Rule *add_rule(Forkfile *ff, char *line);
-static int add_action(Forkfile *ff, Rule *rule, char *line);
+static char *add_action(Forkfile *ff, Rule *rule, char *line);
 static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency);
 static Rule *lookup_rule(Forkfile *ff, int rule_index);
 
@@ -55,14 +55,10 @@ Forkfile read_forkfile(const char filename[]) {
     if (!line[0] || line[0] == '\n' || line[0] == ' ')
       continue;
     if (line[0] == '\t' && rule_open) {
-      printf("Existing Action: %s\n", last_rule->action);
-      printf("Adding action:\n%s\nto rule:\n%s", line, last_rule->name);
       add_action(&ff, last_rule, line);
-      printf("Added Action: %s\n", last_rule->name);
       rule_open = 0;
     } else {
       last_rule = add_rule(&ff, line);
-      printf("Added rule: %s\n", last_rule->name);
       rule_open = 1;
     }
   }
@@ -83,8 +79,6 @@ int lookup_target(Forkfile forkfile, const char target_name[]) {
   if (!forkfile.rule_head)
     return -1;
   else current = forkfile.rule_head;
-
-  printf("---------------\n");
 
   /* Loops */
   while (current && current->next) {
@@ -194,6 +188,8 @@ static Rule *add_rule(Forkfile *ff, char *line) {
   /* Checks */
   if (!ff || !(r = malloc(sizeof(struct rule))))
     return NULL;
+
+  /* Find insert spot */
   if (ff->rule_head) {
     /* Variables */
     struct rule *current = ff->rule_head;
@@ -205,17 +201,28 @@ static Rule *add_rule(Forkfile *ff, char *line) {
     /* Assign Values */
     current->next = r;
   } else ff->rule_head = r;
+
+  /* Allocate Dependency List */
   if (!(r->dependency_head = malloc(sizeof(struct dependency*))))
     return NULL;
   else r->dependency_head = NULL;
-  if ((name = strtok(line, " ")) && (r->name = malloc(strlen(name) + 1))) {
+
+  /* Allocate Target Name */
+  if ((name = strtok(line, " "))) {
+    /* Variables */
+    char *temp = NULL;
+
     /* Remove Colon */
     if ((pos = strchr(name, ':')) != NULL)
       *pos = '\0';
+    if ((temp = malloc(strlen(name) + 1)))
+      strcpy(temp, name);
 
     /* Variables */
-    r->name = name;
+    r->name = temp;
   } else return NULL;
+
+  /* Setup Dependencies */
   if ((dependency = strtok(NULL, " "))) {
     while (dependency != NULL) {
       /* Remove Newline */
@@ -230,9 +237,11 @@ static Rule *add_rule(Forkfile *ff, char *line) {
       dependency_count++;
     }
   }
+
+  /* Allocate Target Action */
   if (!(r->action = malloc(1)))
     return NULL;
-  else strcpy(r->action, "");
+  else r->action = NULL;
 
   /* Assign Values */
   r->index = ff->rule_count; /* Naturally zero-indexed */
@@ -244,21 +253,23 @@ static Rule *add_rule(Forkfile *ff, char *line) {
 }
 
 /* HELPER: Create a new rule action */
-static int add_action(Forkfile *ff, Rule *rule, char *line) {
+static char *add_action(Forkfile *ff, Rule *rule, char *line) {
   /* Variables */
   char *pos = NULL;
+  char *action = NULL;
 
   /* Checks */
   if (!ff || !rule || !line)
     return 0;
-  if ((rule->action = malloc(strlen(line) + 1)))
-    strcpy(rule->action, line);
+  if ((action = malloc(strlen(line) + 1)))
+    strcpy(action, line);
   else return 0;
-  if ((pos = strchr(rule->action, '\n')) != NULL)
+  if ((pos = strchr(action, '\n')) != NULL)
     *pos = '\0';
 
   /* Default */
-  return 1;
+  rule->action = action;
+  return rule->action;
 }
 
 /* HELPER: Create a new rule dependency */
