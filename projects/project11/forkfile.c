@@ -163,7 +163,27 @@ int num_dependencies(Forkfile forkfile, int rule_num) {
   return r->dependency_count;
 }
 
+/* Get the dependency at index */
 char *get_dependency(Forkfile forkfile, int rule_num, int dependency_num) {
+  /* Variables */
+  struct rule *r = lookup_rule(&forkfile, rule_num);
+  struct dependency *current = NULL;
+
+  /* Checks */
+  if (!r || rule_num < 0 || !r->dependency_head)
+    return NULL;
+  else current = r->dependency_head;
+
+  /* Loops */
+  while (current) {
+    if (current->index == dependency_num)
+      return current->word;
+
+    /* Next item */
+    current = current->next;
+  }
+  
+  /* Default */
   return NULL;
 }
 
