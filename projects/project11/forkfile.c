@@ -35,6 +35,7 @@ static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency);
 static Rule *lookup_rule(Forkfile *ff, int rule_index);
 static char *trim_whitespace(char *str, int allow_leading_tab);
 static char *replace_tabs(char *str);
+static char *remove_extra_spaces(char *str);
 
 /* Initialize a Forkfile structure */
 Forkfile read_forkfile(const char filename[]) {
@@ -271,7 +272,7 @@ static char *add_action(Forkfile *ff, Rule *rule, char *line) {
     *pos = '\0';
 
   /* Default */
-  rule->action = trim_whitespace(action, 1);
+  rule->action = remove_extra_spaces(trim_whitespace(action, 1));
   return rule->action;
 }
 
@@ -345,6 +346,7 @@ static char *trim_whitespace(char *str, int action_string) {
   int i = 0;
   int nsi = 0;
 
+  /* Checks */
   if (!(ns = malloc(strlen(str))))
     return NULL;
 
@@ -366,12 +368,14 @@ static char *trim_whitespace(char *str, int action_string) {
   return ns;
 }
 
+/* HELPER: Replace tabs with spaces */
 static char *replace_tabs(char *str) {
   /* Variables */
   char *ns;
   int i = 0;
   int nsi = 0;
 
+  /* Checks */
   if (!(ns = malloc(strlen(str))))
     return NULL;
 
@@ -381,6 +385,35 @@ static char *replace_tabs(char *str) {
       ns[nsi++] = ' ';
     else
       ns[nsi++] = str[i];
+
+    i++;
+  }
+
+  /* Return */
+  return ns;
+}
+
+/* HELPER: Remove multiple spaces */
+static char *remove_extra_spaces(char *str) {
+  /* Variables */
+  char *ns;
+  int i = 0;
+  int nsi = 0;
+  char last_char = '\0';
+
+  /* Checks */
+  if (!(ns = malloc(strlen(str))))
+    return NULL;
+
+  /* Loops */
+  while (str[i]) {
+    if (str[i] == ' ' && last_char == ' ') {
+      i++;
+      continue;
+    } else {
+      ns[nsi++] = str[i];
+      last_char = str[i];
+    }
 
     i++;
   }
