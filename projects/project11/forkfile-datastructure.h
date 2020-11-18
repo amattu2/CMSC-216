@@ -18,6 +18,7 @@
 
   /* Forkfile Generic Node */
   typedef struct dependency {
+    int index;
     char *word;
     struct dependency *next;
   } Dependency;

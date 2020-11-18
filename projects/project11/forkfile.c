@@ -31,7 +31,7 @@
 /* Prototypes */
 static Rule *add_rule(Forkfile *ff, char *line);
 static char *add_action(Forkfile *ff, Rule *rule, char *line);
-static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency);
+static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency, int index);
 static Rule *lookup_rule(Forkfile *ff, int rule_index);
 static char *trim_whitespace(char *str, int allow_leading_tab);
 static char *replace_tabs(char *str);
@@ -186,7 +186,6 @@ static Rule *add_rule(Forkfile *ff, char *line) {
   char *name = NULL;
   char *dependency = NULL;
   char *pos = NULL;
-  int dependency_count = 0;
 
   /* Checks */
   if (!ff || !(r = malloc(sizeof(struct rule))))
@@ -234,11 +233,11 @@ static Rule *add_rule(Forkfile *ff, char *line) {
         *pos = '\0';
 
       /* Add Dependency */
-      add_dependecy(ff, r, dependency);
+      add_dependecy(ff, r, dependency, r->dependency_count);
 
       /* Variables */
       dependency = strtok(NULL, " ");
-      dependency_count++;
+      r->dependency_count++;
     }
   }
 
@@ -249,7 +248,6 @@ static Rule *add_rule(Forkfile *ff, char *line) {
 
   /* Assign Values */
   r->index = ff->rule_count; /* Naturally zero-indexed */
-  r->dependency_count = dependency_count;
   ff->rule_count++;
 
   /* Default */
@@ -277,7 +275,7 @@ static char *add_action(Forkfile *ff, Rule *rule, char *line) {
 }
 
 /* HELPER: Create a new rule dependency */
-static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency) {
+static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency, int index) {
   /* Variables */
   struct dependency *n = NULL;
   char *word = NULL;
@@ -299,14 +297,17 @@ static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency) {
     struct dependency *current = rule->dependency_head;
 
     /* Loops */
-    while (current && current->next)
+    while (current && current->next) {
       current = current->next;
+      index++;
+    }
 
     /* Assign Next */
     current->next = n;
   } else rule->dependency_head = n;
 
   /* Assign Values */
+  n->index = index;
   n->word = trim_whitespace(word, 0);
 
   /* Return */
