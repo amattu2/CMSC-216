@@ -2,7 +2,7 @@
 - [X] public01.c
 - [X] public02.c
 - [X] public03.c
-- [ ] public04.c
+- [X] public04.c
 - [ ] public05.c
 - [ ] public06.c
 - [ ] public07.c

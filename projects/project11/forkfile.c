@@ -176,13 +176,14 @@ char *get_dependency(Forkfile forkfile, int rule_num, int dependency_num) {
 
   /* Loops */
   while (current) {
+    /* Checks */
     if (current->index == dependency_num)
       return current->word;
 
     /* Next item */
     current = current->next;
   }
-  
+
   /* Default */
   return NULL;
 }
@@ -319,7 +320,6 @@ static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency, int index) 
     /* Loops */
     while (current && current->next) {
       current = current->next;
-      index++;
     }
 
     /* Assign Next */
@@ -347,7 +347,7 @@ static Rule *lookup_rule(Forkfile *ff, int rule_index) {
   else current = ff->rule_head;
 
   /* Loops */
-  while (current && current->next) {
+  while (current) {
     /* Checks */
     if (current->index == rule_index)
       return current;
