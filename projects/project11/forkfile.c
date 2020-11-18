@@ -33,7 +33,8 @@ static Rule *add_rule(Forkfile *ff, char *line);
 static char *add_action(Forkfile *ff, Rule *rule, char *line);
 static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency);
 static Rule *lookup_rule(Forkfile *ff, int rule_index);
-static char *trim_whitespace(char *str);
+static char *trim_whitespace(char *str, int allow_leading_tab);
+static char *replace_tabs(char *str);
 
 /* Initialize a Forkfile structure */
 Forkfile read_forkfile(const char filename[]) {
@@ -83,8 +84,6 @@ int lookup_target(Forkfile forkfile, const char target_name[]) {
 
   /* Loops */
   while (current && current->next) {
-    printf("Comparing %s to %s\n", target_name, current->name);
-
     /* Checks */
     if (current->name && strcmp(current->name, target_name) == 0)
       return current->index;
@@ -211,6 +210,7 @@ static Rule *add_rule(Forkfile *ff, char *line) {
   else r->dependency_head = NULL;
 
   /* Allocate Target Name */
+  line = replace_tabs(line);
   if ((name = strtok(line, " "))) {
     /* Variables */
     char *temp = NULL;
@@ -222,7 +222,7 @@ static Rule *add_rule(Forkfile *ff, char *line) {
       strcpy(temp, name);
 
     /* Variables */
-    r->name = temp;
+    r->name = trim_whitespace(temp, 0);
   } else return NULL;
 
   /* Setup Dependencies */
@@ -271,7 +271,7 @@ static char *add_action(Forkfile *ff, Rule *rule, char *line) {
     *pos = '\0';
 
   /* Default */
-  rule->action = action;
+  rule->action = trim_whitespace(action, 1);
   return rule->action;
 }
 
@@ -281,6 +281,7 @@ static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency) {
   struct dependency *n = NULL;
   char *word = NULL;
   char *pos = NULL;
+  dependency = trim_whitespace(dependency, 0);
 
   /* Checks */
   if (!ff || !rule)
@@ -305,7 +306,7 @@ static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency) {
   } else rule->dependency_head = n;
 
   /* Assign Values */
-  n->word = word;
+  n->word = trim_whitespace(word, 0);
 
   /* Return */
   return 1;
@@ -338,7 +339,7 @@ static Rule *lookup_rule(Forkfile *ff, int rule_index) {
 }
 
 /* HELPER: Remove string whitespace */
-static char *trim_whitespace(char *str) {
+static char *trim_whitespace(char *str, int action_string) {
   /* Variables */
   char *ns;
   int i = 0;
@@ -349,8 +350,38 @@ static char *trim_whitespace(char *str) {
 
   /* Loops */
   while (str[i]) {
-    if (str[i] != '\t' && str[i] != '\n')
+    if (str[i] == '\t' && action_string == 1 && i == 0)
       ns[nsi++] = str[i];
+    else if (str[i] == '\t' && action_string == 1 && i > 0)
+      ns[nsi++] = ' ';
+    else if (str[i] == ' ' && action_string == 1 && i > 0)
+      ns[nsi++] = str[i];
+    else if (str[i] != '\t' && str[i] != '\n' && str[i] != ' ')
+      ns[nsi++] = str[i];
+
+    i++;
+  }
+
+  /* Return */
+  return ns;
+}
+
+static char *replace_tabs(char *str) {
+  /* Variables */
+  char *ns;
+  int i = 0;
+  int nsi = 0;
+
+  if (!(ns = malloc(strlen(str))))
+    return NULL;
+
+  /* Loops */
+  while (str[i]) {
+    if (str[i] == '\t')
+      ns[nsi++] = ' ';
+    else
+      ns[nsi++] = str[i];
+
     i++;
   }
 
