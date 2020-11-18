@@ -236,8 +236,34 @@ int is_older(const char filename1[], const char filename2[]) {
   return 1;
 }
 
+/* Execute command in rule */
 int do_action(Forkfile forkfile, int rule_num) {
-  return 0;
+  /* Variables */
+  struct rule *r = lookup_rule(&forkfile, rule_num);
+  char **action = NULL;
+  pid_t child_pid;
+
+  /* Checks */
+  if (!r)
+    return -1;
+  else action = split(r->action);
+
+  child_pid = fork();
+
+  if (child_pid > 0) {
+
+    printf("\nI am the parent.  My child was %d.\n", child_pid);
+
+  } else {
+    if (child_pid == 0) {
+
+      execlp(action[0], action[1], NULL);
+
+    }
+  }
+
+  /* Default */
+  return 1;
 }
 
 /* HELPER: Create a new rule */
