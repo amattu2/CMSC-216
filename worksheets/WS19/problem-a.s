@@ -10,3 +10,6 @@ main:
 
 	li $a0, $t0, 0
 	syscall # print "buffer"
+
+	li $v0, 10 # terminate
+	syscall
