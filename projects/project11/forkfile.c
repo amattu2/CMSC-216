@@ -27,6 +27,7 @@
 #include <sys/stat.h>
 #include <sys/unistd.h>
 #include <errno.h>
+#include <wait.h>
 #include "forkfile.h"
 #include "split.h"
 #include "safe-fork.h"
@@ -240,6 +241,7 @@ int do_action(Forkfile forkfile, int rule_num) {
   /* Variables */
   struct rule *r = lookup_rule(&forkfile, rule_num);
   char **action = NULL;
+  int result = 0;
   pid_t pid;
 
   /* Checks */
@@ -249,8 +251,14 @@ int do_action(Forkfile forkfile, int rule_num) {
     action = split(r->action);
     pid = safe_fork();
   }
-  if (pid == 0) {
-    return execv(action[0], action);
+  if (pid > 0) {
+    wait(&result);
+
+  } else {
+    if (pid == 0) {
+
+      exit(execv(action[0], action));
+    }
   }
 
   /* Default */
