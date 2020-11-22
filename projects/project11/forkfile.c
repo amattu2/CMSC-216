@@ -38,7 +38,6 @@ static char *add_action(Forkfile *ff, Rule *rule, char *line);
 static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency, int index);
 static Rule *lookup_rule(Forkfile *ff, int rule_index);
 static char *trim_whitespace(char *str, int allow_leading_tab);
-static char *replace_tabs(char *str);
 static char *remove_extra_spaces(char *str);
 
 /* Initialize a Forkfile structure */
@@ -248,7 +247,7 @@ int do_action(Forkfile forkfile, int rule_num) {
     return -1;
   else action = split(r->action);
 
-  child_pid = fork();
+  child_pid = safe_fork();
 
   if (child_pid > 0) {
 
@@ -271,8 +270,8 @@ static Rule *add_rule(Forkfile *ff, char *line) {
   /* Variables */
   struct rule *r = NULL;
   char *name = NULL;
-  char *dependency = NULL;
-  char *pos = NULL;
+  char **words = split(line);
+  int index = 1;
 
   /* Checks */
   if (!ff || !(r = malloc(sizeof(struct rule))))
@@ -296,36 +295,17 @@ static Rule *add_rule(Forkfile *ff, char *line) {
     return NULL;
   else r->dependency_head = NULL;
 
-  /* Allocate Target Name */
-  line = replace_tabs(line);
-  if ((name = strtok(line, " "))) {
-    /* Variables */
-    char *temp = NULL;
-
-    /* Remove Colon */
-    if ((pos = strchr(name, ':')) != NULL)
-      *pos = '\0';
-    if ((temp = malloc(strlen(name) + 1)))
-      strcpy(temp, name);
-
-    /* Variables */
-    r->name = trim_whitespace(temp, 0);
+  /* Allocate Name Space */
+  if (words && words[0] && (name = malloc(strlen(words[0]) + 1))) {
+    strcpy(name, words[0]);
+    r->name = name;
   } else return NULL;
 
-  /* Setup Dependencies */
-  if ((dependency = strtok(NULL, " "))) {
-    while (dependency != NULL) {
-      /* Remove Newline */
-      if ((pos = strchr(dependency, '\n')) != NULL)
-        *pos = '\0';
-
-      /* Add Dependency */
-      add_dependecy(ff, r, dependency, r->dependency_count);
-
-      /* Variables */
-      dependency = strtok(NULL, " ");
-      r->dependency_count++;
-    }
+  /* Setup Dependancies */
+  while (words[index]) {
+    add_dependecy(ff, r, words[index], r->dependency_count);
+    r->dependency_count++;
+    index++;
   }
 
   /* Allocate Target Action */
@@ -446,31 +426,6 @@ static char *trim_whitespace(char *str, int action_string) {
     else if (str[i] == ' ' && action_string == 1 && i > 0)
       ns[nsi++] = str[i];
     else if (str[i] != '\t' && str[i] != '\n' && str[i] != ' ')
-      ns[nsi++] = str[i];
-
-    i++;
-  }
-
-  /* Return */
-  return ns;
-}
-
-/* HELPER: Replace tabs with spaces */
-static char *replace_tabs(char *str) {
-  /* Variables */
-  char *ns;
-  int i = 0;
-  int nsi = 0;
-
-  /* Checks */
-  if (!(ns = malloc(strlen(str))))
-    return NULL;
-
-  /* Loops */
-  while (str[i]) {
-    if (str[i] == '\t')
-      ns[nsi++] = ' ';
-    else
       ns[nsi++] = str[i];
 
     i++;
