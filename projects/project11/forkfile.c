@@ -245,21 +245,14 @@ int do_action(Forkfile forkfile, int rule_num) {
   pid_t pid;
 
   /* Checks */
-  if (!r)
-    return -1;
-  else {
+  if (r) {
     action = split(r->action);
     pid = safe_fork();
-  }
+  } else return -1;
   if (pid > 0) {
     wait(&result);
-
-  } else {
-    if (pid == 0) {
-
-      exit(execv(action[0], action));
-    }
-  }
+  } else if (pid == 0)
+    exit(execl(action[0], action[1], action[2]));
 
   /* Default */
   return -1;
