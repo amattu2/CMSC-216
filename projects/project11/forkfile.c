@@ -211,8 +211,8 @@ int exists(const char filename[]) {
 /* Check which file is oldest */
 int is_older(const char filename1[], const char filename2[]) {
   /* Variables */
-  struct stat *s1 = NULL;
-  struct stat *s2 = NULL;
+  struct stat s1;
+  struct stat s2;
 
   /* Check Arguments */
   if (!filename1 || !filename2)
@@ -220,16 +220,16 @@ int is_older(const char filename1[], const char filename2[]) {
 
   /* Check File 1 */
   errno = 0;
-  if (stat(filename1, s1) == -1 && errno == ENOENT)
+  if (stat(filename1, &s1) == -1 && errno == ENOENT)
     return 0;
 
   /* Check File 2 */
   errno = 0;
-  if (stat(filename2, s2) == -1 && errno == ENOENT)
+  if (stat(filename2, &s2) == -1 && errno == ENOENT)
     return 0;
 
   /* Check Time */
-  if (s1->st_mtime > s2->st_mtime)
+  if (s1.st_mtime > s2.st_mtime)
     return 0;
 
   /* Default */
