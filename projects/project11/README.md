@@ -4,7 +4,7 @@
 - [X] public03.c
 - [X] public04.c
 - [ ] public05.c
-- [ ] public06.c
+- [X] public06.c
 - [ ] public07.c
 - [ ] public08.c
 - [ ] public09.c
