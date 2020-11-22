@@ -240,29 +240,21 @@ int do_action(Forkfile forkfile, int rule_num) {
   /* Variables */
   struct rule *r = lookup_rule(&forkfile, rule_num);
   char **action = NULL;
-  pid_t child_pid;
+  pid_t pid;
 
   /* Checks */
   if (!r)
     return -1;
-  else action = split(r->action);
-
-  child_pid = safe_fork();
-
-  if (child_pid > 0) {
-
-    printf("\nI am the parent.  My child was %d.\n", child_pid);
-
-  } else {
-    if (child_pid == 0) {
-
-      execlp(action[0], action[1], NULL);
-
-    }
+  else {
+    action = split(r->action);
+    pid = safe_fork();
+  }
+  if (pid == 0) {
+    return execv(action[0], action);
   }
 
   /* Default */
-  return 1;
+  return -1;
 }
 
 /* HELPER: Create a new rule */
