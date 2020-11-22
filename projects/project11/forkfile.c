@@ -195,13 +195,13 @@ char *get_dependency(Forkfile forkfile, int rule_num, int dependency_num) {
 /* Check if a file exists */
 int exists(const char filename[]) {
   /* Variables */
-  struct stat *s = NULL;
+  struct stat s;
   errno = 0;
 
   /* Checks */
   if (!filename)
     return 0;
-  if (stat(filename, s) == -1 && errno == ENOENT)
+  if (stat(filename, &s) == -1 && errno == ENOENT)
     return 0;
 
   /* Default */
