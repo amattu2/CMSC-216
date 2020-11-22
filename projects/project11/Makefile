@@ -4,7 +4,7 @@
 # not to provide it to anyone else.
 
 CC = gcc
-CFLAGS= -g -ansi -pedantic-errors -Wall -Werror -Wshadow -Wwrite-strings
+CFLAGS= -g -ansi -pedantic-errors -Wall -fstack-protector-all -Werror -Wshadow
 
 # create all public tests
 
@@ -81,6 +81,9 @@ public10.o: public10.c forkfile.h forkfile-datastructure.h make-target.h
 
 forkfile.o: forkfile.c forkfile.h forkfile-datastructure.h split.h safe-fork.h
 	$(CC) $(CFLAGS) -c forkfile.c
+
+make-target.o: make-target.c make-target.h forkfile.h forkfile-datastructure.h
+	$(CC) $(CFLAGS) -c make-target.c
 
 clean:
 	rm -f public*.o public*.x forkfile.o
