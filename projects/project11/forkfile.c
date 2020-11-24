@@ -5,7 +5,7 @@
  * Directory ID: amattu
  *
  * Author: Alec M.
- * Date: Nov 23rd, 2020
+ * Date: Nov 24th, 2020
  *
  * I pledge on my honor that I have not given or received
  * any unauthorized assistance on this assignment.
@@ -145,14 +145,14 @@ void print_forkfile(Forkfile forkfile) {
     printf("%s:", current->name);
 
     /* Print Rule Dependencies */
-    if (d)
+    if (d) {
       while (d) {
         printf(" %s", d->word);
         d = d->next;
         if (!d)
           printf("\n");
       }
-    else printf("\n");
+    } else printf("\n");
 
     /* Print Action */
     if (current->action) {
@@ -372,7 +372,8 @@ static char *add_action(Forkfile *ff, Rule *rule, char *line) {
 }
 
 /* HELPER: Create a new rule dependency */
-static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency, int index) {
+static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency,
+                        int index) {
   /* Variables */
   struct dependency *n = NULL;
   char *word = NULL;
@@ -394,9 +395,8 @@ static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency, int index) 
     struct dependency *current = rule->dependency_head;
 
     /* Loops */
-    while (current && current->next) {
+    while (current && current->next)
       current = current->next;
-    }
 
     /* Assign Next */
     current->next = n;
@@ -444,7 +444,7 @@ static char *trim_whitespace(char *str, int action_string) {
   int nsi = 0;
 
   /* Checks */
-  if (!(ns = malloc(strlen(str))))
+  if (!(ns = malloc(strlen(str) + 1)))
     return NULL;
 
   /* Loops */
@@ -458,6 +458,7 @@ static char *trim_whitespace(char *str, int action_string) {
     else if (str[i] != '\t' && str[i] != '\n' && str[i] != ' ')
       ns[nsi++] = str[i];
 
+    /* Increment index */
     i++;
   }
 
@@ -474,19 +475,17 @@ static char *remove_extra_spaces(char *str) {
   char last_char = '\0';
 
   /* Checks */
-  if (!(ns = malloc(strlen(str))))
+  if (!(ns = malloc(strlen(str) + 1)))
     return NULL;
 
   /* Loops */
   while (str[i]) {
-    if (str[i] == ' ' && last_char == ' ') {
-      i++;
-      continue;
-    } else {
+    if (str[i] != ' ' || last_char != ' ') {
       ns[nsi++] = str[i];
       last_char = str[i];
     }
 
+    /* Increment index */
     i++;
   }
 
