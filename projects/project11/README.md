@@ -11,5 +11,8 @@
 - [X] public10.c
 
 ## Notes
+IMPORTANT:
+- Check valgrind for memory errors (not leaks)
+
 Potential edge cases:
 - When the action line has multiple tabs after the first index between command spaces (Eg. echo abc 		def)
