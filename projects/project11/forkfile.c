@@ -243,6 +243,7 @@ int do_action(Forkfile forkfile, int rule_num) {
   char **action = NULL;
   int result = 0;
   pid_t pid;
+  errno = 0;
 
   /* Checks */
   if (r) {
@@ -254,10 +255,9 @@ int do_action(Forkfile forkfile, int rule_num) {
     wait(&result);
 
     /* Checks */
-    if (result == -1)
-      return -1;
-    else
-      return result;
+    if (WIFEXITED(result) && WEXITSTATUS(result) == 0)
+      return WEXITSTATUS(result);
+    else return -1;
   } else if (pid == 0) { /* Child */
     execvp(action[0], action);
     exit(-1);
