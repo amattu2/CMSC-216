@@ -105,13 +105,26 @@ int lookup_target(Forkfile forkfile, const char target_name[]) {
 void print_action(Forkfile forkfile, int rule_num) {
   /* Variables */
   struct rule *r = lookup_rule(&forkfile, rule_num);
+  char **action = NULL;
+  int index = 0;
 
   /* Checks */
   if (!r || rule_num < 0)
     return;
+  else action = split(r->action);
+  if (!action)
+    return;
 
-  /* Default */
-  printf("%s\n", r->action);
+  /* Loops */
+  while (action[index]) {
+    /* Print Word */
+    printf("%s", action[index++]);
+
+    /* Print Padding */
+    if (action[index])
+      printf(" ");
+  }
+  printf("\n");
 }
 
 /* Print the forkfile contents */
@@ -143,7 +156,23 @@ void print_forkfile(Forkfile forkfile) {
     else printf("\n");
 
     /* Print Action */
-    printf("%s\n", current->action);
+    if (current->action) {
+      /* Variables */
+      char **action = split(current->action);
+      int index = 0;
+
+      /* Loops */
+      printf("\t");
+      while (action[index]) {
+        /* Print Word */
+        printf("%s", action[index++]);
+
+        /* Print Padding */
+        if (action[index])
+          printf(" ");
+      }
+      printf("\n");
+    }
 
     /* Checks */
     if (current->next)
@@ -229,7 +258,7 @@ int is_older(const char filename1[], const char filename2[]) {
     return 0;
 
   /* Check Time */
-  if (s1.st_mtime > s2.st_mtime)
+  if (s2.st_mtime < s1.st_mtime)
     return 0;
 
   /* Default */
