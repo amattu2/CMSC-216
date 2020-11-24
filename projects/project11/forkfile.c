@@ -249,10 +249,19 @@ int do_action(Forkfile forkfile, int rule_num) {
     action = split(r->action);
     pid = safe_fork();
   } else return -1;
-  if (pid > 0) {
+  if (pid > 0) { /* Parent */
+    /* Wait */
     wait(&result);
-  } else if (pid == 0)
-    exit(execl(action[0], action[1], action[2]));
+
+    /* Checks */
+    if (result == -1)
+      return -1;
+    else
+      return result;
+  } else if (pid == 0) { /* Child */
+    execlp(action[0], action[1]);
+    exit(-1);
+  }
 
   /* Default */
   return -1;
