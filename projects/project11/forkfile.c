@@ -259,7 +259,7 @@ int do_action(Forkfile forkfile, int rule_num) {
     else
       return result;
   } else if (pid == 0) { /* Child */
-    execlp(action[0], action[1]);
+    execvp(action[0], action);
     exit(-1);
   }
 
