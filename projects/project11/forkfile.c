@@ -22,11 +22,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
+#include <wait.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/unistd.h>
-#include <errno.h>
-#include <wait.h>
 #include "forkfile.h"
 #include "split.h"
 #include "safe-fork.h"
