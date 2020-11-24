@@ -5,7 +5,7 @@
  * Directory ID: amattu
  *
  * Author: Alec M.
- * Date: Nov 22nd, 2020
+ * Date: Nov 23rd, 2020
  *
  * I pledge on my honor that I have not given or received
  * any unauthorized assistance on this assignment.
@@ -17,7 +17,6 @@
  * - Use custom data structure
  * - Use pipes/forking
 */
-
 
 /* Files */
 #include <stdio.h>
