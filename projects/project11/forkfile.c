@@ -330,6 +330,7 @@ static Rule *add_rule(Forkfile *ff, char *line) {
   } else return NULL;
 
   /* Setup Dependancies */
+  r->dependency_count = 0;
   while (words[index]) {
     add_dependecy(ff, r, words[index], r->dependency_count);
     r->dependency_count++;
@@ -337,9 +338,9 @@ static Rule *add_rule(Forkfile *ff, char *line) {
   }
 
   /* Assign Values */
-  r->next = NULL;
-  r->action = NULL;
   r->index = ff->rule_count; /* Naturally zero-indexed */
+  r->action = NULL;
+  r->next = NULL;
   ff->rule_count++;
 
   /* Default */
