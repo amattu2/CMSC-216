@@ -10,4 +10,10 @@
 - [ ] public09.c
 - [ ] public10.c
 
+## Additional Items
+- [ ] Check for Valgrind errors
+- [ ] Check codebase against linesize
+- [ ] Reread project description
+- [ ] Submit
+
 ## Notes
