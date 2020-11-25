@@ -37,8 +37,6 @@ static Rule *add_rule(Forkfile *ff, char *line);
 static char *add_action(Forkfile *ff, Rule *rule, char *line);
 static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency, int index);
 static Rule *lookup_rule(Forkfile *ff, int rule_index);
-static char *trim_whitespace(char *str, int allow_leading_tab);
-static char *remove_extra_spaces(char *str);
 
 /* Initialize a Forkfile structure */
 Forkfile read_forkfile(const char filename[]) {
@@ -77,7 +75,7 @@ Forkfile read_forkfile(const char filename[]) {
 /* Find a makefile target ID */
 int lookup_target(Forkfile forkfile, const char target_name[]) {
   /* Variables */
-  struct rule *current;
+  struct rule *current = NULL;
 
   /* Checks */
   if (!target_name)
@@ -338,12 +336,9 @@ static Rule *add_rule(Forkfile *ff, char *line) {
     index++;
   }
 
-  /* Allocate Target Action */
-  if (!(r->action = malloc(1)))
-    return NULL;
-  else r->action = NULL;
-
   /* Assign Values */
+  r->next = NULL;
+  r->action = NULL;
   r->index = ff->rule_count; /* Naturally zero-indexed */
   ff->rule_count++;
 
@@ -367,7 +362,7 @@ static char *add_action(Forkfile *ff, Rule *rule, char *line) {
     *pos = '\0';
 
   /* Default */
-  rule->action = remove_extra_spaces(trim_whitespace(action, 1));
+  rule->action = action;
   return rule->action;
 }
 
@@ -378,14 +373,12 @@ static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency,
   struct dependency *n = NULL;
   char *word = NULL;
   char *pos = NULL;
-  dependency = trim_whitespace(dependency, 0);
 
   /* Checks */
   if (!ff || !rule)
     return 0;
   if (!(n = malloc(sizeof(struct dependency))))
     return 0;
-  else n->next = NULL;
   if ((word = malloc(strlen(dependency) + 1)))
     strcpy(word, dependency);
   if ((pos = strchr(word, '\n')) != NULL)
@@ -403,8 +396,9 @@ static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency,
   } else rule->dependency_head = n;
 
   /* Assign Values */
+  n->next = NULL;
   n->index = index;
-  n->word = trim_whitespace(word, 0);
+  n->word = word;
 
   /* Return */
   return 1;
@@ -413,7 +407,7 @@ static int add_dependecy(Forkfile *ff, Rule *rule, char *dependency,
 /* HELPER: Look up a rule by index */
 static Rule *lookup_rule(Forkfile *ff, int rule_index) {
   /* Variables */
-  struct rule *current;
+  struct rule *current = NULL;
 
   /* Checks */
   if (!ff)
@@ -434,61 +428,4 @@ static Rule *lookup_rule(Forkfile *ff, int rule_index) {
 
   /* Default */
   return NULL;
-}
-
-/* HELPER: Remove string whitespace */
-static char *trim_whitespace(char *str, int action_string) {
-  /* Variables */
-  char *ns;
-  int i = 0;
-  int nsi = 0;
-
-  /* Checks */
-  if (!(ns = malloc(strlen(str) + 1)))
-    return NULL;
-
-  /* Loops */
-  while (str[i]) {
-    if (str[i] == '\t' && action_string == 1 && i == 0)
-      ns[nsi++] = str[i];
-    else if (str[i] == '\t' && action_string == 1 && i > 0)
-      ns[nsi++] = ' ';
-    else if (str[i] == ' ' && action_string == 1 && i > 0)
-      ns[nsi++] = str[i];
-    else if (str[i] != '\t' && str[i] != '\n' && str[i] != ' ')
-      ns[nsi++] = str[i];
-
-    /* Increment index */
-    i++;
-  }
-
-  /* Return */
-  return ns;
-}
-
-/* HELPER: Remove multiple spaces */
-static char *remove_extra_spaces(char *str) {
-  /* Variables */
-  char *ns;
-  int i = 0;
-  int nsi = 0;
-  char last_char = '\0';
-
-  /* Checks */
-  if (!(ns = malloc(strlen(str) + 1)))
-    return NULL;
-
-  /* Loops */
-  while (str[i]) {
-    if (str[i] != ' ' || last_char != ' ') {
-      ns[nsi++] = str[i];
-      last_char = str[i];
-    }
-
-    /* Increment index */
-    i++;
-  }
-
-  /* Return */
-  return ns;
 }
