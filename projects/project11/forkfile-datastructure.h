@@ -12,9 +12,9 @@
 */
 
 /* Forkfile data structure */
-#ifndef STRUCT_DEF
+#ifndef FORKFILE_STRUCT
   /* Define preprocessor variable */
-  #define STRUCT_DEF
+  #define FORKFILE_STRUCT
 
   /* Forkfile Generic Node */
   typedef struct dependency {
