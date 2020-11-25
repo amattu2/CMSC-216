@@ -12,7 +12,8 @@
 
 ## Notes
 IMPORTANT:
-- Check valgrind for memory errors (not leaks)
-
-Potential edge cases:
-- When the action line has multiple tabs after the first index between command spaces (Eg. echo abc 		def)
+- [X] Check for Valgrind errors
+- [X] Check codebase against linesize
+- [X] Reread project description
+- [X] Reextract the files and run tests again
+- [X] Submit
