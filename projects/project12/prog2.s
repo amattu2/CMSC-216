@@ -72,10 +72,10 @@ power:
   j exit
 
 sopd:
-  sub $sp, $sp, 16 # Setup stack pointer
-  sw $ra, 16($sp)
-  sw $fp, 8($sp)
-  add $fp, $sp, 16
+  sub $sp, $sp, 8 # Setup stack pointer
+  sw $ra, 8($sp) # Save return address
+  sw $fp, 4($sp)
+  add $fp, $sp, 8 # New pointer
 
   # Read argument 1
   lw $t0, 4($fp)

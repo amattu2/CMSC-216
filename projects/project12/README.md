@@ -19,7 +19,12 @@
 - [ ] Submit
 
 ## Notes
+General
+https://github.com/yfei1/umd/blob/master/CMSC216
+
 `prog1.s`
 https://stackoverflow.com/questions/19748054/reading-and-printing-an-integer-in-mips
 https://stackoverflow.com/questions/45685587/how-to-preserve-the-global-variables-in-the-stack-in-mips-when-calling-a-functio
-https://github.com/yfei1/umd/blob/master/CMSC216
+
+`prog2.s`
+- Argument 1 isn't working
