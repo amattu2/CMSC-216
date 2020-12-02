@@ -18,7 +18,7 @@ Teachers:
 |project7|
 |project8|
 |project9|
-|project10|
+|project10|100%|
 |project11|
 |project12|
 |project13|
