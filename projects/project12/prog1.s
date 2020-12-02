@@ -25,7 +25,7 @@
 # Main Program
 .text
 main:
-	# Set i = 1
+  # Set i = 1
   li $t0, 1
   sw $t0, i
 
@@ -34,35 +34,35 @@ main:
   syscall
   # Move base from $v0 to $t0
   move $t0, $v0
-	# Move base from $t0 to base
-	sw $t0, base
+  # Move base from $t0 to base
+  sw $t0, base
 
   # Get integer exponent
   li $v0, 5
   syscall
   # Move exponent from $v0 to $t0
   move $t0, $v0
-	# Move exponent from $t0 to exponent
-	sw $t0, exponent
+  # Move exponent from $t0 to exponent
+  sw $t0, exponent
 
-	# Begin loop
-	j loop
+  # Begin loop
+  j loop
 
 loop:
-	# Load global variables
-	lw $t0, exponent # exponent
-	lw $t1, base # base
-	lw $t2, i # index
-	lw $t3, ans # answer
+  # Load global variables
+  lw $t0, exponent # exponent
+  lw $t1, base # base
+  lw $t2, i # index
+  lw $t3, ans # answer
 
-	# if i > exponent
-	bgt $t2, $t0, exit
+  # if i > exponent
+  bgt $t2, $t0, exit
 
-	# ans *= base
-	mul $t3, $t3, $t1
+  # ans *= base
+  mul $t3, $t3, $t1
 
-	# Next iteration
-	j loop
+  # Next iteration
+  j loop
 
 exit:
   # Print out answer
