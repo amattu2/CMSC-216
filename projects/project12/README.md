@@ -15,6 +15,7 @@
 - [ ] Check codebase against linesize
 - [ ] Reread project description
 - [ ] Switch `$v0` to `$t0`
+- [ ] Use formatting by emacs
 - [ ] Submit
 
 ## Notes
