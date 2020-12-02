@@ -16,10 +16,10 @@
 
 # Define global variables
 .data
-   base:  .word  0
-   exponent:  .word  0
-   i:  .word  0
-   ans:  .word  0
+  base:      .word  0
+  exponent:  .word  0
+  i:         .word  0
+  ans:       .word  0
 
 
 # Main Program
@@ -60,6 +60,15 @@ loop:
 
   # ans *= base
   mul $t3, $t3, $t1
+
+  # Increment index
+  add $t2, $t2, 1
+
+  # Store back in word
+  sw $t0, exponent # exponent
+  sw $t1, base # base
+  sw $t2, i # index
+  sw $t3, ans # answer
 
   # Next iteration
   j loop
