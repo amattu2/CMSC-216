@@ -21,7 +21,6 @@
   i:         .word  0
   ans:       .word  0
 
-
 # Main Program
 .text
 main:
@@ -29,54 +28,50 @@ main:
   li $t0, 1
   sw $t0, i
 
-  # Get integer base
-  li $v0, 5
-  syscall
-  # Move base from $v0 to $t0
-  move $t0, $v0
-  # Move base from $t0 to base
-  sw $t0, base
+  # Set answer = 1
+  li $t0, 1
+  sw $t0, ans
 
-  # Get integer exponent
+  # scanf base
   li $v0, 5
   syscall
-  # Move exponent from $v0 to $t0
-  move $t0, $v0
-  # Move exponent from $t0 to exponent
-  sw $t0, exponent
+  sw $v0, base
+
+  # scanf exponent
+  li $v0, 5
+  syscall
+  sw $v0, exponent
+
+  lw $t0, exponent # $t0 = exponent
+  lw $t1, base # $t1 = base
+  lw $t2, i # $t2 = i
+  lw $t3, ans # $t3 = ans
 
   # Begin loop
   j loop
 
-loop:
-  # Load global variables
-  lw $t0, exponent # exponent
-  lw $t1, base # base
-  lw $t2, i # index
-  lw $t3, ans # answer
-
-  # if i > exponent
-  bgt $t2, $t0, exit
-
+loop: bgt $t2, $t0, exit # i > exponent
   # ans *= base
   mul $t3, $t3, $t1
 
   # Increment index
   add $t2, $t2, 1
 
-  # Store back in word
-  sw $t0, exponent # exponent
-  sw $t1, base # base
-  sw $t2, i # index
-  sw $t3, ans # answer
+  # Store $t3 into ans
+  sw $t3, ans
 
   # Next iteration
   j loop
 
 exit:
   # Print out answer
-  lw $t0, ans
-  move $a0, $t0
+  li $v0, 1
+  lw $a0, ans
+  syscall
+
+  # Print newline
+  li $v0, 11
+  li $a0, 10
   syscall
 
   # End Program
