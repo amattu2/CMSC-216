@@ -17,3 +17,6 @@
 - [ ] Submit
 
 ## Notes
+`prog1.s`
+https://stackoverflow.com/questions/19748054/reading-and-printing-an-integer-in-mips
+https://stackoverflow.com/questions/45685587/how-to-preserve-the-global-variables-in-the-stack-in-mips-when-calling-a-functio
