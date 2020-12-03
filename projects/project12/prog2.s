@@ -17,126 +17,124 @@
 # - Terminate with the standard MIPS assembly call
 
 .data
-  number:    .word  0
-  exponent:  .word  0
-  result:    .word  0
+  number: .word 0
+  exponent: .word 0
 
 .text
-main: li $sp, 0x7ffffffc  # set up stack ptr
-  # Set number = 0
-  li $t0, 0
-  sw $t0, number
-
-  # Set exponent = 0
-  li $t0, 0
-  sw $t0, exponent
-
-  # Set result = 0
-  li $t0, 0
-  sw $t0, result
-
-  # scanf number
+main:
+  # Read in the first integer for 'base'.
   li $v0, 5
   syscall
+
+  # Store the value in 'base'
   sw $v0, number
 
-  # scanf exponent
+  # Read in the second integer for 'exponent'.
   li $v0, 5
   syscall
+
+  # Store the value in 'base'
   sw $v0, exponent
 
-  # Push number to the stack
-  #lw $t0, number
-  #sw $t0, ($sp)
-  #sub $sp, $sp, 4
+  # Call 'sopd' by passing the two arguments on the stack. Return value is in 'v0'.
+  addiu $sp, $sp, -8
   lw $a0, number
-
-  # Push exponent to the stack
-  #lw $t0, exponent
-  #sw $t0, 4($sp)
-  #sub $sp, $sp, 4
+  sw $a0, 8($sp)
   lw $a1, exponent
-
-  # Jump to SOPD
+  sw $a1, 4($sp)
   jal sopd
+  addiu $sp, $sp, 8
 
-  # Pop arguments
-  add $sp, $sp, 8
-
-  # Store SOPD result
-  move $t0, $v0
-  sw $t0, result
-
-  # Print out result
+  add $a0, $v0, $zero       # $integer to print
   li $v0, 1
-  lw $a0, result
   syscall
 
-  # Print newline
-  li $v0, 11
-  li $a0, 10
-  syscall
-
-  # End Program
+  # End program
   li $v0, 10
   syscall
 
+
+# Accepts 2 arguments: 'base' and 'exponent'.
+# Returns the computed integer value (ignoring overflow).
+#
+# Arguments are expected to be pushed on the stack.
+# Uses `v0` to return output.
 power:
-  # Prologue
-  sub $sp, $sp, 8 # Setup stack pointer
-  sw $ra, 8($sp) # Save return address
-  sw $fp, 4($sp)
-  add $fp, $sp, 8 # New pointer
+  lw $t0, 8($sp) # 'base'
+  lw $t1, 4($sp) # 'exponent'
 
-  # copy from f
-  lw $t0, 8($fp)      # get arg. (value of i) in caller's frame
-  mul $t0, $t0, 10     # compute i * 10
-  move $v0, $t0
-  # / copy from f
+  li $t3, 1  # 'ans'
 
-  # Epilogue
-  lw $ra, 8($sp)      # load ret addr from stack
-  lw $fp, 4($sp)      # restore old frame ptr from stack
-  add $sp, $sp, 8      # reset stack ptr
-  jr $ra              # ret to caller using saved ret addr
+  li $t4, 1  # i
+  power_loop:
+    # If 'i' is greater than 'exponent', break.
+    slt $t5, $t1, $t4
+    bne $t5, $zero, power_loop_end
 
+    mult $t3, $t0
+    mflo $t3
+
+    addi $t4, $t4, 1  # Increment i by 1.
+    j power_loop
+  power_loop_end:
+    add $v0, $t3, $zero
+    jr $ra
+
+
+# Accepts 2 arguments: 'num' and 'n'.
+# Returns the sum of the n'th powers of all the positive divisers of num.
+#
+# Arguments are expected to be pushed on the stack.
+# Uses `v0` to return output.
 sopd:
-  sub $sp, $sp, 8 # Setup stack pointer
-  sw $ra, 8($sp) # Save return address
+  # Prologue -- Load params and then save the return address and frame pointer
+  lw $s0, 8($sp) # 'number'
+  lw $s1, 4($sp) # 'exponent'
+  addiu $sp, $sp, -8
+  sw $ra, 8($sp)
   sw $fp, 4($sp)
-  add $fp, $sp, 8 # New pointer
+  add $fp, $sp, 8
 
-  # int i = 0
-  li $v0, 1
+  li $s2, -1  # 'ans'
 
-  # Ans = -1
-  li $v1, -1
+  # if exponent < 0 or number < 1, then return early.
+  li $t7, 1
+  blt $s0, $t7, sopd_end
+  blt $s1, $zero, sopd_end
 
-  # Read argument 1
-  move $t0, $a0
+  li $s2, 0  # 'ans'
+  li $s3, 1  # i
 
-  # Read argument 2
-  move $t1, $a1
+  sopd_loop:
+    # If 'i' is greater than 'number', break.
+    slt $t7, $s0, $s3
+    bne $t7, $zero, sopd_loop_end
 
-  # debug
-  li $v0, 1
-  move $a0, $t0
-  syscall
-  li $v0, 11
-  li $a0, 10
-  syscall
-  li $v0, 1
-  move $a0, $t1
-  syscall
-  li $v0, 11
-  li $a0, 10
-  syscall
-  li $v0, 10
-  syscall
+    # `num % i`. The HI bits contain the modulo.
+    div $s0, $s3
+    mfhi $t7
+    bne $t7, $zero, sopd_skip
 
-  # Epilogue
-  move    $v0, $t0         # copy ret value to $v0 before exiting
-  lw      $ra, 16($sp)      # load ret addr from stack
-  lw      $fp, 12($sp)      # restore old frame ptr from stack
-  add     $sp, $sp, 16      # reset stack ptr
-  jr      $ra
+    # Call 'power' by passing the two arguments on the stack. Return value is in 'v0'.
+    addiu $sp, $sp, -8
+    sw $s3, 8($sp)  # Store 'i' as 'base'
+    sw $s1, 4($sp)  # Stroe 'exponent' as 'exponent'
+    jal power
+    addiu $sp, $sp, 8
+
+    # Grab the return value and add it to answer
+    add $s2, $s2, $v0
+
+  sopd_skip:
+    addi $s3, $s3, 1  # Increment i by 1.
+    j sopd_loop
+
+  sopd_loop_end:
+  sopd_end:
+    add $v0, $s2, $zero
+
+    # Epilogue -- Restore the old return address and frame pointer
+    lw $ra, 8($sp)
+    lw $fp, 4($fp)
+    add $sp, $sp, 8
+    jr $ra
