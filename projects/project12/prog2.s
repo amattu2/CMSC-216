@@ -3,7 +3,7 @@
 # University ID: 117568813
 # Directory ID: amattu
 # Author: Alec M.
-# Date: December 2nd, 2020
+# Date: December 3rd, 2020
 
 # I pledge on my honor that I have not given or received
 # any unauthorized assistance on this assignment.
@@ -52,7 +52,7 @@ main:
   li $v0, 11
   li $a0, 10
   syscall
-  
+
   # End program
   li $v0, 10
   syscall
@@ -139,6 +139,6 @@ sopd:
 
     # Epilogue -- Restore the old return address and frame pointer
     lw $ra, 8($sp)
-    lw $fp, 4($fp)
+    lw $fp, 4($sp)
     add $sp, $sp, 8
     jr $ra
