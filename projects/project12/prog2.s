@@ -46,14 +46,16 @@ main: li $sp, 0x7ffffffc  # set up stack ptr
   sw $v0, exponent
 
   # Push number to the stack
-  lw $t0, number
-  sw $t0, ($sp)
-  sub $sp, $sp, 4
+  #lw $t0, number
+  #sw $t0, ($sp)
+  #sub $sp, $sp, 4
+  lw $a0, number
 
   # Push exponent to the stack
-  lw $t0, exponent
-  sw $t0, 4($sp)
-  sub $sp, $sp, 4
+  #lw $t0, exponent
+  #sw $t0, 4($sp)
+  #sub $sp, $sp, 4
+  lw $a1, exponent
 
   # Jump to SOPD
   jal sopd
@@ -61,15 +63,42 @@ main: li $sp, 0x7ffffffc  # set up stack ptr
   # Pop arguments
   add $sp, $sp, 8
 
-  # Store sop result
+  # Store SOPD result
   move $t0, $v0
   sw $t0, result
 
-  # Exit
-  j exit
+  # Print out result
+  li $v0, 1
+  lw $a0, result
+  syscall
+
+  # Print newline
+  li $v0, 11
+  li $a0, 10
+  syscall
+
+  # End Program
+  li $v0, 10
+  syscall
 
 power:
-  j exit
+  # Prologue
+  sub $sp, $sp, 8 # Setup stack pointer
+  sw $ra, 8($sp) # Save return address
+  sw $fp, 4($sp)
+  add $fp, $sp, 8 # New pointer
+
+  # copy from f
+  lw $t0, 8($fp)      # get arg. (value of i) in caller's frame
+  mul $t0, $t0, 10     # compute i * 10
+  move $v0, $t0
+  # / copy from f
+
+  # Epilogue
+  lw $ra, 8($sp)      # load ret addr from stack
+  lw $fp, 4($sp)      # restore old frame ptr from stack
+  add $sp, $sp, 8      # reset stack ptr
+  jr $ra              # ret to caller using saved ret addr
 
 sopd:
   sub $sp, $sp, 8 # Setup stack pointer
@@ -77,11 +106,17 @@ sopd:
   sw $fp, 4($sp)
   add $fp, $sp, 8 # New pointer
 
+  # int i = 0
+  li $v0, 1
+
+  # Ans = -1
+  li $v1, -1
+
   # Read argument 1
-  lw $t0, 4($fp)
+  move $t0, $a0
 
   # Read argument 2
-  lw $t1, 8($fp)
+  move $t1, $a1
 
   # debug
   li $v0, 1
@@ -105,18 +140,3 @@ sopd:
   lw      $fp, 12($sp)      # restore old frame ptr from stack
   add     $sp, $sp, 16      # reset stack ptr
   jr      $ra
-
-exit:
-  # Print out result
-  li $v0, 1
-  lw $a0, result
-  syscall
-
-  # Print newline
-  li $v0, 11
-  li $a0, 10
-  syscall
-
-  # End Program
-  li $v0, 10
-  syscall
