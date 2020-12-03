@@ -49,6 +49,10 @@ main:
   li $v0, 1
   syscall
 
+  li $v0, 11
+  li $a0, 10
+  syscall
+  
   # End program
   li $v0, 10
   syscall
