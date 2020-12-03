@@ -12,9 +12,8 @@
 - [X] public11
 
 ## Additional Items
-- [ ] Check codebase against linesize
+- [X] Check codebase against linesize
 - [ ] Reread project description
-- [ ] Switch `$v0` to `$t0`
 - [ ] Use formatting by emacs
 - [ ] Submit
 
