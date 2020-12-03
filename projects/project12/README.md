@@ -2,14 +2,14 @@
 - [X] public01
 - [X] public02
 - [X] public03
-- [ ] public04
-- [ ] public05
-- [ ] public06
-- [ ] public07
-- [ ] public08
-- [ ] public09
-- [ ] public10
-- [ ] public11
+- [X] public04
+- [X] public05
+- [X] public06
+- [X] public07
+- [X] public08
+- [X] public09
+- [X] public10
+- [X] public11
 
 ## Additional Items
 - [ ] Check codebase against linesize
