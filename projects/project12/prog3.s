@@ -16,38 +16,40 @@
 # - Make use of functions and arguments
 # - Terminate with the standard MIPS assembly call
 
+# Define global variables
 .data
   number: .word 0
   exponent: .word 0
 
+# Main Program
 .text
-
 main:
-  # Read in the first integer for 'base'.
+  # Read integer for base
   li $v0, 5
   syscall
 
-  # Store the value in 'base'
+  # Store into base
   sw $v0, number
 
-  # Read in the second integer for 'exponent'.
+  # Read integer for exponent
   li $v0, 5
   syscall
 
-  # Store the value in 'base'
+  # Store into exponent
   sw $v0, exponent
 
-  # Store -1 in the result in case of early return
-  addi $v0, $zero, -1
+  # Default return value
+  addi $v0, $zero, -1 # ans = -1
 
-  # if exponent < 0 or number < 1, then return early.
+  # if exponent < 0 or number < 1, return
   li $t7, 1
   lw $t1, number
   blt $t1, $t7, main_end
   lw $t1, exponent
   blt $s1, $zero, main_end
 
-  # Call 'sopd' by passing the two arguments on the stack. Return value is in 'v0'.
+  # Call sopd with stack
+  # Return is in $v0 (convention)
   addiu $sp, $sp, -12
   lw $a0, number
   sw $a0, 12($sp)
@@ -60,87 +62,80 @@ main:
 
 main_end:
 
-  add $a0, $v0, $zero       # $integer to print
+  add $a0, $v0, $zero # integer to print
   li $v0, 1
   syscall
 
+  # Newline
   li $v0, 11
   li $a0, 10
   syscall
 
-  # End program
+  # End
   li $v0, 10
   syscall
 
 
-# Accepts 2 arguments: 'base' and 'exponent'.
-# Returns the computed integer value (ignoring overflow).
-#
-# Arguments are expected to be pushed on the stack.
-# Uses `v0` to return output.
+# power() function
 power:
   lw $t0, 8($sp) # 'base'
   lw $t1, 4($sp) # 'exponent'
 
-  li $t3, 1  # 'ans'
+  li $t3, 1  # ans = 1
 
-  li $t4, 1  # i
+  li $t4, 1  # i = 1
   power_loop:
-    # If 'i' is greater than 'exponent', break.
+    # if i > exponent
     slt $t5, $t1, $t4
     bne $t5, $zero, power_loop_end
 
     mult $t3, $t0
     mflo $t3
 
-    addi $t4, $t4, 1  # Increment i by 1.
+    addi $t4, $t4, 1  # Increment i
     j power_loop
   power_loop_end:
     add $v0, $t3, $zero
     jr $ra
 
 
-# Accepts 3 arguments: 'num', 'n', and 'i'.
-# Returns the sum of the n'th powers of all the positive divisers of num.
-#
-# Arguments are expected to be pushed on the stack.
-# Uses `v0` to return output.
+# SOPD function
 sopd:
-  # Prologue -- Load params and then save the return address and frame pointer
-  lw $s0, 12($sp) # 'number'
-  lw $s1, 8($sp) # 'exponent'
-  lw $s2, 4($sp) # 'i'
+  # Prologue
+  lw $s0, 12($sp) # number
+  lw $s1, 8($sp) # exponent
+  lw $s2, 4($sp) # i
   addiu $sp, $sp, -8
   sw $ra, 8($sp)
   sw $fp, 4($sp)
   add $fp, $sp, 8
 
-  li $s3, 0  # 'ans'
+  li $s3, 0  # ans = 0
 
-  # if 'number' is smaller than 'i', return early.
+  # if number < i, return
   blt $s0, $s2, sopd_end
 
-  # `num % i`. The HI bits contain the modulo.
+  # num % i
   div $s0, $s2
   mfhi $t7
   bne $t7, $zero, sopd_skip
 
-  # Call 'power' by passing the two arguments on the stack. Return value is in 'v0'.
+  # Call power with stack args
   addiu $sp, $sp, -8
-  sw $s2, 8($sp)  # Store 'i' as 'base'
-  sw $s1, 4($sp)  # Store 'exponent' as 'exponent'
+  sw $s2, 8($sp)  # Store i/base
+  sw $s1, 4($sp)  # Store exponent
   jal power
   addiu $sp, $sp, 8
 
-  # Assign the result to 'ans'.
+  # result = ans
   add $s3, $v0, $zero
 
   sopd_skip:
-    #Increment i
+    # Increment i
     add $s2, $s2, 1
 
-    # Recursive call to `sopd`. Make sure to save all of the `s` registers to restore
-    # after the function call returns. Return value is in `v0`.
+    # Recursively call sopd
+    # Store stack
     addiu $sp, $sp, -28
     sw $s3, 28($sp)
     sw $s2, 24($sp)
@@ -150,19 +145,22 @@ sopd:
     sw $s1, 8($sp)  # exponent
     sw $s2, 4($sp)  # i
     jal sopd
+
+    # Restore stack
     lw $s3, 28($sp)
     lw $s2, 24($sp)
     lw $s1, 20($sp)
     lw $s0, 16($sp)
     addiu $sp, $sp, 28
 
-    # Append the result into answer.
+    # Add result of sopd
     add $s3, $s3, $v0
 
   sopd_end:
     add $v0, $s3, $zero
 
-    # Epilogue -- Restore the old return address and frame pointer
+    # Epilogue
+    # Restore $RA and pointer
     lw $ra, 8($sp)
     lw $fp, 4($sp)
     add $sp, $sp, 8
