@@ -13,9 +13,9 @@
 
 ## Additional Items
 - [X] Check codebase against linesize
-- [ ] Reread project description
-- [ ] Use formatting by emacs
-- [ ] Submit
+- [X] Reread project description
+- [X] Use formatting by emacs
+- [X] Submit
 
 ## Notes
 General
