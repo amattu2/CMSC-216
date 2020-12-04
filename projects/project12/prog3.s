@@ -78,8 +78,8 @@ main_end:
 
 # power() function
 power:
-  lw $t0, 8($sp) # 'base'
-  lw $t1, 4($sp) # 'exponent'
+  lw $t0, 8($sp) # base
+  lw $t1, 4($sp) # exponent
 
   li $t3, 1  # ans = 1
 
