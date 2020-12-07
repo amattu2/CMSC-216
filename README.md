@@ -13,8 +13,8 @@ Teachers:
 |project2|95%|-5 for styleguide related issues|
 |project3|105%|+5 for early submission|
 |project4|100%|
-|project5|
-|project6|
+|project5|100%|
+|project6|100%|**Warning**: Don't use custom names for GCC flags|
 |project7|
 |project8|
 |project9|
