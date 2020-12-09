@@ -1,9 +1,9 @@
 ## Public Tests
-- [ ] public01.c
-- [ ] public02.c
-- [ ] public03.c
+- [X] public01.c
+- [X] public02.c
+- [X] public03.c
 - [ ] public04.c
-- [ ] public05.c
+- [X] public05.c
 
 ## Additional Items
 - [ ] Check codebase against linesize
