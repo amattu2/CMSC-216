@@ -11,3 +11,8 @@
 - [ ] Submit
 
 ## Notes
+The multi threading cannot use global variables, and must use a return value.
+
+All dynamic memory should be freed
+
+Per `pthreads-example.c`, use a separate loop for closing threads
