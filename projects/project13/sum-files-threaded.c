@@ -34,17 +34,13 @@ static void *sum_file_contents(void *filename);
 int main(int argc, char *argv[]) {
   /* Variables */
   pthread_t *threads = NULL;
-  void **thread_results = NULL;
-  long file_sum = 0;
+  long sum = 0;
   int i = 0;
   int argument_count = argc - 1;
 
   /* Checks */
   if (!(threads = malloc(sizeof(pthread_t) * argument_count)))
     exit(-1);
-  /*if (!(thread_results = malloc(sizeof(long*) * argument_count)))
-    exit(-1);
-    */
   if (argc > 1) {
     /* Initialize Threads */
     for (i = 1; i < argc; i++) {
@@ -53,13 +49,16 @@ int main(int argc, char *argv[]) {
 
     /* Close Threads */
     for (i = 1; i < argc; i++) {
-      pthread_join(threads[i], &thread_results[i]);
-      printf("%ld\n", *(long *) thread_results[i]);
+      void *result = NULL;
+
+      pthread_join(threads[i], &result);
+
+      sum = *(long *) result;
     }
   }
 
   /* Print Results */
-  printf("%ld\n", file_sum);
+  printf("%ld\n", sum);
 
   /* Default */
   return 0;
@@ -73,18 +72,18 @@ static void *sum_file_contents(void *filename) {
   int number = 0;
 
   /* Checks */
-  if ((sum = malloc(sizeof(long*))))
-    sum = 0;
+  if ((sum = malloc(sizeof(*sum))))
+    *sum = 0;
   else return 0;
   if (!filename)
     return sum;
-  if (!(file = fopen(filename, "r")))
+  if (!(file = fopen((char *) filename, "r")))
     return sum;
 
   /* Read File */
   fscanf(file, "%d", &number);
   while (!feof(file)) {
-    sum += number;
+    *sum += number;
     fscanf(file, "%d", &number);
   }
 
