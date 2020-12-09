@@ -55,11 +55,11 @@ int main(int argc, char *argv[]) {
 static void *sum_file_contents(void *filename) {
   /* Variables */
   FILE *file = NULL;
-  int *sum = NULL;
+  long *sum = NULL;
   int number = 0;
 
   /* Checks */
-  if ((sum = malloc(sizeof(int*))))
+  if ((sum = malloc(sizeof(long*))))
     sum = 0;
   else return 0;
   if (!filename)
