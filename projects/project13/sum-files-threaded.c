@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
   long *results = NULL;
   long sum = 0;
   int i = 0;
-  int argument_count = argc - 1;
+  int argument_count = argc;
 
   /* Checks */
   if (!(threads = malloc(sizeof(pthread_t) * argument_count)))
@@ -59,6 +59,7 @@ int main(int argc, char *argv[]) {
       /* Join Thread */
       pthread_join(threads[i], &result);
       results[i] = *(long *) result;
+      free(result);
     }
 
     /* Sum Results */
