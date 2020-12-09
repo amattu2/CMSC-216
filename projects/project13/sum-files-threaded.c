@@ -33,14 +33,28 @@ static void *sum_file_contents(void *filename);
 /* Main function */
 int main(int argc, char *argv[]) {
   /* Variables */
-  pthread_t *threads;
+  pthread_t *threads = NULL;
+  void **thread_results = NULL;
   long file_sum = 0;
   int i = 0;
+  int argument_count = argc - 1;
 
   /* Checks */
-  if (argc > 1 && (threads = malloc(sizeof(pthread_t) * (argc - 1)))) {
+  if (!(threads = malloc(sizeof(pthread_t) * argument_count)))
+    exit(-1);
+  /*if (!(thread_results = malloc(sizeof(long*) * argument_count)))
+    exit(-1);
+    */
+  if (argc > 1) {
+    /* Initialize Threads */
     for (i = 1; i < argc; i++) {
       pthread_create(&threads[i], NULL, sum_file_contents, argv[i]);
+    }
+
+    /* Close Threads */
+    for (i = 1; i < argc; i++) {
+      pthread_join(threads[i], &thread_results[i]);
+      printf("%ld\n", *(long *) thread_results[i]);
     }
   }
 
