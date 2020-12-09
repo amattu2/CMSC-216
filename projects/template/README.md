@@ -17,3 +17,4 @@
 - [ ] Submit
 
 ## Notes
+The multi threading cannot use global variables, and must use a return value.
