@@ -37,12 +37,11 @@ int main(int argc, char *argv[]) {
   long *results = NULL;
   long sum = 0;
   int i = 0;
-  int argument_count = argc;
 
   /* Checks */
-  if (!(threads = malloc(sizeof(pthread_t) * argument_count)))
+  if (!(threads = malloc(sizeof(pthread_t) * argc)))
     exit(-1);
-  if (!(results = malloc(sizeof(results) * argument_count)))
+  if (!(results = malloc(sizeof(results) * argc)))
     exit(-1);
   if (argc > 1) {
     /* Initialize Threads */
