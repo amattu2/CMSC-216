@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
   /* Variables */
   pthread_t *threads = NULL;
   int *create_results = NULL;
-  long *results = NULL;
+  long *thread_results = NULL;
   long sum = 0;
   int i = 0;
 
@@ -44,13 +44,13 @@ int main(int argc, char *argv[]) {
     exit(-1);
   if (!(create_results = malloc(sizeof(create_results) * argc)))
     exit(-1);
-  if (!(results = malloc(sizeof(results) * argc)))
+  if (!(thread_results = malloc(sizeof(thread_results) * argc)))
     exit(-1);
   if (argc > 1) {
     /* Initialize Threads */
     for (i = 1; i < argc; i++) {
       create_results[i] = pthread_create(&threads[i], NULL, sum_file_contents, argv[i]);
-      results[i] = 0;
+      thread_results[i] = 0;
     }
 
     /* Close Threads */
@@ -66,13 +66,13 @@ int main(int argc, char *argv[]) {
 
       /* Join Thread */
       pthread_join(threads[i], &result);
-      results[i] = *(long *) result;
+      thread_results[i] = *(long *) result;
       free(result);
     }
 
     /* Sum Results */
     for (i = 1; i < argc; i++)
-      sum += results[i];
+      sum += thread_results[i];
   }
 
   /* Print Results */
@@ -80,7 +80,7 @@ int main(int argc, char *argv[]) {
 
   /* Default */
   free(threads);
-  free(results);
+  free(thread_results);
   free(create_results);
   return 0;
 }
