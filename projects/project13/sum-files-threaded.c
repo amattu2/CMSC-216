@@ -85,7 +85,7 @@ static void *sum_file_contents(void *filename) {
   /* Checks */
   if ((sum = malloc(sizeof(*sum))))
     *sum = 0;
-  else return 0;
+  else exit(-1);
   if (!filename)
     return sum;
   if (!(file = fopen((char *) filename, "r")))
