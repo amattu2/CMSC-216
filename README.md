@@ -21,10 +21,12 @@ Teachers:
 |project10|100%|
 |project11|
 |project12|
-|project13|
+|project13|100%|
 
 # Notes
 It goes without saying, CMSC216 students should not make use of this repository for any reason.
 
 # Requirements & Dependencies
-ANSI C89
+Languages
+- ANSI C89
+- MIPS Assembly
