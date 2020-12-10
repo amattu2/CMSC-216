@@ -34,6 +34,7 @@ static void *sum_file_contents(void *filename);
 int main(int argc, char *argv[]) {
   /* Variables */
   pthread_t *threads = NULL;
+  int *create_results = NULL;
   long *results = NULL;
   long sum = 0;
   int i = 0;
@@ -41,12 +42,14 @@ int main(int argc, char *argv[]) {
   /* Checks */
   if (!(threads = malloc(sizeof(pthread_t) * argc)))
     exit(-1);
+  if (!(create_results = malloc(sizeof(create_results) * argc)))
+    exit(-1);
   if (!(results = malloc(sizeof(results) * argc)))
     exit(-1);
   if (argc > 1) {
     /* Initialize Threads */
     for (i = 1; i < argc; i++) {
-      pthread_create(&threads[i], NULL, sum_file_contents, argv[i]);
+      create_results[i] = pthread_create(&threads[i], NULL, sum_file_contents, argv[i]);
       results[i] = 0;
     }
 
@@ -55,8 +58,14 @@ int main(int argc, char *argv[]) {
       /* Variables */
       void *result = NULL;
 
+      /* Checks */
+      if (create_results[i] != 0) {
+        printf("Skipped thread %d with result %d\n", i, create_results[i]);
+        continue;
+      }
+
       /* Join Thread */
-      pthread_join(threads[i], &result);
+      pthread_join(threads[i], &result); /* Causing seg fault */
       results[i] = *(long *) result;
       free(result);
     }
