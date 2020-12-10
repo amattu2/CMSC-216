@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
       }
 
       /* Join Thread */
-      pthread_join(threads[i], &result); /* Causing seg fault */
+      pthread_join(threads[i], &result);
       results[i] = *(long *) result;
       free(result);
     }
