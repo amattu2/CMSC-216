@@ -59,10 +59,8 @@ int main(int argc, char *argv[]) {
       void *result = NULL;
 
       /* Checks */
-      if (create_results[i] != 0) {
-        printf("Skipped thread %d with failure result %d\n", i, create_results[i]);
+      if (create_results[i] != 0)
         continue;
-      }
 
       /* Join Thread */
       pthread_join(threads[i], &result);
