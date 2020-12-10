@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
 
       /* Checks */
       if (create_results[i] != 0) {
-        printf("Skipped thread %d with result %d\n", i, create_results[i]);
+        printf("Skipped thread %d with failure result %d\n", i, create_results[i]);
         continue;
       }
 
@@ -81,6 +81,7 @@ int main(int argc, char *argv[]) {
   /* Default */
   free(threads);
   free(results);
+  free(create_results);
   return 0;
 }
 
