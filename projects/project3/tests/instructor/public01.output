@@ -1,0 +1,5 @@
+add   R12 R17 R6 
+mul   R5  R6  R6 
+sub   R17 R5  R6 
+or    R11 R9  R5 
+and   R9  R5  R11

@@ -1,0 +1,14 @@
+main.x: main.o functions.o memory-checking.o safe-fork.o
+	gcc main.o functions.o memory-checking.o safe-fork.o -o main.x
+
+functions.o: functions.c functions.h
+	gcc -c functions.c
+
+main.o: main.c functions.h
+	gcc -c main.c
+
+linesize.x: linesize.c
+	gcc linesize.c -o linesize.x
+
+clean:
+	rm -f main.o functions.o main.x

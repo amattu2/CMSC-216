@@ -1,0 +1,11 @@
+main.x: main.o functions.o
+	gcc main.o functions.o -o main.x
+
+functions.o: functions.c functions.h
+	gcc -c functions.c
+
+main.o: main.c functions.h
+	gcc -c main.c
+
+clean:
+	rm -f main.o functions.o main.x

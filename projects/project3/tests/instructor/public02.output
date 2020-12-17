@@ -1,0 +1,5 @@
+li    R6  216
+not   R7  R6 
+mv    R8  R2 
+load  R6  0216
+halt

@@ -1,0 +1,4 @@
+000: sub   R17 R5  R6 
+004: and   R9  R5  R11
+008: mul   R5  R6  R6 
+00c: li    R6  216

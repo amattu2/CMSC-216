@@ -1,0 +1,2 @@
+target1: dependency1
+	./public06-testprogram.x

@@ -1,0 +1,2 @@
+file: newer-file
+	echo I SHOULD print this because the dependency is newer.

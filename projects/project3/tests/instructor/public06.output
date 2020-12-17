@@ -1,0 +1,8 @@
+000: sub   R17 R5  R6 
+004: and   R9  R5  R11
+008: mul   R5  R6  R6 
+00c: li    R6  216
+010: load  R6  0216
+014: mv    R8  R2 
+018: not   R7  R6 
+01c: halt

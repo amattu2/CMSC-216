@@ -1,0 +1,12 @@
+main.o:
+	gcc -c main.c
+
+functions.o:
+	gcc -c functions.c
+
+main.x:
+	gcc main.o functions.o -o main.x
+
+Running main.x now, it prints 216
+
+Yet again, all assertions were successful!

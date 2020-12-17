@@ -1,0 +1,12 @@
+#!/bin/tcsh -f
+
+# CMSC 216, Fall 2020, Project #12
+# Public test 1 (public01)
+#
+# Tests running the first program to compute 1^1.
+#
+# (c) Larry Herman, 2020.  You are allowed to use this code yourself, but
+# not to provide it to anyone else.
+
+# spim -file prog1.s < public01.inputdata | tail -n +2
+spim -file prog1.s < public01.inputdata | tail -n +2

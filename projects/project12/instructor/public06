@@ -1,0 +1,11 @@
+#!/bin/tcsh -f
+
+# CMSC 216, Fall 2020, Project #12
+# Public test 6 (public06)
+#
+# Tests running the second program to compute sopd(1, 216).
+#
+# (c) Larry Herman, 2020.  You are allowed to use this code yourself, but
+# not to provide it to anyone else.
+
+spim -file prog2.s < public06.inputdata | tail -n +2

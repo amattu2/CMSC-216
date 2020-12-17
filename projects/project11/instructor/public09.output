@@ -1,0 +1,6 @@
+nonexistent-file:
+	echo I SHOULD print this because the target does not exist.
+
+I SHOULD print this because the target does not exist.
+
+Yet again, all assertions were successful!

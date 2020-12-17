@@ -1,0 +1,17 @@
+This should be printed by the first rule.
+public05.forkfile
+target1: dependency1
+	echo "This should be printed by the first rule."
+
+target2: dependency2
+	ls public05.forkfile
+
+target3: dependency3
+	cat public05.forkfile
+
+target4: dependency1
+	echo "This should be printed by the last rule."
+This should be printed by the last rule.
+
+
+

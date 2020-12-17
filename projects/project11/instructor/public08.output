@@ -1,0 +1,6 @@
+file:
+	echo I SHOULD print this because the dependency is newer.
+
+I SHOULD print this because the dependency is newer.
+
+Yet again, all assertions were successful!
