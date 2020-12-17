@@ -15,7 +15,7 @@ Teachers:
 |project4|100%|
 |project5|100%|
 |project6|100%|**Warning**: Don't use custom names for GCC flags|
-|project7|
+|project7|89%|-5% for styleguide related issues, -6% for private test failures|
 |project8|
 |project9|
 |project10|100%|
