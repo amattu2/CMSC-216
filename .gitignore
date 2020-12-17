@@ -1,9 +1,7 @@
 *.o
 *.gch
 *.pdf
-instructor/
 random/
 examples/
 
 # Project 13 Instructor files
-sum-files.c
