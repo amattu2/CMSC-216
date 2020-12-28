@@ -16,11 +16,11 @@ Teachers:
 |project5|100%|
 |project6|100%|**Warning**: Don't use custom names for GCC flags|
 |project7|89%|-5% for styleguide related issues, -6% for private test failures|
-|project8|
-|project9|
+|project8|105%|+5% early submission|
+|project9|93%|-7% for private test failures|
 |project10|100%|
-|project11|
-|project12|
+|project11|94%|Deduction for styleguide issues, minor private test failures|
+|project12|106%|+10% for single+early submission, -2% for styleguide issues, -2% for private test failures|
 |project13|100%|
 
 # Notes
