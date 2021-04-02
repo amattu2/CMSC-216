@@ -1,6 +1,6 @@
 # CMSC 216 (Fall 2020)
 # Section: 0303 (M/W 8am)
-# University ID: 117568813
+# University ID: -
 # Directory ID: amattu
 # Author: Alec M.
 # Date: December 2nd, 2020
